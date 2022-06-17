@@ -18,11 +18,15 @@
             />
         </div>
         <div><button>Войти</button></div>
+        <div v-if="isAuthenticated">logined!</div>
         </form>
     </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex'
+
 export default {
     name: 'LoginComponent',
 
@@ -31,6 +35,12 @@ export default {
             userName: "",
             password: "",
         };
+    },
+
+    computed: {
+        ...mapGetters({
+            isAuthenticated: 'auth/IS_AUTHENTICATED',
+        })
     },
 
     methods: {

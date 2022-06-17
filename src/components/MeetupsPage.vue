@@ -31,16 +31,16 @@ export default {
         }
     },
     mounted(){
-        fetch('/api')
-            .then((data) => {
-                return data.json();
-            })
-            .then((data) => {
-                console.log(data.text);
-            })
-            .catch((e) => {
-                console.log('ERR', e);
-            })
+        // fetch('/auth')
+        //     .then((data) => {
+        //         return data.json();
+        //     })
+        //     .then((data) => {
+        //         console.log(data.text);
+        //     })
+        //     .catch((e) => {
+        //         console.log('ERR', e);
+        //     })
     }
 }
 </script>
