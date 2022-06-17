@@ -10,8 +10,9 @@ const config = {
 const $api = axios.create(config)
 
 const authApi = {
+
     async login(userLogin, password){
-        return $api.get('/api', {userLogin, password})
+        return $api.get('/api/auth', {userLogin, password})
             .then(function (response) {
                 const { token } = response.data
                 //localStorage.setItem('corpUserToken', token)
@@ -23,6 +24,7 @@ const authApi = {
                 console.log('API Login err', err)
             })
     },
+
     async logout(){
         // return $api.get('/api', {userLogin, password})
         //     .then(function (response) {
@@ -32,8 +34,9 @@ const authApi = {
         //         console.log('Auth Logout err', err);
         //     })
     }
-}
+
+};
 
 export {
     authApi
-}
+};

@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "server": "DEBUG=myapp:* npm start",
-    "start": "node ./server/bin/www"
+    "start": "nodemon ./server/bin/www"
   },
   "dependencies": {
     "axios": "^0.27.2",

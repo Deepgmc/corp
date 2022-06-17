@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router/router.js'
-import store from './store'
+import store from './store/store.js'
 //import $auth from './plugins/auth/auth.plugin.js'
 
 createApp(App)
