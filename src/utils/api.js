@@ -11,8 +11,8 @@ const $api = axios.create(config)
 
 const authApi = {
 
-    async login(userLogin, password){
-        return $api.get('/api/auth', {userLogin, password})
+    async login({userLogin, password}){
+        return $api.post('/api/auth/login', {userLogin: userLogin, password: password})
             .then(function (response) {
                 const { token } = response.data
                 //localStorage.setItem('corpUserToken', token)
@@ -22,6 +22,18 @@ const authApi = {
             })
             .catch(function (err) {
                 console.log('API Login err', err)
+            })
+    },
+
+    async register({userLogin, password}){
+        return $api.post('/api/auth/register', {userLogin: userLogin, password: password})
+            .then(function (response) {
+                return new Promise((resolve, reject) => {
+                    resolve(token)
+                })
+            })
+            .catch(function (err) {
+                console.log('API Register err', err)
             })
     },
 

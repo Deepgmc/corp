@@ -1,22 +1,26 @@
 const createError = require('http-errors')
 const express = require('express')
+const app = express()
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const session = require('express-session')
+app.use(cookieParser())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
-const authRouter = require('./routes/auth')
+const apiRouter = require('./routes/auth')
 
-const app = express()
 //app.set('views', path.join(__dirname, 'views'))
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
+
+
+
 
 
 
 
 //app.use('/', express.static(path.join(__dirname, 'public')))
-app.use('/api', authRouter)
+app.use('/api', apiRouter)
 
 
 

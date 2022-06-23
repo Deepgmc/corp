@@ -1,4 +1,5 @@
 import {authApi} from '../../utils/api'
+import actions from '../../utils/ACTIONS'
 
 export default {
     namespaced: true,
@@ -12,43 +13,61 @@ export default {
     },
 
     actions: {
-        async LOGIN({state, commit}, {userLogin, password}) {
+        async ACTION_LOGIN({state, commit}, {userLogin, password}) {
             if(state.isLoading){
                 return
             }
-            commit('SET_LOADING')
+            commit(actions.SET_LOADING)
             const userData = await authApi.login({userLogin, password})
                 .then((token) => {
-                    commit('SET_TOKEN', token)
+                    commit(actions.SET_TOKEN, token)
                 })
                 .catch(function (err) {
                     console.log('AUTH Login err', err)
                 })
         },
 
+        async ACTION_REGISTER({state, commit}, {userLogin, password}){
+            if(state.isLoading){
+                return
+            }
+            const userData = await authApi.register({userLogin, password})
+                .then(({id}) => {
+                    console.log('Registered new user: ', id)
+                    return {userLogin, password}
+                })
+                .then(({userLogin, password}) => {
+                    console.log('NEED LOGIN HERE')
+                })
+                .catch(function (err) {
+                    console.log('AUTH Register err', err)
+                })
+            commit(actions.SET_LOADING)
+        },
+
         async LOGOUT({commit}, {token}) {
             await authApi.auth.logout(token)
-            commit('SET_TOKEN', null)
+            commit(actions.SET_TOKEN, null)
 
         }
     },
 
     mutations: {
-        SET_TOKEN(state, token){
+        [actions.SET_TOKEN](state, token){
             state.token = token
         },
-        SET_USER(state, user){
+        [actions.SET_USER](state, user){
             state.user = user
         },
-        ERROR(state, error) {
+        [actions.SET_ERROR](state, error) {
             state.isLoading = false
             state.error = error
         },
-        SUCCESS(state) {
+        [actions.SET_SUCCESS](state) {
             state.isLoading = false
             state.error = null
         },
-        SET_LOADING(state){
+        [actions.SET_LOADING](state){
             state.isLoading = true
         }
     },

@@ -1,22 +1,23 @@
 <template>
     <div>
         <hr />
-        <div>Login component</div>
+        <div>{{ isRegistering ? 'Register' : 'Login'}} component</div>
         <form @submit.prevent="onLoginSubmit">
         <div>
             <input
-                v-model="userName"
-                type="text"
-                placeholder="user name"
+                v-model     = "userLogin"
+                type        = "text"
+                placeholder = "user name"
             />
         </div>
         <div>
             <input
-                v-model="password"
-                type="password"
-                placeholder="password"
+                v-model     = "password"
+                type        = "password"
+                placeholder = "password"
             />
         </div>
+        <div><label>вкл. регистрацию<input type="checkbox" v-model="isRegistering"></label></div>
         <div><button>Войти</button></div>
         <div v-if="isAuthenticated">logined!</div>
         </form>
@@ -32,8 +33,9 @@ export default {
 
     data: () => {
         return {
-            userName: "",
-            password: "",
+            userLogin: 'test name',
+            password: 'test_password',
+            isRegistering: false
         };
     },
 
@@ -45,7 +47,10 @@ export default {
 
     methods: {
         onLoginSubmit(){
-            this.$store.dispatch('auth/LOGIN', {userName: this.userName, password: this.password})
+            this.$store.dispatch(`auth/ACTION_${this.isRegistering ? 'REGISTER' : 'LOGIN'}`, {
+                userLogin    : this.userLogin,
+                password     : this.password
+            })
         }
     }
 };

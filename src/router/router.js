@@ -12,6 +12,11 @@ const routes = [
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/AuthView.vue')
   },
+  // {
+  //   path: '/home',
+  //   name: 'home',
+  //   component: () => import(/* webpackChunkName: "home" */ '../views/IndexView.vue')
+  // },
 ]
 
 const router = createRouter({
@@ -20,11 +25,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== 'login') {
-    next('/login')
-  } else {
-    next()
-  }
+  // if (to.name !== 'login') {
+  //   next('/login')
+  // } else {
+  //   next()
+  // }
+  next()
 })
 
 export default router
