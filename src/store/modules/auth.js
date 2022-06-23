@@ -6,41 +6,45 @@ export default {
     state() {
         return {
             isLoading: false,
-            user: null,
-            token: localStorage.getItem('corpUserToken') ?? null,
-            error: null
+            user     : null,
+            //token    : localStorage.getItem('corpUserToken') ?? null,
+            error    : null,
+            success  : null
         }
     },
 
     actions: {
-        async ACTION_LOGIN({state, commit}, {userLogin, password}) {
-            if(state.isLoading){
-                return
-            }
-            commit(actions.SET_LOADING)
-            const userData = await authApi.login({userLogin, password})
-                .then((token) => {
-                    commit(actions.SET_TOKEN, token)
-                })
-                .catch(function (err) {
-                    console.log('AUTH Login err', err)
-                })
-        },
+        // async ACTION_LOGIN({state, commit}, {login, password}) {
+        //     if(state.isLoading){
+        //         return
+        //     }
+        //     commit(actions.SET_LOADING)
+        //     const userData = await authApi.login({login, password})
+        //         .then((token) => {
+        //             commit(actions.SET_TOKEN, token)
+        //         })
+        //         .catch(function (err) {
+        //             console.log('AUTH Login err', err)
+        //         })
+        // },
 
-        async ACTION_REGISTER({state, commit}, {userLogin, password}){
+        async ACTION_REGISTER({state, commit}, {login, password}){
             if(state.isLoading){
                 return
             }
-            const userData = await authApi.register({userLogin, password})
-                .then(({id}) => {
-                    console.log('Registered new user: ', id)
-                    return {userLogin, password}
+            const userData = await authApi.register({login, password})
+                .then((success) => {
+                    console.log('Registered new user: ', success)
+                    commit(actions.SET_LOGIN_SUCCESS, success)
+                    return {login, password}
                 })
-                .then(({userLogin, password}) => {
-                    console.log('NEED LOGIN HERE')
+                .then(({login, password}) => {
+                    //! NEED LOGIN HERE
+                    //! https://www.youtube.com/watch?v=jkQdEvPf-uI&list=PLNOjHC_BXrfCNWe0ghCxEmNVeHN_J5K3k&index=3
+                    //! 38:43
                 })
-                .catch(function (err) {
-                    console.log('AUTH Register err', err)
+                .catch(function (error) {
+                    commit(actions.SET_LOGIN_ERROR, error)
                 })
             commit(actions.SET_LOADING)
         },
@@ -59,13 +63,13 @@ export default {
         [actions.SET_USER](state, user){
             state.user = user
         },
-        [actions.SET_ERROR](state, error) {
+        [actions.SET_LOGIN_ERROR](state, error) {
             state.isLoading = false
             state.error = error
         },
-        [actions.SET_SUCCESS](state) {
+        [actions.SET_LOGIN_SUCCESS](state, success) {
             state.isLoading = false
-            state.error = null
+            state.success = success
         },
         [actions.SET_LOADING](state){
             state.isLoading = true
@@ -73,6 +77,8 @@ export default {
     },
 
     getters: {
-        IS_AUTHENTICATED: (state) => !!state.token
+        IS_AUTHENTICATED: (state) => !!state.token,
+        GET_LOGIN_ERROR: (state) => state.error ?? null,
+        GET_LOGIN_SUCCESS: (state) => state.success ?? null
     },
 }

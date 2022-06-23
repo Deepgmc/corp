@@ -5,7 +5,7 @@
         <form @submit.prevent="onLoginSubmit">
         <div>
             <input
-                v-model     = "userLogin"
+                v-model     = "login"
                 type        = "text"
                 placeholder = "user name"
             />
@@ -20,6 +20,12 @@
         <div><label>вкл. регистрацию<input type="checkbox" v-model="isRegistering"></label></div>
         <div><button>Войти</button></div>
         <div v-if="isAuthenticated">logined!</div>
+        <div v-if="loginErorr !== null">
+            <p>{{ loginErorr.text }}</p>
+        </div>
+        <div v-if="loginSuccess !== null">
+            <p>{{ loginSuccess.text }}</p>
+        </div>
         </form>
     </div>
 </template>
@@ -33,8 +39,8 @@ export default {
 
     data: () => {
         return {
-            userLogin: 'test name',
-            password: 'test_password',
+            login        : 'test name',
+            password     : 'test_password',
             isRegistering: false
         };
     },
@@ -42,14 +48,16 @@ export default {
     computed: {
         ...mapGetters({
             isAuthenticated: 'auth/IS_AUTHENTICATED',
+            loginErorr     : 'auth/GET_LOGIN_ERROR',
+            loginSuccess   : 'auth/GET_LOGIN_SUCCESS',
         })
     },
 
     methods: {
         onLoginSubmit(){
             this.$store.dispatch(`auth/ACTION_${this.isRegistering ? 'REGISTER' : 'LOGIN'}`, {
-                userLogin    : this.userLogin,
-                password     : this.password
+                login   : this.login,
+                password: this.password
             })
         }
     }
