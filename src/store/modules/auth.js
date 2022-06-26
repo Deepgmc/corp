@@ -1,59 +1,94 @@
-import {authApi} from '../../utils/api'
+import authApi from '../../utils/auth.js'
+import actions from '../../utils/ACTIONS_C'
+
 
 export default {
     namespaced: true,
     state() {
         return {
             isLoading: false,
-            user: null,
-            token: localStorage.getItem('corpUserToken') ?? null,
-            error: null
+            user     : null,
+            token    : authApi.getToken() ?? null,
+            error    : null,
+            success  : null
         }
     },
 
     actions: {
-        async LOGIN({state, commit}, {userLogin, password}) {
+
+        async ACTION_REGISTER({state, commit}, {login, password}){
             if(state.isLoading){
                 return
             }
-            commit('SET_LOADING')
-            const userData = await authApi.login({userLogin, password})
-                .then((token) => {
-                    commit('SET_TOKEN', token)
+            commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
+            commit(actions.SET_LOADING)
+            const userData = await authApi.register({login, password})
+                .then((success) => {
+                    console.log('Registered new user: ', success)
+                    commit(actions.SET_LOGIN_SUCCESS, success)
+
+                    return {login, password}
                 })
-                .catch(function (err) {
-                    console.log('AUTH Login err', err)
+                //.then(({login, password}) => {
+                    //! NEED LOGIN HERE
+                //})
+                .catch(function (error) {
+                    commit(actions.SET_LOGIN_ERROR, error)
+                })
+        },
+
+        async ACTION_LOGIN({state, commit}, {login, password}) {
+            if(state.isLoading){
+                return
+            }
+            commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
+            commit(actions.SET_LOADING)
+            const userData = await authApi.login({login, password})
+                .then((token) => {
+                    commit(actions.SET_TOKEN, token)
+                })
+                .catch(function (error) {
+                    console.log('AUTH Login err', error)
                 })
         },
 
         async LOGOUT({commit}, {token}) {
             await authApi.auth.logout(token)
-            commit('SET_TOKEN', null)
+            commit(actions.SET_TOKEN, null)
 
         }
     },
 
     mutations: {
-        SET_TOKEN(state, token){
+        [actions.SET_TOKEN](state, token){
             state.token = token
+            authApi.setToken(token)
         },
-        SET_USER(state, user){
+        [actions.SET_USER](state, user){
             state.user = user
         },
-        ERROR(state, error) {
+        [actions.SET_LOGIN_ERROR](state, error) {
             state.isLoading = false
             state.error = error
         },
-        SUCCESS(state) {
+        [actions.SET_LOGIN_SUCCESS](state, success) {
             state.isLoading = false
-            state.error = null
+            state.success = success
         },
-        SET_LOADING(state){
+        [actions.SET_LOADING](state){
             state.isLoading = true
+        },
+        [actions.FLUSH_REGISTER_ERROR_SUCCEESS](state){
+            state.success = null
+            state.error = null
         }
     },
 
     getters: {
-        IS_AUTHENTICATED: (state) => !!state.token
+        IS_AUTHENTICATED: (state) => {
+            return !!state.token || !!authApi.getToken()
+        },
+        GET_LOGIN_ERROR: (state) => state.error ?? null,
+        GET_LOGIN_SUCCESS: (state) => state.success ?? null
     },
 }

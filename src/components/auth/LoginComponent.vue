@@ -1,24 +1,31 @@
 <template>
     <div>
         <hr />
-        <div>Login component</div>
+        <div>{{ isRegistering ? 'Register' : 'Login'}} component</div>
         <form @submit.prevent="onLoginSubmit">
-        <div>
-            <input
-                v-model="userName"
-                type="text"
-                placeholder="user name"
-            />
-        </div>
-        <div>
-            <input
-                v-model="password"
-                type="password"
-                placeholder="password"
-            />
-        </div>
-        <div><button>Войти</button></div>
-        <div v-if="isAuthenticated">logined!</div>
+            <div>
+                <input
+                    v-model     = "login"
+                    type        = "text"
+                    placeholder = "user name"
+                />
+            </div>
+            <div>
+                <input
+                    v-model     = "password"
+                    type        = "password"
+                    placeholder = "password"
+                />
+            </div>
+            <div><label>зарегистрироваться<input type="checkbox" v-model="isRegistering"></label></div>
+            <div><button>{{ isRegistering ? 'Зарегистрироваться' : 'Войти' }}</button></div>
+            <div v-if="isAuthenticated">logined!</div>
+            <div v-if="loginErorr !== null">
+                <p>{{ loginErorr.text }}</p>
+            </div>
+            <div v-if="loginSuccess !== null">
+                <p>{{ loginSuccess.text }}</p>
+            </div>
         </form>
     </div>
 </template>
@@ -32,20 +39,27 @@ export default {
 
     data: () => {
         return {
-            userName: "",
-            password: "",
+            login        : 'test name',
+            password     : 'test_password',
+            isRegistering: false
         };
     },
 
     computed: {
         ...mapGetters({
             isAuthenticated: 'auth/IS_AUTHENTICATED',
+            loginErorr     : 'auth/GET_LOGIN_ERROR',
+            loginSuccess   : 'auth/GET_LOGIN_SUCCESS',
         })
     },
 
     methods: {
         onLoginSubmit(){
-            this.$store.dispatch('auth/LOGIN', {userName: this.userName, password: this.password})
+            this.$auth.login.call(this)
+            // this.$store.dispatch(`auth/ACTION_${this.isRegistering ? 'REGISTER' : 'LOGIN'}`, {
+            //     login   : this.login,
+            //     password: this.password
+            // })
         }
     }
 };
