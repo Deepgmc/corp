@@ -1,5 +1,5 @@
 const authService = require('../services/authService.js')
-const passport = require('passport')
+//const passport = require('passport')
 
 const loginController = function (req, res, next) {
     // //! AUTHENTICATE USER
