@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '../store/store'
+
 import HomeView from '../views/HomeView.vue'
 
 const routes = [
@@ -25,12 +27,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // if (to.name !== 'login') {
-  //   next('/login')
-  // } else {
-  //   next()
-  // }
-  next()
+  if(to.name !== 'login' && !store.getters['auth/IS_AUTHENTICATED']){
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router

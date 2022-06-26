@@ -1,4 +1,3 @@
-const {connection, connect} = require('../mysql_connection.js')
 const authService = require('../services/authService.js')
 
 
