@@ -97,6 +97,6 @@ export default {
         GET_LOGIN_ERROR: (state) => state.error ?? null,
         GET_LOGIN_SUCCESS: (state) => state.success ?? null,
         GET_TOKEN: (state) => state.token,
-        GET_USER: (state) => {console.log('GET_USER', state.user);return state.user},
+        GET_USER: (state) => {return state.user},
     },
 }
