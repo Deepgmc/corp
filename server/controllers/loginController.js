@@ -10,7 +10,7 @@ const loginController = function (req, res, next) {
             res.send({ authData: user })
         })
         .catch((error) => {
-            res.send({ error: true, text: error })
+            res.send({ error: true, message: error })
             return
         })
 
