@@ -24,8 +24,8 @@ const authApi = {
         return $api.post('/auth/auth/login', { login: login, password: password })
             .then(function (response) {
                 console.log('LOGIN RESPONSE:', response)
-                if (!response.data.authData.user) {
-                    throw new Error('Invalid auth/login response')
+                if (!response.data.authData || !response.data.authData.user) {
+                    return Promise.reject('Invalid auth/login response')
                 }
                 const token = response.data.authData.user.token
                 return new Promise((resolve, reject) => {
@@ -56,14 +56,17 @@ const authApi = {
 
 
 
-    async logout() {
-        // return $api.get('/auth', {login, password})
-        //     .then(function (response) {
-        //         localStorage.removeItem('corpUserToken')
-        //     })
-        //     .catch(function (err) {
-        //         console.log('Auth Logout err', err);
-        //     })
+    async logout(token, user) {
+        return $api.post('/auth/auth/logout', { token: token, user: user })
+            .then(function (response) {
+                console.log('LOGOUT RESPONSE:', response)
+                return new Promise((resolve, reject) => {
+                    resolve(true)
+                })
+            })
+            .catch(function (error) {
+                console.error('API Login err', error)
+            })
     },
 
 
@@ -77,7 +80,7 @@ const authApi = {
     },
 
     getToken(){
-        return localStorage.getItem(CORP_AUTH_TOKEN_NAME)
+        return localStorage.getItem(CORP_AUTH_TOKEN_NAME) || null
     },
 
 }

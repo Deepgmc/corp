@@ -1,8 +1,5 @@
 const {connection} = require('../mysql_connection.js')
 const crypto = require('crypto')
-// const bcryptjs = require('bcryptjs')
-// const passport = require('passport')
-// const passportLocal = require('passport-local')
 
 function createNewUser(user){
     return new Promise((resolve, reject) => {
@@ -12,19 +9,11 @@ function createNewUser(user){
                     reject('Login already exists')
                     return
                 }
-                //const salt = bcryptjs.genSaltSync(10)
-                // const userData = {
-                //     login   : user.login,
-                //     password: bcryptjs.hashSync(user.password, salt)
-                // }
-                const token = crypto.randomBytes(20).toString('hex')
                 const passHash = getMD5(user.password)
-
 
                 const userData = {
                     login   : user.login,
-                    password: passHash,
-                    token   : token
+                    password: passHash
                 }
                 connection.query('INSERT INTO users set ?', userData, function(error, rows){
                     if(error){
@@ -42,33 +31,55 @@ function createNewUser(user){
     })
 }
 
+/**
+    вход юзера подразумевает перегенерацию токена
+    при регистрации токен не выдаётся
+    при логауте токен очищается
+*/
+
 async function loginUser(getUser){
     const user = await findUserByLogin(getUser.login)
     if(checkUserPassword(getUser.password, user.password)){
+        const token = generateToken()
+        updateUserToken({login: getUser.login, token: token}, () => {})
         return {
             error: false,
             user: {
                 id   : user.id,
                 login: user.login,
-                token: user.token
+                token: token
             },
             message: 'Login success'
         }
     } else {
         return {error: true, message: 'Invalid login information'}
     }
+}
 
+/**
+    при логауте токен очищается
+*/
+async function logoutUser(token, getUser){
+    const user = await findUserByLogin(getUser.login)
 
-    //user.login, user.password
-    // return new Promise((resolve, reject) => {
-    //     passport.authenticate('local', {
-    //         successRedirect: '/',
-    //         failureRedirect: '/login',
-    //         successFlash   : false,
-    //         failureFlash   : false
-    //     })
-    //     resolve('Logined success')
-    // })
+    return new Promise((resolve, reject) => {
+        if(token !== user.token){
+            reject('Wrong token')
+        }
+        updateUserToken({login: user.login, token: ''}, (error, rows) => {
+            if(error){
+                reject(error)
+            } else {
+                resolve(rows.affectedRows)
+            }
+        })
+
+    })
+}
+
+function updateUserToken({login, token}, callback){
+    console.log('UPDATE TOKEN:', login, token);
+    connection.query('UPDATE users SET users.token = ? WHERE login = ?', [token, login], callback)
 }
 
 
@@ -115,13 +126,18 @@ function getMD5(pass){
     return crypto.createHash('md5').update(pass).digest('hex')
 }
 
+function generateToken(){
+    return crypto.randomBytes(20).toString('hex')
+}
+
 
 module.exports = {
     createNewUser,
     loginUser,
     //initPassportLocal,
     findUserById,
-    findUserByLogin
+    findUserByLogin,
+    logoutUser
 }
 
 

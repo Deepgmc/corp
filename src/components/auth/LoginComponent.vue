@@ -19,7 +19,9 @@
             </div>
             <div><label>зарегистрироваться<input type="checkbox" v-model="isRegistering"></label></div>
             <div><button>{{ isRegistering ? 'Зарегистрироваться' : 'Войти' }}</button></div>
+
             <div v-if="isAuthenticated">logined!</div>
+
             <div v-if="loginErorr !== null">
                 <p>{{ loginErorr.text }}</p>
             </div>
@@ -56,10 +58,6 @@ export default {
     methods: {
         onLoginSubmit(){
             this.$auth.login.call(this)
-            // this.$store.dispatch(`auth/ACTION_${this.isRegistering ? 'REGISTER' : 'LOGIN'}`, {
-            //     login   : this.login,
-            //     password: this.password
-            // })
         }
     }
 };

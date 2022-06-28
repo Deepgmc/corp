@@ -3,7 +3,9 @@ import actions from '../../utils/ACTIONS_C'
 
 
 export default {
+
     namespaced: true,
+
     state() {
         return {
             isLoading: false,
@@ -46,16 +48,19 @@ export default {
             const userData = await authApi.login({login, password})
                 .then((token) => {
                     commit(actions.SET_TOKEN, token)
+                    commit(actions.SET_USER, {login: login, token: token})
                 })
                 .catch(function (error) {
                     console.log('AUTH Login err', error)
                 })
         },
 
-        async LOGOUT({commit}, {token}) {
-            await authApi.auth.logout(token)
-            commit(actions.SET_TOKEN, null)
-
+        async ACTION_LOGOUT({commit}, {token, user}) {
+            const logoutResult = await authApi.logout(token, user)
+            if(logoutResult){
+                commit(actions.SET_TOKEN, null)
+                commit(actions.SET_USER, null)
+            }
         }
     },
 
@@ -86,9 +91,12 @@ export default {
 
     getters: {
         IS_AUTHENTICATED: (state) => {
-            return !!state.token || !!authApi.getToken()
+            const token = state.token
+            return !!token && token.length > 30
         },
         GET_LOGIN_ERROR: (state) => state.error ?? null,
-        GET_LOGIN_SUCCESS: (state) => state.success ?? null
+        GET_LOGIN_SUCCESS: (state) => state.success ?? null,
+        GET_TOKEN: (state) => state.token,
+        GET_USER: (state) => {console.log('GET_USER', state.user);return state.user},
     },
 }

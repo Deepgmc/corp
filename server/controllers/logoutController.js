@@ -1,7 +1,17 @@
+const authService = require('../services/authService.js')
+
 const logoutController = function (req, res, next) {
-    req.session.destroy(function(error) {
-        return res.redicrect('/login')
-    })
+    console.log('LOGOUT user: ', req.body.user)
+    authService.logoutUser(req.body.token, req.body.user)
+        .then((result) => {
+            if(result) res.send({ error: false, message: 'Logout success' })
+            else res.send({ error: true, message: 'Logout error' })
+        })
+        .catch((error) => {
+            res.send({ error: true, message: error })
+            return
+        })
+
 }
 
 module.exports = logoutController
