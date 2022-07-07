@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '../store/store'
 
 import HomeView from '../views/HomeView.vue'
+import ProfileView from '../views/ProfileView.vue'
 
 
 
@@ -16,11 +17,11 @@ const routes = [
     name: 'login',
     component: () => import(/* webpackChunkName: "login" */ '../views/AuthView.vue')
   },
-  // {
-  //   path: '/home',
-  //   name: 'home',
-  //   component: () => import(/* webpackChunkName: "home" */ '../views/IndexView.vue')
-  // },
+  {
+    path: '/profile',
+    name: 'profile',
+    component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
+  },
 ]
 
 const router = createRouter({
