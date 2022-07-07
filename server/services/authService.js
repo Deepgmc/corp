@@ -6,7 +6,7 @@ function createNewUser(user){
         checkIsUserExist(user.login)
             .then((isOk) => {
                 if(!isOk) {
-                    reject('Login already exists')
+                    reject('Такой пользователь уже зарегистрирован')
                     return
                 }
                 const passHash = getMD5(user.password)
@@ -19,7 +19,7 @@ function createNewUser(user){
                     if(error){
                         reject(error)
                     }
-                    resolve('User created success')
+                    resolve('Новый пользователь создан')
                 })
             })
             .catch((error) => {
@@ -49,10 +49,10 @@ async function loginUser(getUser){
                 login: user.login,
                 token: token
             },
-            message: 'Login success'
+            message: 'Авторизация успешна'
         }
     } else {
-        return {error: true, message: 'Invalid login information'}
+        return {error: true, message: 'Введена неверная информация'}
     }
 }
 
@@ -64,7 +64,7 @@ async function logoutUser(token, getUser){
 
     return new Promise((resolve, reject) => {
         if(token !== user.token){
-            reject('Wrong token')
+            reject('Неверный токен')
         }
         updateUserToken({login: user.login, token: ''}, (error, rows) => {
             if(error){

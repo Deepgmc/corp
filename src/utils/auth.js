@@ -25,7 +25,10 @@ const authApi = {
             .then(function (response) {
                 console.log('LOGIN RESPONSE:', response)
                 if (!response.data.authData || !response.data.authData.user) {
-                    return Promise.reject('Invalid auth/login response')
+                    if(response.data.authData.error){
+                        return Promise.reject(response.data.authData)
+                    }
+                    return Promise.reject({error: true, message: 'Неизвестная ошибка авторизации'})
                 }
                 const token = response.data.authData.user.token
                 return new Promise((resolve, reject) => {
@@ -33,7 +36,7 @@ const authApi = {
                 })
             })
             .catch(function (error) {
-                console.error('API Login err', error)
+                return Promise.reject(error)
             })
     },
 
@@ -48,7 +51,6 @@ const authApi = {
                     console.log('REGISTER RESPONSE:', response)
                     return Promise.reject(response.data)
                 }
-                console.log('Register promise ok', response)
                 return Promise.resolve(response.data)
             })
     },

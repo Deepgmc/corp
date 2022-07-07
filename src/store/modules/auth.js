@@ -39,7 +39,7 @@ export default {
                 })
         },
 
-        async ACTION_LOGIN({state, commit}, {login, password}) {
+        async ACTION_LOGIN({state, commit, dispatch}, {login, password}) {
             if(state.isLoading){
                 return
             }
@@ -51,7 +51,13 @@ export default {
                     commit(actions.SET_USER, {login: login, token: token})
                 })
                 .catch(function (error) {
-                    console.log('AUTH Login err', error)
+                    dispatch('ACTION_SHOW_NOTIFICATION', {
+                            type   : 'error',
+                            message: error.message
+                        },
+                        { root: true }
+                    )
+                    commit(actions.SET_LOGIN_ERROR, error)
                 })
         },
 
@@ -94,9 +100,9 @@ export default {
             const token = state.token
             return !!token && token.length > 30
         },
-        GET_LOGIN_ERROR: (state) => state.error ?? null,
+        GET_LOGIN_ERROR  : (state) => state.error ?? null,
         GET_LOGIN_SUCCESS: (state) => state.success ?? null,
-        GET_TOKEN: (state) => state.token,
-        GET_USER: (state) => {console.log('GET_USER', state.user);return state.user},
+        GET_TOKEN        : (state) => state.token,
+        GET_USER         : (state) => {return state.user},
     },
 }

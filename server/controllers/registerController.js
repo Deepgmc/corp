@@ -7,10 +7,10 @@ const registerController = function (req, res, next) {
     console.log('Try register user: ', req.body.login, req.body.password)
     authService.createNewUser(req.body)
         .then((successText) => {
-            res.send({error: false, text: successText})
+            res.send({error: false, message: successText})
         })
         .catch((error) => {
-            res.send({error: true, text: error})
+            res.send({error: true, message: error})
             return
         })
 }
