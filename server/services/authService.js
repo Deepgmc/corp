@@ -39,6 +39,9 @@ function createNewUser(user){
 
 async function loginUser(getUser){
     const user = await findUserByLogin(getUser.login)
+    if(!user) {
+        return Promise.reject(`Нет зарегистрированного пользователя с логином ${getUser.login}`)
+    }
     if(checkUserPassword(getUser.password, user.password)){
         const token = generateToken()
         updateUserToken({login: getUser.login, token: token}, () => {})

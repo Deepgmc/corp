@@ -1,8 +1,18 @@
 <template>
     <div>
-        <hr />
-        <div>{{ isRegistering ? 'Register' : 'Login'}} component</div>
         <form @submit.prevent="onLoginSubmit">
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" v-model="isRegistering" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    зарегистрироваться
+                </label>
+            </div>
+
+            <hr />
+
+            <div>{{ isRegistering ? 'Регистрация' : 'Авторизация'}}</div>
+
             <div>
                 <input
                     v-model     = "login"
@@ -19,12 +29,7 @@
                     class       = "form-control"
                 />
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" v-model="isRegistering" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                    зарегистрироваться
-                </label>
-            </div>
+
             <div>
                 <button class="btn btn-success">
                     {{ isRegistering ? 'Зарегистрироваться' : 'Войти' }}

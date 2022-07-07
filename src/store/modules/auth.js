@@ -1,5 +1,6 @@
 import authApi from '../../utils/auth.js'
-import actions from '../../utils/ACTIONS_C'
+import actions from '../../utils/STORE_C'
+import messages from '../../utils/MESSAGES'
 
 
 export default {
@@ -18,8 +19,13 @@ export default {
 
     actions: {
 
-        async ACTION_REGISTER({state, commit}, {login, password}){
+        /** REGISTER */
+        async ACTION_REGISTER({state, commit, dispatch, getters}, {login, password}){
             if(state.isLoading){
+                return
+            }
+            if(getters.IS_AUTHENTICATED){
+                dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: messages.ALREADY_LOGINED }, { root: true } )
                 return
             }
             commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
@@ -35,32 +41,36 @@ export default {
                     //! NEED LOGIN HERE
                 //})
                 .catch(function (error) {
+                    dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
                     commit(actions.SET_LOGIN_ERROR, error)
                 })
         },
 
-        async ACTION_LOGIN({state, commit, dispatch}, {login, password}) {
+        /** LOGIN */
+        async ACTION_LOGIN({state, commit, dispatch, getters}, {login, password}) {
             if(state.isLoading){
                 return
+            }
+            if(getters.IS_AUTHENTICATED){
+                dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: messages.ALREADY_LOGINED }, { root: true } )
+                return Promise.reject({error: true, message: messages.ALREADY_LOGINED })
             }
             commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
             commit(actions.SET_LOADING)
             const userData = await authApi.login({login, password})
                 .then((token) => {
+                    console.log('login then 1');
                     commit(actions.SET_TOKEN, token)
                     commit(actions.SET_USER, {login: login, token: token})
                 })
                 .catch(function (error) {
-                    dispatch('ACTION_SHOW_NOTIFICATION', {
-                            type   : 'error',
-                            message: error.message
-                        },
-                        { root: true }
-                    )
+                    console.log('login catch 1');
+                    dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
                     commit(actions.SET_LOGIN_ERROR, error)
                 })
         },
 
+        /** LOGOUT */
         async ACTION_LOGOUT({commit}, {token, user}) {
             const logoutResult = await authApi.logout(token, user)
             if(logoutResult){

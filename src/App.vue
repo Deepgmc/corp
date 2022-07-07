@@ -45,7 +45,7 @@
 
             </footer>
         </div>
-        <notifications />
+        <notifications class="notification" position="top center" width="400" />
     </div>
 </template>
 
@@ -57,6 +57,8 @@ export default {
 </script>
 
 
-<style>
-
+<style scoped>
+.notification{
+    margin: 20px 0 0 0;
+}
 </style>

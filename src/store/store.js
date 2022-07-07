@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import auth from './modules/auth.js'
 import { notify } from '@kyvg/vue3-notification';
-import actions from '../utils/ACTIONS_C'
+import actions from '../utils/STORE_C'
 
 export default createStore({
     state: {
@@ -22,16 +22,16 @@ export default createStore({
         ACTION_SHOW_NOTIFICATION({state, commit}, {type, message}) {
             let title = ''
             switch(type){
-                case 'error'        : title = 'Внимание, ошибка'; break
+                case 'error'        : title = 'Внимание!'; break
                 case 'success'      : title = ''; break
-                case 'info'         : title = 'Информация'; break
-                default             : title = 'Информация'; break
+                case 'info'         : title = 'Информация!'; break
+                default             : title = 'Информация!'; break
             }
             notify({
-                title: title,
-                text : message,
-                max  : 1,
-                type : type
+                title   : title,
+                text    : message,
+                max     : 1,
+                type    : type
             })
         }
     },

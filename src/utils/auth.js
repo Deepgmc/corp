@@ -25,8 +25,8 @@ const authApi = {
             .then(function (response) {
                 console.log('LOGIN RESPONSE:', response)
                 if (!response.data.authData || !response.data.authData.user) {
-                    if(response.data.authData.error){
-                        return Promise.reject(response.data.authData)
+                    if(response.data.error){
+                        return Promise.reject(response.data)
                     }
                     return Promise.reject({error: true, message: 'Неизвестная ошибка авторизации'})
                 }

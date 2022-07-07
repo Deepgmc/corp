@@ -7,6 +7,16 @@ const $auth = {
                     login   : this.login,
                     password: this.password
                 })
+                .then((res) => {
+                    console.log('login plugin then 2')
+                    if(!this.isRegistering) {
+                        //если происходит регистрация, то перекидывать дальше не нужно
+                        this.$router.push({name: 'home'})
+                    }
+                })
+                .catch(() => {
+                    console.log('login plugin catch 2')
+                })
             },
 
             logout() {
@@ -14,7 +24,9 @@ const $auth = {
                     token: this.token,
                     user: this.user
                 })
-                this.$router.push('/login')
+                .then(() => {
+                    this.$router.push({name: 'login'})
+                })
             }
 
         }
