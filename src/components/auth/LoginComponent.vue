@@ -8,6 +8,7 @@
                     v-model     = "login"
                     type        = "text"
                     placeholder = "user name"
+                    class       = "form-control"
                 />
             </div>
             <div>
@@ -15,15 +16,25 @@
                     v-model     = "password"
                     type        = "password"
                     placeholder = "password"
+                    class       = "form-control"
                 />
             </div>
-            <div><label>зарегистрироваться<input type="checkbox" v-model="isRegistering"></label></div>
-            <div><button>{{ isRegistering ? 'Зарегистрироваться' : 'Войти' }}</button></div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" v-model="isRegistering" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    зарегистрироваться
+                </label>
+            </div>
+            <div>
+                <button class="btn btn-success">
+                    {{ isRegistering ? 'Зарегистрироваться' : 'Войти' }}
+                </button>
+            </div>
 
-            <div v-if="isAuthenticated">logined!</div>
+            <div v-if="isAuthenticated" class="alert alert-warning mt-2">Вы уже авторизованы в системе</div>
 
             <div v-if="loginErorr !== null">
-                <p>{{ loginErorr.text }}</p>
+                <p>{{ loginErorr.message }}</p>
             </div>
             <div v-if="loginSuccess !== null">
                 <p>{{ loginSuccess.text }}</p>
@@ -52,13 +63,17 @@ export default {
             isAuthenticated: 'auth/IS_AUTHENTICATED',
             loginErorr     : 'auth/GET_LOGIN_ERROR',
             loginSuccess   : 'auth/GET_LOGIN_SUCCESS',
-        })
+        }),
+        loginErorr () {
+            const error = this.$store.getters['auth/GET_LOGIN_ERROR']
+            return error
+        }
     },
 
     methods: {
         onLoginSubmit(){
             this.$auth.login.call(this)
-        }
+        },
     }
 };
 </script>

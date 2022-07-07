@@ -3,6 +3,8 @@ import store from '../store/store'
 
 import HomeView from '../views/HomeView.vue'
 
+
+
 const routes = [
   {
     path: '/',
@@ -22,16 +24,16 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+    history: createWebHistory(process.env.BASE_URL),
+    routes
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.name !== 'login' && !store.getters['auth/IS_AUTHENTICATED']){
-    next('/login')
-  } else {
-    next()
-  }
+    if(to.name !== 'login' && !store.getters['auth/IS_AUTHENTICATED']){
+        next('/login')
+    } else {
+        next()
+    }
 })
 
 export default router

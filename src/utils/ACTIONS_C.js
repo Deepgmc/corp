@@ -1,4 +1,6 @@
 module.exports = {
+    SET_NOTIFICATION             : 'SET_NOTIFICATION',
+
     SET_LOADING                  : 'SET_LOADING',
     SET_TOKEN                    : 'SET_TOKEN',
     SET_USER                     : 'SET_USER',
