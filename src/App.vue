@@ -26,7 +26,7 @@
 
 
 <script>
-import NavComponent from '@/components/layouts/NavComponent.vue'
+import NavComponent from '@/components/NavComponent.vue'
 
 export default {
     name: 'App',
