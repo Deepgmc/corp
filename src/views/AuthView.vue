@@ -1,5 +1,6 @@
 <template>
     <div>
+        Auth layout
         <login-component></login-component>
     </div>
 </template>
