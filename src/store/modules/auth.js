@@ -61,7 +61,7 @@ export default {
                 .then((user) => {
                     commit(actions.SET_TOKEN, user.token)
                     // Возьмём информацию о пользователе после авторизации
-                    dispatch(`auth/ACTION_GET_USER`, {
+                    dispatch(actions.ACTION_GET_USER, {
                         token: user.token
                     })
                 })
