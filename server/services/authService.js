@@ -33,7 +33,7 @@ function createNewUser(user){
 
 /**
     вход юзера подразумевает перегенерацию токена
-    при регистрации токен не выдаётся
+    при регистрации токен НЕ выдаётся
     при логауте токен очищается
 */
 
@@ -57,6 +57,18 @@ async function loginUser(getUser){
     } else {
         return {error: true, message: 'Введена неверная информация'}
     }
+}
+
+/**
+    запрашивается информация пользователя при обновлении страницы или авторизации
+*/
+async function getUserInfo(getToken){
+    const user = await findUserByToken(getToken)
+    if(!user) {
+        return Promise.reject(`Нет зарегистрированного пользователя с ткеном ${getUser.login}`)
+    }
+    user.password = null
+    return user
 }
 
 /**
@@ -104,6 +116,18 @@ function findUserByLogin(login){
     })
 }
 
+function findUserByToken(token){
+    return new Promise((resolve, reject) => {
+        findUserByTokenQuery(token, (error, rows) => {
+            if(error) reject(error)
+            resolve(rows[0])
+        })
+    })
+    .catch((e) => {
+        console.log('findUserByToken error: ', e)
+    })
+}
+
 function checkIsUserExist(login) {
     return new Promise((resolve, reject) => {
         findUserByLoginQuery(login, (error, rows) => {
@@ -119,10 +143,14 @@ function checkIsUserExist(login) {
 }
 
 function findUserByLoginQuery(login, callback){
-    connection.query('SELECT * FROM users WHERE login = ?', login, callback)
+    connection.query('SELECT * FROM users WHERE login = ? LIMIT 1', login, callback)
 }
 function findUserByIdQuery(id, callback){
-    connection.query('SELECT * FROM users WHERE id = ?', id, callback)
+    connection.query('SELECT * FROM users WHERE id = ? LIMIT 1', id, callback)
+}
+
+function findUserByTokenQuery(token, callback){
+    connection.query('SELECT * FROM users WHERE token = ? LIMIT 1', token, callback)
 }
 
 function getMD5(pass){
@@ -137,10 +165,10 @@ function generateToken(){
 module.exports = {
     createNewUser,
     loginUser,
-    //initPassportLocal,
     findUserById,
     findUserByLogin,
-    logoutUser
+    logoutUser,
+    getUserInfo
 }
 
 

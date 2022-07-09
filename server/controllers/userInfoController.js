@@ -1,11 +1,12 @@
 const authService = require('../services/authService.js')
 
 const loginController = function (req, res, next) {
-    //! AUTHENTICATE USER
-    console.log('Попытка авторизации юзера: ', req.body.login, req.body.password)
-    authService.loginUser(req.body)
-        .then((user) => {
-            res.send({ authData: user, error: false, message: '' })
+    //! get user Info
+    console.log('Пытаемся взять информацию пользователя:', req.body.token)
+
+    authService.getUserInfo(req.body.token)
+        .then((userInfo) => {
+            res.send(userInfo)
         })
         .catch((error) => {
             res.send({ error: true, message: error })

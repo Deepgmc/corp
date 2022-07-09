@@ -1,6 +1,6 @@
 <template>
     <div>
-        Home component
+        Transactions component
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 
 export default {
 
-    name: 'HomeComponent',
+    name: 'TransactionsComponent',
 
     computed: {
 
