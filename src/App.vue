@@ -1,6 +1,14 @@
 <template>
     <div class="container">
 
+        <div class="row p-4 border-bottom">
+            <div class="col-10">
+                Header
+            </div>
+            <div class="col-2">
+                <login-info></login-info>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-2">
                 <nav-component />
@@ -27,10 +35,25 @@
 
 <script>
 import NavComponent from '@/components/NavComponent.vue'
+import LoginInfo from '@/components/LoginInfo.vue'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'App',
-    components: {NavComponent}
+    components: {NavComponent, LoginInfo},
+
+    mounted(){
+        if(this.isAuthenticated){
+            this.$auth.getUser.call(this)
+        }
+    },
+
+    computed: {
+        ...mapGetters({
+            isAuthenticated: 'auth/IS_AUTHENTICATED',
+            token          : 'auth/GET_TOKEN'
+        })
+    },
 }
 </script>
 

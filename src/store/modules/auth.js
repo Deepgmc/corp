@@ -20,7 +20,7 @@ export default {
     actions: {
 
         /** REGISTER */
-        async ACTION_REGISTER({state, commit, dispatch, getters}, {login, password}){
+        async [actions.ACTION_REGISTER]({state, commit, dispatch, getters}, {login, password}){
             if(state.isLoading){
                 return
             }
@@ -47,7 +47,7 @@ export default {
         },
 
         /** LOGIN */
-        async ACTION_LOGIN({state, commit, dispatch, getters}, {login, password}) {
+        async [actions.ACTION_LOGIN]({state, commit, dispatch, getters}, {login, password}) {
             if(state.isLoading){
                 return
             }
@@ -58,10 +58,12 @@ export default {
             commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
             commit(actions.SET_LOADING)
             const userData = await authApi.login({login, password})
-                .then((token) => {
-                    console.log('login then 1');
-                    commit(actions.SET_TOKEN, token)
-                    commit(actions.SET_USER, {login: login, token: token})
+                .then((user) => {
+                    commit(actions.SET_TOKEN, user.token)
+                    // Возьмём информацию о пользователе после авторизации
+                    dispatch(`auth/ACTION_GET_USER`, {
+                        token: user.token
+                    })
                 })
                 .catch(function (error) {
                     console.log('login catch 1');
@@ -70,8 +72,16 @@ export default {
                 })
         },
 
+        /** get user info async */
+        async [actions.ACTION_GET_USER]({state, commit, dispatch, getters}, {token}){
+            const userData = await authApi.getUserInfo(token)
+            if(userData){
+                commit(actions.SET_USER, userData)
+            }
+        },
+
         /** LOGOUT */
-        async ACTION_LOGOUT({commit}, {token, user}) {
+        async [actions.ACTION_LOGOUT]({commit}, {token, user}) {
             const logoutResult = await authApi.logout(token, user)
             if(logoutResult){
                 commit(actions.SET_TOKEN, null)
@@ -83,6 +93,7 @@ export default {
     mutations: {
         [actions.SET_TOKEN](state, token){
             state.token = token
+            /** запись токена в localStorage */
             authApi.setToken(token)
         },
         [actions.SET_USER](state, user){

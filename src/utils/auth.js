@@ -30,9 +30,8 @@ const authApi = {
                     }
                     return Promise.reject({error: true, message: 'Неизвестная ошибка авторизации'})
                 }
-                const token = response.data.authData.user.token
                 return new Promise((resolve, reject) => {
-                    resolve(token)
+                    resolve(response.data.authData.user)
                 })
             })
             .catch(function (error) {
@@ -49,6 +48,18 @@ const authApi = {
             .then(function (response) {
                 if (response.data.error) {
                     console.log('REGISTER RESPONSE:', response)
+                    return Promise.reject(response.data)
+                }
+                return Promise.resolve(response.data)
+            })
+    },
+
+
+    async getUserInfo(token){
+        return $api.post('/auth/auth/get_user_info', { token })
+            .then(function (response) {
+                console.log('getUserInfo response', response);
+                if (response.data.error) {
                     return Promise.reject(response.data)
                 }
                 return Promise.resolve(response.data)

@@ -1,3 +1,8 @@
+/**
+ * плагин для всяких манипуляций с авторизацией
+    можно из любого компонента разлогиниться, например, если что
+    или проверить валидность токена
+ */
 const $auth = {
     install(app, options){
         app.config.globalProperties.$auth = {
@@ -8,14 +13,22 @@ const $auth = {
                     password: this.password
                 })
                 .then((res) => {
-                    console.log('login plugin then 2')
                     if(!this.isRegistering) {
-                        //если происходит регистрация, то перекидывать дальше не нужно
+                        //если происходит регистрация (а не авторизация), то перекидывать дальше не нужно
                         this.$router.push({name: 'home'})
                     }
                 })
                 .catch(() => {
                     console.log('login plugin catch 2')
+                })
+            },
+
+            getUser(){
+                if(!this.token){
+                    console.error('Invalid token')
+                }
+                this.$store.dispatch(`auth/ACTION_GET_USER`, {
+                    token: this.token
                 })
             },
 
