@@ -3,8 +3,6 @@ import store from '../store/store'
 
 import HomeView from '../views/HomeView.vue'
 
-
-
 const routes = [
     {
         path: '/',
@@ -35,6 +33,11 @@ const routes = [
         path: '/transactions',
         name: 'transactions',
         component: () => import(/* webpackChunkName: "transactions" */ '../views/TransactionsView.vue')
+    },
+    {
+        path: '/my-company',
+        name: 'myCompany',
+        component: () => import(/* webpackChunkName: "myCompany" */ '../views/MyCompanyView.vue')
     },
 ]
 

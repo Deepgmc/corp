@@ -23,15 +23,6 @@ const $auth = {
                 })
             },
 
-            getUser(){
-                if(!this.token){
-                    console.error('Invalid token')
-                }
-                this.$store.dispatch(`auth/ACTION_GET_USER`, {
-                    token: this.token
-                })
-            },
-
             logout() {
                 this.$store.dispatch(`auth/ACTION_LOGOUT`, {
                     token: this.token,
@@ -40,7 +31,16 @@ const $auth = {
                 .then(() => {
                     this.$router.push({name: 'login'})
                 })
-            }
+            },
+
+            getUser(){
+                if(!this.token){
+                    console.error('Invalid token')
+                }
+                this.$store.dispatch(`auth/ACTION_GET_USER`, {
+                    token: this.token
+                })
+            },
 
         }
     }

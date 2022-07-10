@@ -67,7 +67,7 @@ async function getUserInfo(getToken){
     if(!user) {
         return Promise.reject(`Нет зарегистрированного пользователя с ткеном ${getUser.login}`)
     }
-    user.password = null
+    delete user.password
     return user
 }
 

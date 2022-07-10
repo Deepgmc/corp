@@ -1,6 +1,20 @@
 import authApi from '../../utils/auth.js'
-import actions from '../../utils/STORE_C'
-import messages from '../../utils/MESSAGES'
+import {
+    ACTION_REGISTER,
+    ACTION_SHOW_NOTIFICATION,
+    FLUSH_REGISTER_ERROR_SUCCEESS,
+    SET_LOADING,
+    SET_LOGIN_SUCCESS,
+    SET_LOGIN_ERROR,
+    ACTION_LOGIN,
+    ACTION_GET_USER,
+    SET_TOKEN,
+    ACTION_LOGOUT,
+    SET_USER
+} from '../../utils/STORE_C'
+import {
+    ALREADY_LOGINED
+} from '../../utils/MESSAGES'
 
 
 export default {
@@ -20,20 +34,20 @@ export default {
     actions: {
 
         /** REGISTER */
-        async [actions.ACTION_REGISTER]({state, commit, dispatch, getters}, {login, password}){
+        async [ACTION_REGISTER]({state, commit, dispatch, getters}, {login, password}){
             if(state.isLoading){
                 return
             }
             if(getters.IS_AUTHENTICATED){
-                dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: messages.ALREADY_LOGINED }, { root: true } )
+                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: ALREADY_LOGINED }, { root: true } )
                 return
             }
-            commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
-            commit(actions.SET_LOADING)
+            commit(FLUSH_REGISTER_ERROR_SUCCEESS)
+            commit(SET_LOADING)
             const userData = await authApi.register({login, password})
                 .then((success) => {
                     console.log('Registered new user: ', success)
-                    commit(actions.SET_LOGIN_SUCCESS, success)
+                    commit(SET_LOGIN_SUCCESS, success)
 
                     return {login, password}
                 })
@@ -41,76 +55,76 @@ export default {
                     //! NEED LOGIN HERE
                 //})
                 .catch(function (error) {
-                    dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
-                    commit(actions.SET_LOGIN_ERROR, error)
+                    dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
+                    commit(SET_LOGIN_ERROR, error)
                 })
         },
 
         /** LOGIN */
-        async [actions.ACTION_LOGIN]({state, commit, dispatch, getters}, {login, password}) {
+        async [ACTION_LOGIN]({state, commit, dispatch, getters}, {login, password}) {
             if(state.isLoading){
                 return
             }
             if(getters.IS_AUTHENTICATED){
-                dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: messages.ALREADY_LOGINED }, { root: true } )
+                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: messages.ALREADY_LOGINED }, { root: true } )
                 return Promise.reject({error: true, message: messages.ALREADY_LOGINED })
             }
-            commit(actions.FLUSH_REGISTER_ERROR_SUCCEESS)
-            commit(actions.SET_LOADING)
+            commit(FLUSH_REGISTER_ERROR_SUCCEESS)
+            commit(SET_LOADING)
             const userData = await authApi.login({login, password})
                 .then((user) => {
-                    commit(actions.SET_TOKEN, user.token)
+                    commit(SET_TOKEN, user.token)
                     // Возьмём информацию о пользователе после авторизации
-                    dispatch(actions.ACTION_GET_USER, {
+                    dispatch(ACTION_GET_USER, {
                         token: user.token
                     })
                 })
                 .catch(function (error) {
                     console.log('login catch 1');
-                    dispatch(actions.ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
-                    commit(actions.SET_LOGIN_ERROR, error)
+                    dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
+                    commit(SET_LOGIN_ERROR, error)
                 })
         },
 
         /** get user info async */
-        async [actions.ACTION_GET_USER]({state, commit, dispatch, getters}, {token}){
+        async [ACTION_GET_USER]({state, commit, dispatch, getters}, {token}){
             const userData = await authApi.getUserInfo(token)
             if(userData){
-                commit(actions.SET_USER, userData)
+                commit(SET_USER, userData)
             }
         },
 
         /** LOGOUT */
-        async [actions.ACTION_LOGOUT]({commit}, {token, user}) {
+        async [ACTION_LOGOUT]({commit}, {token, user}) {
             const logoutResult = await authApi.logout(token, user)
             if(logoutResult){
-                commit(actions.SET_TOKEN, null)
-                commit(actions.SET_USER, null)
+                commit(SET_TOKEN, null)
+                commit(SET_USER, null)
             }
         }
     },
 
     mutations: {
-        [actions.SET_TOKEN](state, token){
+        [SET_TOKEN](state, token){
             state.token = token
             /** запись токена в localStorage */
             authApi.setToken(token)
         },
-        [actions.SET_USER](state, user){
+        [SET_USER](state, user){
             state.user = user
         },
-        [actions.SET_LOGIN_ERROR](state, error) {
+        [SET_LOGIN_ERROR](state, error) {
             state.isLoading = false
             state.error = error
         },
-        [actions.SET_LOGIN_SUCCESS](state, success) {
+        [SET_LOGIN_SUCCESS](state, success) {
             state.isLoading = false
             state.success = success
         },
-        [actions.SET_LOADING](state){
+        [SET_LOADING](state){
             state.isLoading = true
         },
-        [actions.FLUSH_REGISTER_ERROR_SUCCEESS](state){
+        [FLUSH_REGISTER_ERROR_SUCCEESS](state){
             state.success = null
             state.error = null
         }

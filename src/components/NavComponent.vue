@@ -26,6 +26,12 @@ export default {
                     name: 'home'
                 },
                 {
+                    text: 'Моя компания',
+                    link: '/my-company',
+                    visible: 'all',
+                    name: 'myCompany'
+                },
+                {
                     text: 'Сотрудники',
                     link: '/employee',
                     visible: 'all',
@@ -38,7 +44,7 @@ export default {
                     name: 'bills'
                 },
                 {
-                    text: 'Сделки',
+                    text: 'Контрагенты',
                     link: '/transactions',
                     visible: 'all',
                     name: 'transactions'

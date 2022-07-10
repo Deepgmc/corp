@@ -3,31 +3,20 @@ const express = require('express')
 const app = express()
 const path = require('path')
 const cookieParser = require('cookie-parser')
-//const session = require('express-session')
-//const passport = require('passport')
-
-// app.use(session({
-//     secret           : 'abcdefghijklmnopqrstuvwxyz',
-//     resave           : false,
-//     saveUninitialized: true,
-//     cookie           : { maxAge: 3600 * 24 }
-// }))
 
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 const authRouter = require('./routes/auth')
+const apiRouter = require('./routes/api')
 app.use('/auth', authRouter)
+app.use('/api', apiRouter)
 
 
 
 //app.set('views', path.join(__dirname, 'views'))
-
-
 
 
 

@@ -1,11 +1,14 @@
 import { createStore } from 'vuex'
 import auth from './modules/auth.js'
-import { notify } from '@kyvg/vue3-notification';
-import actions from '../utils/STORE_C'
+import company from './modules/company.js'
+import {
+    SET_NOTIFICATION
+} from '../utils/STORE_C.js'
+import store_actions from './store_actions.js'
 
 export default createStore({
     state: {
-        notification: null
+        notification: null,
     },
 
     getters: {
@@ -13,31 +16,16 @@ export default createStore({
     },
 
     mutations: {
-        [actions.SET_NOTIFICATION](state, notification){
+        [SET_NOTIFICATION](state, notification){
             state.notification = notification
         },
     },
 
-    actions: {
-        ACTION_SHOW_NOTIFICATION({state, commit}, {type, message}) {
-            let title = ''
-            switch(type){
-                case 'error'        : title = 'Внимание!'; break
-                case 'success'      : title = ''; break
-                case 'info'         : title = 'Информация!'; break
-                default             : title = 'Информация!'; break
-            }
-            notify({
-                title   : title,
-                text    : message,
-                max     : 1,
-                type    : type
-            })
-        }
-    },
+    actions: store_actions,
 
     modules: {
-        auth: auth
+        auth,
+        company
     },
 
     strict: process.env.NODE_ENV !== 'production',

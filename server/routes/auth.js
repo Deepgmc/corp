@@ -19,8 +19,8 @@ router.post('/auth/logout', logoutController)
 
 
 router.post('/', function (req, res, next) {
-    console.log('FAIL API RESPONSE')
-    res.send('FAIL API RESPONSE')
+    console.log('FAIL AUTH RESPONSE')
+    res.send('FAIL AUTH RESPONSE')
 })
 
 

@@ -58,7 +58,7 @@ const authApi = {
     async getUserInfo(token){
         return $api.post('/auth/auth/get_user_info', { token })
             .then(function (response) {
-                console.log('getUserInfo response', response);
+                console.log('getUserInfo response', response)
                 if (response.data.error) {
                     return Promise.reject(response.data)
                 }
