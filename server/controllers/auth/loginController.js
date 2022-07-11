@@ -1,7 +1,9 @@
-const authService = require('../services/authService.js')
+const authS = require('../../services/authService.js')
 
 const loginController = function (req, res, next) {
     //! AUTHENTICATE USER
+
+    const authService = new authS()
     console.log('Попытка авторизации юзера: ', req.body.login, req.body.password)
     authService.loginUser(req.body)
         .then((user) => {

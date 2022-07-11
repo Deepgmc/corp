@@ -1,11 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
-const loginController    = require('../controllers/loginController.js')
+const companyController = require('../controllers/companyController')
 
 
 
-router.post('/auth/login', loginController)
+
+router.post('/company/saveUserCompany', companyController.saveUserCompany)
 
 
 router.post('/', function (req, res, next) {

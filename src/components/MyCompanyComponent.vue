@@ -56,8 +56,8 @@ export default {
 
     data() {
         return {
-            companyName: '',
-            companyAddress: ''
+            companyName   : 'ПАО Сбербанк',
+            companyAddress: 'г. Москва, ул. Вавилова д. 12'
         }
     },
 
@@ -96,15 +96,16 @@ export default {
 
         async companyFormSubmit(){
             const result = await this.v$.$validate()
-            if(!result){
-                console.warn('Invalid user company validation!')
-                return
-            }
+            // if(!result){
+            //     console.warn('Invalid user company validation!')
+            //     return
+            // }
 
 
             // send form
             this.$store.dispatch(`company/ACTION_SAVE_USER_COMPANY_INFO`, {
-
+                companyName   : this.companyName,
+                companyAddress: this.companyAddress
             })
 
         }

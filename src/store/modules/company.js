@@ -24,11 +24,11 @@ export default {
     actions: {
         async [ACTION_SAVE_USER_COMPANY_INFO]({state, commit, dispatch, getters}, companyData){
             $api.sendQuery({
-                type: 'POST',
+                type      : 'POST',
                 moduleName: 'api',
-                section: STORE_MODULE_NAME,
-                operation: 'saveUserCompany',
-                data: companyData
+                section   : STORE_MODULE_NAME,
+                operation : 'saveUserCompany',
+                data      : companyData
             })
             .then((res) => {
                 console.log('res', res);
