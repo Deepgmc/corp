@@ -43,9 +43,21 @@ export default {
     components: {NavComponent, LoginInfo},
 
     mounted(){
+
+        /**
+            подгружаем общие на всё приложение данные:
+            - самого пользователя
+            - его компанию
+            - списки сотрудников и счетов?
+        */
+        //TODO надо ли подгружать тут списки или только суммы по спискам?
+
+        /** данные юзера */
         if(this.isAuthenticated){
             this.$auth.getUser.call(this)
         }
+        /** данные по компании юзера */
+        this.$store.dispatch(`company/ACTION_GET_USER_COMPANY`, {})
     },
 
     computed: {

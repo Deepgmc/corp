@@ -7,6 +7,7 @@ const companyController = require('../controllers/companyController')
 
 
 router.post('/company/saveUserCompany', companyController.saveUserCompany)
+router.get('/company/getUserCompany', companyController.getUserCompany)
 
 
 router.post('/', function (req, res, next) {

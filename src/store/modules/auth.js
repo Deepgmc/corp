@@ -1,4 +1,5 @@
 import authApi from '../../utils/auth.js'
+
 import {
     ACTION_REGISTER,
     ACTION_SHOW_NOTIFICATION,
@@ -12,6 +13,7 @@ import {
     ACTION_LOGOUT,
     SET_USER
 } from '../../utils/STORE_C'
+
 import {
     ALREADY_LOGINED
 } from '../../utils/MESSAGES'
@@ -136,7 +138,7 @@ export default {
             return !!token && token.length > 30
         },
         GET_LOGIN_ERROR  : (state) => state.error ?? null,
-        GET_LOGIN_SUCCESS: (state) => state.success ?? null,
+        GET_LOGIN_SUCCESS: (state) => {return state.success ?? null},
         GET_TOKEN        : (state) => state.token,
         GET_USER         : (state) => {return state.user},
     },

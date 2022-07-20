@@ -1,6 +1,7 @@
 import $api from './api'
 import { CORP_AUTH_TOKEN_NAME } from './STORAGE_C'
 
+
 const authApi = {
 
     /**
@@ -8,9 +9,9 @@ const authApi = {
         только при наличии токена
         по факту это просто проверка валидности и времени действия токена
     */
-    async isAuthenticated(){
+    // async isAuthenticated(){
 
-    },
+    // },
 
     async login({ login, password }) {
         /**

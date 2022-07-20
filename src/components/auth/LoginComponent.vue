@@ -55,7 +55,7 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'LoginComponent',
 
-    data: () => {
+    data() {
         return {
             login        : 'test name',
             password     : 'test_password',
@@ -67,7 +67,7 @@ export default {
         ...mapGetters({
             isAuthenticated: 'auth/IS_AUTHENTICATED',
             loginErorr     : 'auth/GET_LOGIN_ERROR',
-            loginSuccess   : 'auth/GET_LOGIN_SUCCESS',
+            loginSuccess   : 'auth/GET_LOGIN_SUCCESS'
         }),
         loginErorr () {
             const error = this.$store.getters['auth/GET_LOGIN_ERROR']

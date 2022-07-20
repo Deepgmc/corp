@@ -1,5 +1,7 @@
 import axios from 'axios'
 import store from '../store/store.js'
+import { CORP_AUTH_TOKEN_NAME } from './STORAGE_C'
+
 import {
     TOKEN_VALIDATION_FAIL,
     INVALID_HTTP_OPERATION
@@ -8,7 +10,8 @@ import {
 const config = {
     baseURL: process.env.VUE_APP_BASE_URL,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token' : localStorage.getItem(CORP_AUTH_TOKEN_NAME) || null
     }
 }
 
@@ -33,9 +36,9 @@ $api.sendQuery = async function({
     }
 
     //$api.post('/auth/auth/login', { login: login, password: password })
-    return $api[type](`/${moduleName}/${section}/${operation}`, { token: token, data: data })
+    return await $api[type](`/${moduleName}/${section}/${operation}`, { token: token, data: data })
         .catch(error => {
-            console.warn('Error in sendQuery: ', error);
+            console.warn('Error in sendQuery: ', error)
         })
         // .then(function (response) {
         //     console.log('LOGOUT RESPONSE:', response)

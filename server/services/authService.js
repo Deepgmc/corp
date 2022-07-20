@@ -102,9 +102,11 @@ class authService extends Service {
     }
 
     findUserByLogin(login){
+        //TODO ОБЪЕДИНИТЬ ЭТИ МЕТОДЫ
         return new Promise((resolve, reject) => {
             this.findUserByLoginQuery(login, (error, rows) => {
                 if(error) reject(error)
+                if(typeof rows === 'undefined') reject('Пользователь не найден')
                 resolve(rows[0])
             })
         })
@@ -114,9 +116,11 @@ class authService extends Service {
     }
 
     async findUserByToken(token){
+        //TODO ОБЪЕДИНИТЬ ЭТИ МЕТОДЫ
         return new Promise((resolve, reject) => {
             this.findUserByTokenQuery(token, (error, rows) => {
                 if(error) reject(error)
+                if(typeof rows === 'undefined') reject('Пользователь не найден')
                 resolve(rows[0])
             })
         })

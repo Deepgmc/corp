@@ -5,33 +5,32 @@
             <div class="mb-3">
                 <label for="companyName" class="form-label">Название вашей компании</label>
                 <input
-                    v-model="companyName"
-                    @change="setName"
-                    type="text"
-                    class="form-control"
-                    id="companyName"
-                    aria-describedby="nameHelp"
+                    @change          = "setName"
+                    v-model          = "name"
+                    type             = "text"
+                    class            = "form-control"
+                    id               = "companyName"
+                    aria-describedby = "nameHelp"
                 />
                 <div id="nameHelp" class="form-text">
                     Длина названия не больше 20 символов
                 </div>
-                <div v-if="v$.companyName.$error" class="alert alert-danger">Имя компании задано не верно</div>
+                <div v-if="v$.name.$error" class="alert alert-danger">Имя компании задано не верно</div>
             </div>
 
             <div class="mb-3">
-                <label for="companyAddress" class="form-label">Адрес вашей компании</label>
+                <label for="address" class="form-label">Адрес вашей компании</label>
                 <input
-                    v-model="companyAddress"
-                    @change="setAddress"
-                    type="text"
-                    class="form-control"
-                    id="companyAddress"
-                    aria-describedby="addressHelp"
+                    v-model          = "address"
+                    type             = "text"
+                    class            = "form-control"
+                    id               = "address"
+                    aria-describedby = "addressHelp"
                 />
                 <div id="addressHelp" class="form-text">
                     Длина адреса не больше 40 символов, но не менее 10
                 </div>
-                <div v-if="v$.companyAddress.$error" class="alert alert-danger">Адрес компании задан не верно</div>
+                <div v-if="v$.address.$error" class="alert alert-danger">Адрес компании задан не верно</div>
             </div>
 
             <button type="submit" class="btn btn-primary">Сохранить</button>
@@ -45,71 +44,98 @@
 /* Валидация через vuelidate */
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength } from '@vuelidate/validators'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapMutations, mapActions } from 'vuex'
 
 export default {
     name: 'MyCompanyComponent',
 
-    setup () {
-        return { v$: useVuelidate() }
+    computed: {
+        ...mapState('company', {
+            company: state => state.company
+        }),
+
+        name: {
+            get() {
+                return this.company.name
+            },
+            set(value) {
+                //сэттером пишем в стор - а обратно сюда он уже попадает за счет реактивности
+                this.setCompanyField({field: 'name', value})
+            }
+        },
+        address: {
+            get() {
+                return this.company.address
+            },
+            set(value) {
+                //сэттером пишем в стор - а обратно сюда он уже попадает за счет реактивности
+                this.setCompanyField({field: 'address', value})
+            }
+        },
     },
 
-    data() {
-        return {
-            companyName   : 'ПАО Сбербанк',
-            companyAddress: 'г. Москва, ул. Вавилова д. 12'
+    methods: {
+
+        ...mapActions('company', {
+            saveUserCompanyInfo: 'ACTION_SAVE_USER_COMPANY_INFO'
+        }),
+
+        ...mapMutations('company', {
+            setCompanyField: 'SET_COMPANY_FIELD'
+        }),
+
+        setName ($event) {
+            //this.company.name = $event.target.value.trim()
+            this.v$.name.$touch()
+        },
+
+        setAddress ($event) {
+            // this.company.address = $event.target.value.trim()
+            this.v$.address.$touch()
+        },
+
+        async companyFormSubmit(){
+            const result = await this.v$.$validate()
+            if(!result){
+                console.warn('Invalid user company validation!')
+                return
+            }
+
+            // send form
+            this.saveUserCompanyInfo({
+                name   : this.name,
+                address: this.address
+            })
+        }
+
+    },
+
+    created(){
+        if(!this.$store.state['company'].company){
+            /** начальная инициализация пустым значением */
+            this.$store.commit('company/SET_COMPANY', {
+                name   : 'test',
+                address: 'test address'
+            })
         }
     },
 
     validations () {
         return {
-            companyName: {
+            name: {
                 required,
                 minLength: minLength(3),
                 maxLength: maxLength(20),
             },
-            companyAddress: {
+            address: {
                 minLength: minLength(10),
                 maxLength: maxLength(40),
             }
         }
     },
 
-    computed: {
-        ...mapGetters({
-            isAuthenticated: 'company/IS_AUTHENTICATED',
-            userInfo       : 'auth/GET_USER',
-        })
-    },
-
-    methods: {
-
-        setName ($event) {
-            this.companyName = $event.target.value.trim()
-            this.v$.companyName.$touch()
-        },
-
-        setAddress ($event) {
-            this.companyAddress = $event.target.value.trim()
-            this.v$.companyAddress.$touch()
-        },
-
-        async companyFormSubmit(){
-            const result = await this.v$.$validate()
-            // if(!result){
-            //     console.warn('Invalid user company validation!')
-            //     return
-            // }
-
-
-            // send form
-            this.$store.dispatch(`company/ACTION_SAVE_USER_COMPANY_INFO`, {
-                companyName   : this.companyName,
-                companyAddress: this.companyAddress
-            })
-
-        }
-
+    setup () {
+        return { v$: useVuelidate() }
     },
 };
 </script>
