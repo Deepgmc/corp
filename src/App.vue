@@ -70,9 +70,12 @@ export default {
 </script>
 
 
-<style>
+<style lang="scss">
 .notification{
     margin: 20px 0 0 0;
 }
-
+.form-help-text{
+    color    : $sub-text-color;
+    font-size: $form-sub-text-size;
+}
 </style>
