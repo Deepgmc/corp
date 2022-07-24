@@ -5,13 +5,11 @@ class companyService extends Service {
     async saveUserCompany({name, address}, user){
         let company, result
         if(!user.company_id){
-            console.log('no company');
             /** если у юзера еще нет компании - создадим её */
             result = await this.createCompany({companyName: name, companyAddress: address})
             result = await this.updateUserCompanyId(result.insertId, user.id)
             return true
         } else {
-            console.log('have company');
             /** компания уже была создана ранее - обновим её данные */
             company = await this.findUserCompany(user.company_id)
             result = await this.updateCompanyData(name, address, company.id)
@@ -38,7 +36,6 @@ class companyService extends Service {
     }
 
     async createCompany({companyName, companyAddress}){
-        console.log('Creating company', companyName)
         return new Promise((resolve, reject) => {
             this._connection.query('INSERT INTO company (name, address) VALUES (?, ?)', [companyName, companyAddress], (error, rows) => {
                 if(error) reject(error)

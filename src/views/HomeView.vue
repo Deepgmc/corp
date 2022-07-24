@@ -1,6 +1,5 @@
 <template>
     <div>
-        Home layout
         <home-component></home-component>
     </div>
 </template>

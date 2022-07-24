@@ -93,7 +93,6 @@ class authService extends Service {
     }
 
     updateUserToken({login, token}, callback){
-        console.log('UPDATE TOKEN:', login, token);
         this._connection.query('UPDATE users SET users.token = ? WHERE login = ?', [token, login], callback)
     }
 

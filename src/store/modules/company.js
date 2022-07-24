@@ -4,8 +4,11 @@ import {
     ACTION_SAVE_USER_COMPANY_INFO,
     SET_COMPANY,
     ACTION_GET_USER_COMPANY,
+    GET_USER_COMPANY,
     SET_COMPANY_FIELD,
-    ACTION_SHOW_NOTIFICATION
+    ACTION_SHOW_NOTIFICATION,
+    GET_IS_LOADED,
+    SET_LOADED
 } from '../../utils/STORE_C'
 
 import {
@@ -25,7 +28,10 @@ export default {
                 компания вошедшего юзера
                 все остальные сущности - сотрудники, счета и т.п. относятся к этой компании, являются её подсущностями
             */
-            company: null
+            isLoaded: false,
+            company: {
+                name: null
+            }
         }
     },
 
@@ -61,6 +67,7 @@ export default {
             .then((res) => {
                 if(res.data.company){
                     commit(SET_COMPANY, res.data.company)
+                    commit(SET_LOADED, true)
                 } else {
                     Promise.reject('Компания не найдена')
                 }
@@ -73,18 +80,22 @@ export default {
     },
 
     getters: {
-        GET_USER_COMPANY: (state) => {
+        [GET_USER_COMPANY]: (state) => {
             return state.company ?? null
+        },
+        [GET_IS_LOADED]: (state) => {
+            return state.isLoaded
         },
     },
 
     mutations: {
         [SET_COMPANY](state, company){
-            console.log('SET_COMPANY', company);
             state.company = company
         },
+        [SET_LOADED](state, status){
+            state.isLoaded = status
+        },
         [SET_COMPANY_FIELD](state, {field, value}){
-            console.log('SET_COMPANY_FIELD!!!', field, value);
             state.company[field] = value
         }
     }

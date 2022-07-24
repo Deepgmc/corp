@@ -2,10 +2,10 @@
     <div class="container">
 
         <div class="row p-4 border-bottom">
-            <div class="col-10">
+            <div class="col-9">
                 Header
             </div>
-            <div class="col-2">
+            <div class="col-3">
                 <login-info></login-info>
             </div>
         </div>
@@ -70,8 +70,9 @@ export default {
 </script>
 
 
-<style scoped>
+<style>
 .notification{
     margin: 20px 0 0 0;
 }
+
 </style>

@@ -1,6 +1,5 @@
 <template>
     <div>
-        Profile layout
         <profile-component></profile-component>
     </div>
 </template>

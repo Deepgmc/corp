@@ -1,4 +1,5 @@
 import authApi from '../../utils/auth.js'
+import $api from '../../utils/api.js'
 
 import {
     ACTION_REGISTER,
@@ -11,13 +12,18 @@ import {
     ACTION_GET_USER,
     SET_TOKEN,
     ACTION_LOGOUT,
-    SET_USER
+    SET_USER,
+    SET_USER_FIELD,
+    ACTION_SAVE_PROFILE_INFO
 } from '../../utils/STORE_C'
 
 import {
-    ALREADY_LOGINED
+    ALREADY_LOGINED,
+    SAVE_SUCCESS,
+    SAVE_ERROR,
 } from '../../utils/MESSAGES'
 
+const STORE_MODULE_NAME = 'auth'
 
 export default {
 
@@ -103,6 +109,24 @@ export default {
                 commit(SET_TOKEN, null)
                 commit(SET_USER, null)
             }
+        },
+
+        async [ACTION_SAVE_PROFILE_INFO]({commit, dispatch}, {newUser, settings}){
+            return $api.sendQuery({
+                type      : 'POST',
+                moduleName: 'api',
+                section   : STORE_MODULE_NAME,
+                operation : 'saveUserProfile',
+                data      : {user: newUser, settings: settings}
+            })
+            .then((res) => {
+                commit(SET_USER, newUser)
+                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: res.data.message }, { root: true } )
+            })
+            .catch((error) => {
+                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
+            })
+
         }
     },
 
@@ -129,7 +153,10 @@ export default {
         [FLUSH_REGISTER_ERROR_SUCCEESS](state){
             state.success = null
             state.error = null
-        }
+        },
+        [SET_USER_FIELD](state, {field, value}){
+            state.user[field] = value
+        },
     },
 
     getters: {

@@ -1,20 +1,34 @@
 const { defineConfig } = require('@vue/cli-service')
 
 module.exports = defineConfig({
-  transpileDependencies: true
+    transpileDependencies: true
 })
 
 module.exports = {
-  devServer: {
-    proxy: {
-      '/auth': {
-        target: 'http://localhost:3000'
-      },
-      '/api': {
-        target: 'http://localhost:3000'
-      },
+    // configureWebpack: {
+    //     plugins: [
+    //         new MyAwesomeWebpackPlugin()
+    //     ]
+    // },
+    devServer: {
+        proxy: {
+            '/auth': {
+                target: 'http://localhost:3000'
+            },
+            '/api': {
+                target: 'http://localhost:3000'
+            },
+        },
     },
-  },
 
-  publicPath: '/'
+    publicPath: '/',
+    outputDir: 'dist',
+
+    css: {
+        loaderOptions: {
+            sass: {
+                additionalData: ' @import "@/assets/styles/"; '
+            }
+        }
+    }
 }
