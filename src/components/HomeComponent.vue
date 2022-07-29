@@ -1,22 +1,18 @@
 <template>
     <div>
-        Home component
+        <currency-info></currency-info>
     </div>
 </template>
 
 <script>
 
-
+import currencyInfo from '@/components/common/currencyInfo'
 export default {
 
     name: 'HomeComponent',
 
-    computed: {
+    components: {currencyInfo},
 
-    },
 
-    methods: {
-
-    }
 }
 </script>

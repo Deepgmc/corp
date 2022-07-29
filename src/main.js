@@ -14,6 +14,7 @@ import Notifications from '@kyvg/vue3-notification'
 
 
 createApp(App)
+
     /** Vue default */
     .use(store)
     .use(router)

@@ -28,15 +28,27 @@ $api.sendQuery = async function({
     type = type.toLowerCase()
     const token = store.getters['auth/GET_TOKEN']
     if(!validateToken(token)){
-        console.warn(`Api: ${TOKEN_VALIDATION_FAIL}`, token);
+        console.warn(`Api: ${TOKEN_VALIDATION_FAIL}`, token)
         return Promise.reject(`Api: ${TOKEN_VALIDATION_FAIL} ${token}`)
     }
     if(!['post', 'get', 'delete', 'put'].includes(type)){
         return Promise.reject(INVALID_HTTP_OPERATION)
     }
 
-    //$api.post('/auth/auth/login', { login: login, password: password })
-    return await $api[type](`/${moduleName}/${section}/${operation}`, { token: token, data: data })
+    let getParams = null
+    if(type === 'get'){
+        /**
+            если тип запроса - GET,
+            то передаваемые данные запихиваем в гет-параметры,
+            а не передаём в body
+        */
+        getParams = '?' + Object.entries(data).reduce((acc, item) => {
+            acc.push(`${item[0]}=${item[1]}`)
+            return acc
+        }, [])
+    }
+
+    return await $api[type](`/${moduleName}/${section}/${operation}${getParams ? getParams : ''}`, { token: token, data: data })
         .catch(error => {
             console.warn('Error in sendQuery: ', error)
         })
