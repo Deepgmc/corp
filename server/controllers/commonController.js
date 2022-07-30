@@ -128,7 +128,7 @@ const getCBRFCurrency = async function (req, res, next) {
                         numCode : numCode,
                         charCode: val.CharCode[0],
                         nominal : val.Nominal[0],
-                        value   : val.Value[0],
+                        value   : val.Value[0].replace(/\,/g, '.'),
                         name    : name
                     }
                 })

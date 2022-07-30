@@ -2,9 +2,14 @@
     <div>
         <div v-if="isLoading">Данные загружаются с ЦБ РФ...</div>
         <div v-else>
-            <div v-for="currency in currencies" :key="currency.numCode">
-                {{currency.name}}: {{currency.nominal}} / {{currency.value}} рублей
+
+            <div class="card text-center">
+                <div class="card-header">
+                    Курсы валют
+                </div>
+                <slot name="currencyBody" :previewCurrencies="previewCurrencies" :currencies="currencies"></slot>
             </div>
+
         </div>
     </div>
 </template>
@@ -18,8 +23,8 @@
     <Name>Киргизских сомов</Name>
     <Value>72,4723</Value>
 </Valute>
- */
-import $api from '@/utils/api.js'
+*/
+
 
 export default {
     /*
@@ -28,39 +33,20 @@ export default {
     name: 'currencyInfo',
 
     data: () => ({
-        currencies          : null,
-        isLoading           : true,
-        currentDateXMLFormat: new Date().toLocaleDateString().replace(/\./g, '/')
+        whatToPreview: ['TRY', 'USD', 'EUR']
     }),
 
-    async mounted() {
-        const XMLCurrency = await this.loadCurrency()
-        console.log('Loaded XMLCurrency: ', XMLCurrency)
+    props: {
+        currencies: Array,
+        isLoading : Boolean
     },
 
-    methods: {
-        loadCurrency(){
-            return new Promise((resolve, reject) => {
-                $api.sendQuery({
-                    type      : 'GET',
-                    moduleName: 'api',
-                    section   : 'common',
-                    operation : 'getCBRFCurrency',
-                    data      : {
-                        forDate: this.currentDateXMLFormat
-                    }
-                })
-                .then((res) => {
-                    this.isLoading = false
-                    this.currencies = res.data.currencies
-                })
-                .catch((error) => {
-                    console.log('Currency error: ', error);
-                })
-
-            })
+    computed: {
+        previewCurrencies(){
+            return this.currencies.filter(currency => this.whatToPreview.includes(currency.charCode))
         }
-    }
+    },
+
 }
 </script>
 
