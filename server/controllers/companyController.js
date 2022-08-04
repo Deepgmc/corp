@@ -17,6 +17,12 @@ const saveUserCompany = async function (req, res, next) {
     res.send({error: false, message: 'Saved success'})
 }
 
+const saveNewDepartment = async function (req, res, next) {
+    const companyService = new companyS()
+    const saveResult = await companyService.saveNewDepartment(req.body.data)
+    res.send({error: false, message: saveResult})
+}
+
 const getUserCompany = async function (req, res, next) {
     const companyService = new companyS()
     const authService = new authS()
@@ -36,5 +42,6 @@ const getUserCompany = async function (req, res, next) {
 
 module.exports = {
     saveUserCompany,
-    getUserCompany
+    getUserCompany,
+    saveNewDepartment
 }

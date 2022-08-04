@@ -1,6 +1,6 @@
 <template>
     <div>
-        Employee component
+        AddEmployee
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 
 export default {
 
-    name: 'EmployeeComponent',
+    name: 'AddEmployee',
 
     computed: {
 

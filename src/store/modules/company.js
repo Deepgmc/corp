@@ -2,6 +2,7 @@ import $api from '../../utils/api.js'
 
 import {
     ACTION_SAVE_USER_COMPANY_INFO,
+    ACTION_SAVE_NEW_DEPARTMENT,
     SET_COMPANY,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
@@ -37,7 +38,28 @@ export default {
 
     actions: {
 
-        async [ACTION_SAVE_USER_COMPANY_INFO]({state, commit, dispatch, getters}, company){
+        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch}, {deptName, companyId}){
+            return $api.sendQuery({
+                type      : 'POST',
+                moduleName: 'api',
+                section   : STORE_MODULE_NAME,
+                operation : 'saveNewDepartment',
+                data      : {
+                    deptName,
+                    companyId
+                }
+            })
+            .then((res) => {
+                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: SAVE_SUCCESS }, { root: true } )
+                console.log('department saved:', res)
+            })
+            .catch((error) => {
+                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
+                console.log('error', error)
+            })
+        },
+
+        async [ACTION_SAVE_USER_COMPANY_INFO]({state, commit, dispatch}, company){
             return $api.sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
@@ -48,7 +70,7 @@ export default {
             .then((res) => {
                 commit(SET_COMPANY, company)
                 dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: SAVE_SUCCESS }, { root: true } )
-                console.log('res', res)
+                console.log('company saved:', res)
             })
             .catch((error) => {
                 dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
