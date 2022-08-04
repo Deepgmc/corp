@@ -1,12 +1,12 @@
 <template>
     <div class="row">
-        <div class="col-12 border-bottom">
+        <div class="col-md-12 border-bottom">
             <employee-component></employee-component>
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
             <add-department></add-department>
         </div>
-        <div class="col-6">
+        <div class="col-md-6">
             <add-employee></add-employee>
         </div>
     </div>
