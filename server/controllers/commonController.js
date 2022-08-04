@@ -132,7 +132,7 @@ const getCBRFCurrency = async function (req, res, next) {
                         name    : name
                     }
                 })
-                .filter(value => value.name)
+                .filter(value => !!value.name)
 
                 res.send({error: false, currencies: result.ValCurs.Valute})
             })

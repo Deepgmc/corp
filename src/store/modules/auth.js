@@ -3,7 +3,6 @@ import $api from '../../utils/api.js'
 
 import {
     ACTION_REGISTER,
-    ACTION_SHOW_NOTIFICATION,
     FLUSH_REGISTER_ERROR_SUCCEESS,
     SET_LOADING,
     SET_LOGIN_SUCCESS,
@@ -17,11 +16,8 @@ import {
     ACTION_SAVE_PROFILE_INFO
 } from '../../utils/STORE_C'
 
-import {
-    ALREADY_LOGINED,
-    SAVE_SUCCESS,
-    SAVE_ERROR,
-} from '../../utils/MESSAGES'
+
+import utils from '../../utils/utilFunctions'
 
 const STORE_MODULE_NAME = 'auth'
 
@@ -47,7 +43,7 @@ export default {
                 return
             }
             if(getters.IS_AUTHENTICATED){
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: ALREADY_LOGINED }, { root: true } )
+                utils.showDefaultMessage(dispatch, 'login_error')
                 return
             }
             commit(FLUSH_REGISTER_ERROR_SUCCEESS)
@@ -63,7 +59,7 @@ export default {
                     //! NEED LOGIN HERE
                 //})
                 .catch(function (error) {
-                    dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
+                    utils.showDefaultMessage(dispatch, 'register_error', error.message)
                     commit(SET_LOGIN_ERROR, error)
                 })
         },
@@ -74,7 +70,7 @@ export default {
                 return
             }
             if(getters.IS_AUTHENTICATED){
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: messages.ALREADY_LOGINED }, { root: true } )
+                utils.showDefaultMessage(dispatch, 'login_error')
                 return Promise.reject({error: true, message: messages.ALREADY_LOGINED })
             }
             commit(FLUSH_REGISTER_ERROR_SUCCEESS)
@@ -88,8 +84,7 @@ export default {
                     })
                 })
                 .catch(function (error) {
-                    console.log('login catch 1');
-                    dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: error.message }, { root: true } )
+                    utils.showDefaultMessage(dispatch, 'login_error', error.message)
                     commit(SET_LOGIN_ERROR, error)
                 })
         },
@@ -121,10 +116,10 @@ export default {
             })
             .then((res) => {
                 commit(SET_USER, newUser)
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: res.data.message }, { root: true } )
+                utils.showDefaultMessage(dispatch, 'login_success', res.data.message)
             })
             .catch((error) => {
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
+                utils.showDefaultMessage(dispatch, 'save_error')
             })
 
         }

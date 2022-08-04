@@ -61,6 +61,15 @@ class companyService extends Service {
         return await this.findUserCompany(companyId)
     }
 
+    saveNewDepartment(data){
+        return new Promise((resolve, reject) => {
+            this._connection.query('INSERT INTO departments (name, companyId) VALUES (?, ?)', [data.deptName, data.companyId], (error, rows) => {
+                if(error) reject(error)
+                resolve('Department saved')
+            })
+        })
+    }
+
     findCompanyByIdQuery(companyId, callback){
         this._connection.query('SELECT * FROM company WHERE id = ? LIMIT 1', companyId, callback)
     }

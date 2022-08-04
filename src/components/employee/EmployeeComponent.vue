@@ -1,6 +1,6 @@
 <template>
     <div>
-        Employee component
+        EmployeeComponent
     </div>
 </template>
 

@@ -2,19 +2,16 @@ import $api from '../../utils/api.js'
 
 import {
     ACTION_SAVE_USER_COMPANY_INFO,
+    ACTION_SAVE_NEW_DEPARTMENT,
     SET_COMPANY,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
     SET_COMPANY_FIELD,
-    ACTION_SHOW_NOTIFICATION,
     GET_IS_LOADED,
     SET_LOADED
 } from '../../utils/STORE_C'
 
-import {
-    SAVE_SUCCESS,
-    SAVE_ERROR
-} from '../../utils/MESSAGES'
+import utils from '../../utils/utilFunctions'
 
 const STORE_MODULE_NAME = 'company'
 
@@ -37,7 +34,26 @@ export default {
 
     actions: {
 
-        async [ACTION_SAVE_USER_COMPANY_INFO]({state, commit, dispatch, getters}, company){
+        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch}, {deptName, companyId}){
+            return $api.sendQuery({
+                type      : 'POST',
+                moduleName: 'api',
+                section   : STORE_MODULE_NAME,
+                operation : 'saveNewDepartment',
+                data      : {
+                    deptName,
+                    companyId
+                }
+            })
+            .then((res) => {
+                utils.showDefaultMessage(dispatch, 'save_success')
+            })
+            .catch((error) => {
+                utils.showDefaultMessage(dispatch, 'save_error')
+            })
+        },
+
+        async [ACTION_SAVE_USER_COMPANY_INFO]({state, commit, dispatch}, company){
             return $api.sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
@@ -47,12 +63,10 @@ export default {
             })
             .then((res) => {
                 commit(SET_COMPANY, company)
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: SAVE_SUCCESS }, { root: true } )
-                console.log('res', res)
+                utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
-                console.log('error', error)
+                utils.showDefaultMessage(dispatch, 'save_error')
             })
         },
 

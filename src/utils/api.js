@@ -52,16 +52,6 @@ $api.sendQuery = async function({
         .catch(error => {
             console.warn('Error in sendQuery: ', error)
         })
-        // .then(function (response) {
-        //     console.log('LOGOUT RESPONSE:', response)
-        //     return new Promise((resolve, reject) => {
-        //         resolve(true)
-        //     })
-        // })
-        // .catch(function (error) {
-        //     console.error('API Login err', error)
-        // })
-    //const logoutResult = await authApi.logout(token, user)
 }
 
 const validateToken = function(token){

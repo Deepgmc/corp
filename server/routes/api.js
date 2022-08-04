@@ -7,6 +7,7 @@ const commonController = require('../controllers/commonController')
 
 
 router.post('/company/saveUserCompany', companyController.saveUserCompany)
+router.post('/company/saveNewDepartment', companyController.saveNewDepartment)
 
 router.get('/company/getUserCompany', companyController.getUserCompany)
 
