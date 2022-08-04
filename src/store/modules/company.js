@@ -7,15 +7,11 @@ import {
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
     SET_COMPANY_FIELD,
-    ACTION_SHOW_NOTIFICATION,
     GET_IS_LOADED,
     SET_LOADED
 } from '../../utils/STORE_C'
 
-import {
-    SAVE_SUCCESS,
-    SAVE_ERROR
-} from '../../utils/MESSAGES'
+import utils from '../../utils/utilFunctions'
 
 const STORE_MODULE_NAME = 'company'
 
@@ -50,12 +46,10 @@ export default {
                 }
             })
             .then((res) => {
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: SAVE_SUCCESS }, { root: true } )
-                console.log('department saved:', res)
+                utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
-                console.log('error', error)
+                utils.showDefaultMessage(dispatch, 'save_error')
             })
         },
 
@@ -69,12 +63,10 @@ export default {
             })
             .then((res) => {
                 commit(SET_COMPANY, company)
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'success', message: SAVE_SUCCESS }, { root: true } )
-                console.log('company saved:', res)
+                utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
-                dispatch(ACTION_SHOW_NOTIFICATION, {type: 'error', message: SAVE_ERROR }, { root: true } )
-                console.log('error', error)
+                utils.showDefaultMessage(dispatch, 'save_error')
             })
         },
 

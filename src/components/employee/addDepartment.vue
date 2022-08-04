@@ -1,9 +1,12 @@
 <template>
-    <div class="row">
-        <form @submit.prevent="onDeptSave">
+    <div class="card mt-2">
+        <div class="card-header">
+            Новый департамент
+        </div>
+        <div class="card-body">
+            <form @submit.prevent="onDeptSave">
 
-            <div class="col-12 mb-3">
-                <label for="deptName" class="form-label">Название департамента</label>
+                <label for="deptName" class="form-label card-text">Название</label>
                 <input
                     @input           ="setDeptName"
                     v-model          ="localDeptName"
@@ -13,12 +16,13 @@
                     aria-describedby ="deptNameHelp"
                 >
                 <div id="deptNameHelp" class="form-text">
-                    Длина названия не больше 40 символов
+                    Длина названия {{minDeptNameLength}}-{{maxDeptNameLength}} символов
                 </div>
-            </div>
 
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+
+            </form>
+        </div>
     </div>
 </template>
 
@@ -26,8 +30,8 @@
 
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
-import { ONLY_LETTERS, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
-import { mapState, mapMutations, mapActions } from 'vuex'
+import { MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
+import { mapState, mapActions } from 'vuex'
 
 export default {
 
@@ -35,9 +39,9 @@ export default {
 
     data() {
         return {
-            localDeptName: '',
-            maxDeptNameLength   : 10,
-            minDeptNameLength   : 3
+            localDeptName    : '',
+            maxDeptNameLength: 30,
+            minDeptNameLength: 3
         }
     },
 
