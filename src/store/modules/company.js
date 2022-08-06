@@ -4,7 +4,7 @@ import {
     ACTION_SAVE_USER_COMPANY_INFO,
     ACTION_SAVE_NEW_DEPARTMENT,
     SET_COMPANY,
-    SET_DEPARTMENTS,
+    ADD_DEPARTMENT,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
     SET_COMPANY_FIELD,
@@ -48,7 +48,7 @@ export default {
                 }
             })
             .then((res) => {
-                commit(SET_DEPARTMENTS, {id: res.data.message.insertId, name: deptName})
+                commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
                 utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
@@ -110,7 +110,7 @@ export default {
         [SET_COMPANY](state, company){
             state.company = company
         },
-        [SET_DEPARTMENTS](state, newDepartment){
+        [ADD_DEPARTMENT](state, newDepartment){
             state.company.departments.push(newDepartment)
         },
         [SET_LOADED](state, status){
