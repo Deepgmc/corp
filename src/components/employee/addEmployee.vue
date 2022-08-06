@@ -26,9 +26,7 @@
                 <div class="row mt-2">
                     <div class="col-md-12">
                         <select class="form-control">
-                            <option value="1">департамент 1</option>
-                            <option value="2">департамент 2</option>
-                            <option value="3">департамент 3</option>
+                            <option v-for="department in company.departments" :key="department.id" value="{{department.id}}">{{department.name}}</option>
                         </select>
                     </div>
                 </div>
@@ -67,6 +65,9 @@ export default {
         errorsList(){
             return this.v.$errors.map((error) => error.$property)
         },
+        ...mapState('company', {
+            company: state => state.company
+        }),
     },
 
     methods: {

@@ -5,6 +5,20 @@ module.exports = defineConfig({
 })
 
 module.exports = {
+    pages: {
+        index: {
+            entry: 'src/main.js',
+            title: 'CORP'
+        }
+    },
+    // chainWebpack: config => {
+    //     config
+    //         .plugin('html')
+    //         .tap(args => {
+    //             args[0].title = "My Vue App";
+    //             return args;
+    //         })
+    // },
     // configureWebpack: {
     //     plugins: [
     //         new MyAwesomeWebpackPlugin()
