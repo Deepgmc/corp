@@ -28,6 +28,10 @@ class Service {
     generateToken(){
         return this._crypto.randomBytes(20).toString('hex')
     }
+
+    getTimestamp(){
+        return Math.floor(Date.now() / 1000)
+    }
 }
 
 module.exports = Service

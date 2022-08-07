@@ -82,6 +82,25 @@ class companyService extends Service {
         })
     }
 
+    saveNewEmployee(employeeData){
+        return new Promise((resolve, reject) => {
+            this._connection.query(`
+                    INSERT INTO employee
+                    (create_time, fio, company_id, department_id)
+                    VALUES (?, ?, ?, ?)`,
+                [
+                    this.getTimestamp(),
+                    employeeData.employee.fio,
+                    employeeData.company_id,
+                    employeeData.department_id
+                ],
+                (error, insertResult) => {
+                    if(error) reject(error)
+                    resolve(insertResult)
+                })
+        })
+    }
+
     findCompanyByIdQuery(companyId, callback){
         this._connection.query('SELECT * FROM company WHERE id = ? LIMIT 1', companyId, callback)
     }

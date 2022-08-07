@@ -4,13 +4,13 @@
             Новый сотрудник
         </div>
         <div class="card-body">
-            <form @submit.prevent="saveEmployee">
+            <form @submit.prevent="saveEmployeeSubmit">
 
                 <div class="row mt-2">
                     <div class="col-md-12">
                         <label for="employeeName" class="form-label card-text">ФИО</label>
                         <input
-                            @input           ="setEmployeeName"
+                            @input           ="setEmployeeNameField"
                             v-model          ="localEmployeeName"
                             type             ="text"
                             :class           ="['form-control', {'is-invalid': errorsList.includes('localEmployeeName')}]"
@@ -25,8 +25,19 @@
 
                 <div class="row mt-2">
                     <div class="col-md-12">
-                        <select class="form-control">
-                            <option v-for="department in company.departments" :key="department.id" value="{{department.id}}">{{department.name}}</option>
+                        <select
+                            v-model ="selectedDepartment"
+                            @change ="setDepartmentField"
+                            :class  ="['form-control', {'is-invalid': errorsList.includes('selectedDepartment')}]"
+                        >
+                            <option disabled value="">выберите отдел</option>
+                            <option
+                                v-for ="department in company.departments"
+                                :key  ="department.id"
+                                :value="department.id"
+                            >
+                                {{department.name}}
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -46,7 +57,7 @@
 
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
-import { onlyWords, ONLY_LETTERS, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
+import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -55,7 +66,8 @@ export default {
 
     data(){
         return {
-            localEmployeeName: '',
+            selectedDepartment   : '',
+            localEmployeeName    : '',
             maxEmployeeNameLength: 50,
             minEmployeeNameLength: 8
         }
@@ -65,15 +77,39 @@ export default {
         errorsList(){
             return this.v.$errors.map((error) => error.$property)
         },
+
         ...mapState('company', {
             company: state => state.company
         }),
     },
 
     methods: {
-        setEmployeeName ($event) {
+        ...mapActions('company', {
+            saveUserCompanyInfo: 'ACTION_SAVE_NEW_EMPLOYEE'
+        }),
+
+        setEmployeeNameField ($event) {
             this.v.localEmployeeName.$touch()
         },
+        setDepartmentField ($event) {
+            this.v.localEmployeeName.$touch()
+        },
+
+        async saveEmployeeSubmit(){
+            const result = await this.v.$validate()
+            if(!result){
+                console.warn('Invalid addEmployee validation!', this.v.$errors)
+                return
+            }
+
+            this.saveUserCompanyInfo({
+                employee: {
+                    fio: this.localEmployeeName
+                },
+                company_id   : this.company.id,
+                department_id: this.selectedDepartment
+            })
+        }
     },
 
     validations () {
@@ -84,6 +120,10 @@ export default {
                 maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.maxEmployeeNameLength}`, maxLength(this.maxEmployeeNameLength)),
                 onlyWords: helpers.withMessage(ONLY_LETTERS, onlyWords),
             },
+            selectedDepartment: {
+                required: helpers.withMessage(REQUIRED, required),
+                number  : helpers.withMessage(NUMBER, number)
+            }
         }
     },
 

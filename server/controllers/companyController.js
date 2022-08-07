@@ -1,9 +1,10 @@
 const companyS = require('../services/companyService')
 const authS = require('../services/authService.js')
 
+const companyService = new companyS()
+const authService = new authS()
+
 const saveUserCompany = async function (req, res, next) {
-    const companyService = new companyS()
-    const authService = new authS()
 
     const token = req.headers.token ?? req.body.token
     //TODO CHECK TOKEN (req.body.token) так же запихнуть в целом всю проверку в одно место!
@@ -18,14 +19,16 @@ const saveUserCompany = async function (req, res, next) {
 }
 
 const saveNewDepartment = async function (req, res, next) {
-    const companyService = new companyS()
     const saveResult = await companyService.saveNewDepartment(req.body.data)
     res.send({error: false, message: saveResult})
 }
 
+const saveNewEmployee = async function (req, res, next) {
+    const saveResult = await companyService.saveNewEmployee(req.body.data)
+    res.send({error: false, message: saveResult})
+}
+
 const getUserCompany = async function (req, res, next) {
-    const companyService = new companyS()
-    const authService = new authS()
 
     const token = req.headers.token ?? req.body.token
     //TODO CHECK TOKEN (req.body.token) так же запихнуть в целом всю проверку в одно место!
@@ -43,5 +46,6 @@ const getUserCompany = async function (req, res, next) {
 module.exports = {
     saveUserCompany,
     getUserCompany,
-    saveNewDepartment
+    saveNewDepartment,
+    saveNewEmployee
 }
