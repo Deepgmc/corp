@@ -1,1 +1,10 @@
-@import './variables.scss'
+@import './variables.scss';
+
+.list-font-size {
+    font-size: $list-font-size;
+}
+
+.showMore {
+    cursor: pointer;
+    color: $sub-text-color;
+}
