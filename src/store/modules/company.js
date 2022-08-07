@@ -9,7 +9,8 @@ import {
     GET_USER_COMPANY,
     SET_COMPANY_FIELD,
     GET_IS_LOADED,
-    SET_LOADED
+    SET_LOADED,
+    ACTION_SAVE_NEW_EMPLOYEE
 } from '../../utils/STORE_C'
 
 import utils from '../../utils/utilFunctions'
@@ -36,7 +37,26 @@ export default {
 
     actions: {
 
-        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch, getters}, {deptName, companyId}){
+        async [ACTION_SAVE_NEW_EMPLOYEE]({commit, dispatch}, employee){
+            return $api.sendQuery({
+                type      : 'POST',
+                moduleName: 'api',
+                section   : STORE_MODULE_NAME,
+                operation : 'saveNewEmployee',
+                data      : employee
+            })
+            .then((res) => {
+                //TODO добавить сотрудника на клиенте
+                //commit(ADD_EMPLOYEE, {})
+                utils.showDefaultMessage(dispatch, 'save_success')
+            })
+            .catch((error) => {
+                console.warn('Save department error', error);
+                utils.showDefaultMessage(dispatch, 'save_error')
+            })
+        },
+
+        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch}, {deptName, companyId}){
             return $api.sendQuery({
                 type      : 'POST',
                 moduleName: 'api',

@@ -48,7 +48,13 @@ import { onlyWords, ONLY_LETTERS, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../ut
 
 import { mapState, mapMutations, mapActions } from 'vuex'
 
+import {
+    ACTION_SAVE_USER_COMPANY_INFO,
+    SET_COMPANY_FIELD
+} from '../utils/STORE_C.js'
+
 export default {
+
     name: 'MyCompanyComponent',
 
     data() {
@@ -75,11 +81,11 @@ export default {
     methods: {
 
         ...mapActions('company', {
-            saveUserCompanyInfo: 'ACTION_SAVE_USER_COMPANY_INFO'
+            saveUserCompanyInfo: ACTION_SAVE_USER_COMPANY_INFO
         }),
 
         ...mapMutations('company', {
-            setCompanyField: 'SET_COMPANY_FIELD'
+            setCompanyField: SET_COMPANY_FIELD
         }),
 
         setName ($event) {

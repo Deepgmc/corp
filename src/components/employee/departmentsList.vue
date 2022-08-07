@@ -1,15 +1,22 @@
 <template>
     <div class="card mt-2">
+
         <div class="card-header">
             Наши отделы
         </div>
-        <div class="list-group list-group-flush list-font-size">
-            <list :items="company.departments">
-                <template #itemSlot="slotParams">
-                    {{slotParams.item.name}}
-                </template>
-            </list>
-        </div>
+
+        <list
+            :items="company.departments"
+            collapsedSize="5"
+        >
+            <template #itemSlot="slotParams">
+                <div class="row">
+                    <div class="col-md-1">{{slotParams.item.id}}</div>
+                    <div class="col-md-11">{{slotParams.item.name}}</div>
+                </div>
+            </template>
+        </list>
+
     </div>
 </template>
 
