@@ -58,14 +58,26 @@ class companyService extends Service {
 
     async getUserCompany(companyId){
         if(!companyId) return {}
-        return await this.findUserCompany(companyId)
+        const company = await this.findUserCompany(companyId)
+        const departments = await this.findCompanyDepartments(companyId)
+        company.departments = departments
+        return company
+    }
+
+    async findCompanyDepartments(companyId){
+        return new Promise((resolve, reject) => {
+            this._connection.query('SELECT * FROM departments WHERE companyId = ?', companyId, (error, rows) => {
+                if(error) reject(error)
+                resolve(rows)
+            })
+        })
     }
 
     saveNewDepartment(data){
         return new Promise((resolve, reject) => {
-            this._connection.query('INSERT INTO departments (name, companyId) VALUES (?, ?)', [data.deptName, data.companyId], (error, rows) => {
+            this._connection.query('INSERT INTO departments (name, companyId) VALUES (?, ?)', [data.deptName, data.companyId], (error, insertResult) => {
                 if(error) reject(error)
-                resolve('Department saved')
+                resolve(insertResult)
             })
         })
     }

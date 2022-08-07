@@ -4,6 +4,7 @@ import {
     ACTION_SAVE_USER_COMPANY_INFO,
     ACTION_SAVE_NEW_DEPARTMENT,
     SET_COMPANY,
+    ADD_DEPARTMENT,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
     SET_COMPANY_FIELD,
@@ -27,14 +28,15 @@ export default {
             */
             isLoaded: false,
             company: {
-                name: null
+                name: null,
+                departments: []
             }
         }
     },
 
     actions: {
 
-        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch}, {deptName, companyId}){
+        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch, getters}, {deptName, companyId}){
             return $api.sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
@@ -46,9 +48,11 @@ export default {
                 }
             })
             .then((res) => {
+                commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
                 utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
+                console.log('Save department error', error);
                 utils.showDefaultMessage(dispatch, 'save_error')
             })
         },
@@ -105,6 +109,9 @@ export default {
     mutations: {
         [SET_COMPANY](state, company){
             state.company = company
+        },
+        [ADD_DEPARTMENT](state, newDepartment){
+            state.company.departments.push(newDepartment)
         },
         [SET_LOADED](state, status){
             state.isLoaded = status
