@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="isAuthenticated && userInfo" class="text-end">
+        <div v-if="isAuthenticated && userInfo" class="text-start">
             <div>{{ userInfo.login }}</div>
             <div v-if="isCompanyLoaded" class="subText">{{ userCompany.name }}</div>
         </div>

@@ -10,17 +10,24 @@
                 <div class="card-header card-header__colors">
                     Динамика за год
                 </div>
+                <div class="card-body">
+                    <canvas></canvas>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <departments-list></departments-list>
-        </div>
     </div>
+
     <div class="row">
         <div class="col-md-6">
             <add-department></add-department>
         </div>
         <div class="col-md-6">
+            <departments-list></departments-list>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
             <add-employee></add-employee>
         </div>
     </div>

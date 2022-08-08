@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-2">
         <div class="card-header card-header__colors">
-            Новый департамент
+            Новый отдел
         </div>
         <div class="card-body">
             <form @submit.prevent="onDeptSave">
@@ -48,7 +48,7 @@ export default {
     data() {
         return {
             localDeptName    : '',
-            maxDeptNameLength: 30,
+            maxDeptNameLength: 50,
             minDeptNameLength: 3
         }
     },

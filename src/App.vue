@@ -1,14 +1,24 @@
 <template>
     <div class="container">
 
-        <div class="row p-4 border-bottom">
-            <div class="col-9">
-                Header
+        <div class="row">
+            <div class="col-md-9">
+                <img alt="Corp logo" :src="umbrellaLogo">
             </div>
-            <div class="col-3">
-                <login-info></login-info>
+            <div class="col-md-3">
+
             </div>
         </div>
+
+        <div class="row border-bottom pt-4 pb-4">
+            <div class="col-md-2">
+                <login-info></login-info>
+            </div>
+            <div class="col-md-9">
+
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-2">
                 <nav-component />
@@ -38,8 +48,16 @@ import NavComponent from '@/components/NavComponent.vue'
 import LoginInfo from '@/components/LoginInfo.vue'
 import { mapGetters } from 'vuex'
 
+import umbrellaLogo from './assets/umbrella-logo.png'
+
 export default {
     name: 'App',
+
+    data(){
+        return {
+            umbrellaLogo: umbrellaLogo
+        }
+    },
 
     components: {NavComponent, LoginInfo},
 

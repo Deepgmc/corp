@@ -11,7 +11,7 @@
         >
             <template #itemSlot="slotParams">
                 <div class="row">
-                    <div class="col-md-1">{{slotParams.index + 1}}</div>
+                    <!-- <div class="col-md-1">{{slotParams.index + 1}}</div> -->
                     <div class="col-md-3">{{slotParams.item.fio}}</div>
                     <div class="col-md-3">{{slotParams.item.departmentName}}</div>
                 </div>
@@ -42,6 +42,7 @@ export default {
         }),
 
         localEmployees() {
+            if(!this.company.employees) return []
             return [...this.company.employees].map(emp => {
                 return {
                     ...emp,

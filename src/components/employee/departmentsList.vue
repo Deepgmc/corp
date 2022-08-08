@@ -11,7 +11,7 @@
         >
             <template #itemSlot="slotParams">
                 <div class="row">
-                    <div class="col-md-1">{{slotParams.index + 1}}</div>
+                    <!-- <div class="col-md-1">{{slotParams.index + 1}}</div> -->
                     <div class="col-md-11">{{slotParams.item.name}}</div>
                 </div>
             </template>
