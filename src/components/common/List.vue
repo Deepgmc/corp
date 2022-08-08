@@ -1,17 +1,24 @@
 <template>
 
-    <div class="list-group list-group-flush list-font-size">
+    <div class="list-group">
 
-        <div v-for="(item, index) in itemsToRender" :key="index" class="list-group-item">
-            <slot name="itemSlot" :item="item"></slot>
+        <div v-if="itemsToRender.length < 1">
+            <div class="p-3">Данных для отображения нет</div>
         </div>
 
-        <div v-if="isCollapsed && isNeedShowMore" class="list-group-item showMore" @click="expandItems">
-            ...
+        <div v-else class="list-font-size">
+            <div v-for="(item, index) in itemsToRender" :key="index" class="list-group-item">
+                <slot name="itemSlot" :item="item" :index="index"></slot>
+            </div>
+
+            <div v-if="isCollapsed && isNeedShowMore" class="list-group-item showMore" @click="expandItems">
+                ...
+            </div>
+            <div v-else-if="isNeedShowMore" class="list-group-item showMore" @click="deExpandItems">
+                свернуть
+            </div>
         </div>
-        <div v-else-if="isNeedShowMore" class="list-group-item showMore" @click="deExpandItems">
-            свернуть
-        </div>
+
 
     </div>
 
@@ -24,7 +31,6 @@ export default {
     data(){
         return {
             isCollapsed: true,
-            itemsToRender: []
         }
     },
 
@@ -37,6 +43,13 @@ export default {
         },
         isNeedShowMore(){
             return this.items.length > this.collapsedSizeInt
+        },
+        itemsToRender() {
+            if(this.isCollapsed) {
+                return this.collapsedItems
+            } else if(!this.isCollapsed){
+                return this.items
+            }
         }
     },
 
@@ -47,24 +60,18 @@ export default {
             default : []
         },
         collapsedSize: {
-            type    : String,
+            type    : Number,
             required: true,
-            default : '5'
+            default : 5
         }
-    },
-
-    mounted(){
-        this.itemsToRender = this.collapsedItems
     },
 
     methods: {
         expandItems(){
             this.isCollapsed = false
-            this.itemsToRender = this.items
         },
         deExpandItems(){
             this.isCollapsed = true
-            this.itemsToRender = this.collapsedItems
         }
     }
 
