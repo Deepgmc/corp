@@ -1,5 +1,5 @@
 @import './variables.scss';
-
+@import 'bootstrap/dist/css/bootstrap.min.scss';
 .list-font-size {
     font-size: $list-font-size;
 }
@@ -7,4 +7,14 @@
 .showMore {
     cursor: pointer;
     color: $sub-text-color;
+}
+
+.card-header__colors {
+    @extend .bg-primary;
+    @extend .text-light;
+}
+
+.form-help-text{
+    color    : $sub-text-color;
+    font-size: $form-sub-text-size;
 }

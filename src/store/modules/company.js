@@ -10,7 +10,8 @@ import {
     SET_COMPANY_FIELD,
     GET_IS_LOADED,
     SET_LOADED,
-    ACTION_SAVE_NEW_EMPLOYEE
+    ACTION_SAVE_NEW_EMPLOYEE,
+    ADD_EMPLOYEE
 } from '../../utils/STORE_C'
 
 import utils from '../../utils/utilFunctions'
@@ -46,8 +47,13 @@ export default {
                 data      : employee
             })
             .then((res) => {
-                //TODO добавить сотрудника на клиенте
-                //commit(ADD_EMPLOYEE, {})
+                commit(ADD_EMPLOYEE, {
+                    id          : res.data.message.insertId,
+                    fio         : employee.employee.fio,
+                    companyId   : employee.companyId,
+                    departmentId: employee.departmentId,
+                    create_time : Math.floor(Date.now() / 1000)
+                })
                 utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
@@ -77,7 +83,7 @@ export default {
             })
         },
 
-        async [ACTION_SAVE_USER_COMPANY_INFO]({state, commit, dispatch}, company){
+        async [ACTION_SAVE_USER_COMPANY_INFO]({commit, dispatch}, company){
             return $api.sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
@@ -94,7 +100,7 @@ export default {
             })
         },
 
-        async [ACTION_GET_USER_COMPANY]({state, commit, dispatch, getters}, {}){
+        async [ACTION_GET_USER_COMPANY]({commit}, {}){
             return $api.sendQuery({
                 type      : 'GET',
                 moduleName: 'api',
@@ -104,6 +110,7 @@ export default {
             })
             .then((res) => {
                 if(res.data.company){
+                    console.info('GetUserCompany:', res.data.company);
                     commit(SET_COMPANY, res.data.company)
                     commit(SET_LOADED, true)
                 } else {
@@ -132,6 +139,10 @@ export default {
         },
         [ADD_DEPARTMENT](state, newDepartment){
             state.company.departments.push(newDepartment)
+            console.log('ADD_DEPARTMENT', state.company.departments);
+        },
+        [ADD_EMPLOYEE](state, newEmployee){
+            state.company.employees.push(newEmployee)
         },
         [SET_LOADED](state, status){
             state.isLoaded = status

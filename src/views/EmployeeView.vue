@@ -1,11 +1,17 @@
 <template>
     <div class="row">
-        <div class="col-md-12 border-bottom">
-            <employee-component></employee-component>
+        <div class="col-md-12">
+            <employee-list></employee-list>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">График динамики</div>
+        <div class="col-md-6">
+            <div class="card mt-2">
+                <div class="card-header card-header__colors">
+                    Динамика за год
+                </div>
+            </div>
+        </div>
         <div class="col-md-6">
             <departments-list></departments-list>
         </div>
@@ -22,13 +28,13 @@
 
 
 <script>
-import EmployeeComponent from '@/components/employee/EmployeeComponent.vue'
+import EmployeeList from '@/components/employee/EmployeeList.vue'
 import addEmployee from '@/components/employee/addEmployee.vue'
 import addDepartment from '@/components/employee/addDepartment.vue'
 import departmentsList from '@/components/employee/departmentsList.vue'
 
 export default {
     name: 'EmployeeView',
-    components: {EmployeeComponent, addEmployee, addDepartment, departmentsList},
+    components: {EmployeeList, addEmployee, addDepartment, departmentsList},
 }
 </script>

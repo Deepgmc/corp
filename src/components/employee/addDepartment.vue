@@ -1,25 +1,33 @@
 <template>
     <div class="card mt-2">
-        <div class="card-header">
+        <div class="card-header card-header__colors">
             Новый департамент
         </div>
         <div class="card-body">
             <form @submit.prevent="onDeptSave">
 
-                <label for="deptName" class="form-label card-text">Название</label>
-                <input
-                    @input           ="setDeptName"
-                    v-model          ="localDeptName"
-                    type             ="text"
-                    :class           ="['form-control', {'is-invalid': errorsList.includes('localDeptName')}]"
-                    id               ="deptName"
-                    aria-describedby ="deptNameHelp"
-                >
-                <div id="deptNameHelp" class="form-text">
-                    Длина названия {{minDeptNameLength}}-{{maxDeptNameLength}} символов
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <label for="deptName" class="form-label card-text">Название</label>
+                        <div id="deptNameHelp" class="form-text form-help-text">
+                            Длина названия {{minDeptNameLength}}-{{maxDeptNameLength}} символов
+                        </div>
+                        <input
+                            @input           ="setDeptName"
+                            v-model          ="localDeptName"
+                            type             ="text"
+                            :class           ="['form-control', {'is-invalid': errorsList.includes('localDeptName')}]"
+                            id               ="deptName"
+                            aria-describedby ="deptNameHelp"
+                        >
+                    </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </div>
 
             </form>
         </div>

@@ -4,14 +4,14 @@ class companyService extends Service {
 
     async saveUserCompany({name, address}, user){
         let company, result
-        if(!user.company_id){
+        if(!user.companyId){
             /** если у юзера еще нет компании - создадим её */
             result = await this.createCompany({companyName: name, companyAddress: address})
             result = await this.updateUserCompanyId(result.insertId, user.id)
             return true
         } else {
             /** компания уже была создана ранее - обновим её данные */
-            company = await this.findUserCompany(user.company_id)
+            company = await this.findUserCompany(user.companyId)
             result = await this.updateCompanyData(name, address, company.id)
             return true
         }
@@ -28,7 +28,7 @@ class companyService extends Service {
 
     async updateUserCompanyId(companyId, userId){
         return new Promise((resolve, reject) => {
-            this._connection.query('UPDATE users SET company_id = ? WHERE id = ?', [companyId, userId], (error, rows) => {
+            this._connection.query('UPDATE users SET companyId = ? WHERE id = ?', [companyId, userId], (error, rows) => {
                 if(error) reject(error)
                 resolve(rows)
             })
@@ -59,14 +59,22 @@ class companyService extends Service {
     async getUserCompany(companyId){
         if(!companyId) return {}
         const company = await this.findUserCompany(companyId)
-        const departments = await this.findCompanyDepartments(companyId)
-        company.departments = departments
+        company.departments = await this.findCompanyDepartments(companyId)
+        company.employees = await this.findCompanyEmployees(companyId)
         return company
     }
 
     async findCompanyDepartments(companyId){
         return new Promise((resolve, reject) => {
             this._connection.query('SELECT * FROM departments WHERE companyId = ?', companyId, (error, rows) => {
+                if(error) reject(error)
+                resolve(rows)
+            })
+        })
+    }
+    async findCompanyEmployees(companyId){
+        return new Promise((resolve, reject) => {
+            this._connection.query('SELECT * FROM employee WHERE companyId = ?', companyId, (error, rows) => {
                 if(error) reject(error)
                 resolve(rows)
             })
@@ -86,13 +94,13 @@ class companyService extends Service {
         return new Promise((resolve, reject) => {
             this._connection.query(`
                     INSERT INTO employee
-                    (create_time, fio, company_id, department_id)
+                    (create_time, fio, companyId, departmentId)
                     VALUES (?, ?, ?, ?)`,
                 [
                     this.getTimestamp(),
                     employeeData.employee.fio,
-                    employeeData.company_id,
-                    employeeData.department_id
+                    employeeData.companyId,
+                    employeeData.departmentId
                 ],
                 (error, insertResult) => {
                     if(error) reject(error)

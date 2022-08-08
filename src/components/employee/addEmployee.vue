@@ -1,6 +1,6 @@
 <template>
     <div class="card mt-2">
-        <div class="card-header">
+        <div class="card-header card-header__colors">
             Новый сотрудник
         </div>
         <div class="card-body">
@@ -8,27 +8,34 @@
 
                 <div class="row mt-2">
                     <div class="col-md-12">
-                        <label for="employeeName" class="form-label card-text">ФИО</label>
+                        <label for="employeeName" class="form-label">ФИО</label>
+                        <div id="employeeNameHelp" class="form-text form-help-text">
+                            Длина {{minEmployeeNameLength}}-{{maxEmployeeNameLength}} символов, без цифр
+                        </div>
                         <input
                             @input           ="setEmployeeNameField"
                             v-model          ="localEmployeeName"
                             type             ="text"
                             :class           ="['form-control', {'is-invalid': errorsList.includes('localEmployeeName')}]"
-                            id               ="deptName"
-                            aria-describedby ="deptNameHelp"
+                            id               ="employeeName"
+                            aria-describedby ="employeeNameHelp"
                         >
-                        <div id="deptNameHelp" class="form-text">
-                            Длина {{minEmployeeNameLength}}-{{maxEmployeeNameLength}} символов, без цифр
-                        </div>
+
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-md-12">
+                        <label for="selectedDepartment" class="form-label">Департамент</label>
+                        <div id="deptSelectHelp" class="form-text form-help-text">
+                            Длина {{minEmployeeNameLength}}-{{maxEmployeeNameLength}} символов, без цифр
+                        </div>
                         <select
+                            id ="selectedDepartment"
                             v-model ="selectedDepartment"
                             @change ="setDepartmentField"
                             :class  ="['form-control', {'is-invalid': errorsList.includes('selectedDepartment')}]"
+                            aria-describedby ="deptSelectHelp"
                         >
                             <option disabled value="">выберите отдел</option>
                             <option
@@ -39,6 +46,7 @@
                                 {{department.name}}
                             </option>
                         </select>
+
                     </div>
                 </div>
 
@@ -106,8 +114,8 @@ export default {
                 employee: {
                     fio: this.localEmployeeName
                 },
-                company_id   : this.company.id,
-                department_id: this.selectedDepartment
+                companyId   : this.company.id,
+                departmentId: this.selectedDepartment
             })
         }
     },
