@@ -30,3 +30,4 @@ export const SET_USER_FIELD                = 'SET_USER_FIELD'
 
 //EMPLOYEE
 export const ACTION_SAVE_NEW_EMPLOYEE = 'ACTION_SAVE_NEW_EMPLOYEE'
+export const ADD_EMPLOYEE             = 'ADD_EMPLOYEE'
