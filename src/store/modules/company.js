@@ -18,6 +18,12 @@ import utils from '../../utils/utilFunctions'
 
 const STORE_MODULE_NAME = 'company'
 
+const companyDummy = {
+    name       : null,
+    departments: [],
+    employee   : [],
+}
+
 export default {
 
     namespaced: true,
@@ -29,10 +35,7 @@ export default {
                 все остальные сущности - сотрудники, счета и т.п. относятся к этой компании, являются её подсущностями
             */
             isLoaded: false,
-            company: {
-                name: null,
-                departments: []
-            }
+            company: companyDummy
         }
     },
 
@@ -135,11 +138,12 @@ export default {
 
     mutations: {
         [SET_COMPANY](state, company){
+            if(typeof company.departments === 'undefined') company = companyDummy
             state.company = company
         },
         [ADD_DEPARTMENT](state, newDepartment){
-            state.company.departments.push(newDepartment)
             console.log('ADD_DEPARTMENT', state.company.departments);
+            state.company.departments.push(newDepartment)
         },
         [ADD_EMPLOYEE](state, newEmployee){
             state.company.employees.push(newEmployee)

@@ -38,7 +38,6 @@ const getUserCompany = async function (req, res, next) {
         throw new Error('Пользователь с таким токеном не найден')
     }
     const company = await companyService.getUserCompany(user.companyId)
-    console.log('Found company: ', company)
 
     res.send({company: company})
 }

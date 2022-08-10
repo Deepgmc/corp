@@ -5,8 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "server": "DEBUG=myapp:* npm start",
-    "start": "nodemon ./server/bin/www"
+    "server": "DEBUG=myapp:* nodemon ./server/bin/www"
   },
   "dependencies": {
     "@kyvg/vue3-notification": "^2.3.4",
