@@ -51,12 +51,14 @@ export default {
             const userData = await authApi.register({login, password})
                 .then((success) => {
                     console.log('Registered new user: ', success)
+                    utils.showDefaultMessage(dispatch, 'login_success', success.message)
                     commit(SET_LOGIN_SUCCESS, success)
 
                     return {login, password}
                 })
                 //.then(({login, password}) => {
-                    //! NEED LOGIN HERE
+                    //TODO
+                    //NEED LOGIN HERE
                 //})
                 .catch(function (error) {
                     utils.showDefaultMessage(dispatch, 'register_error', error.message)
@@ -157,6 +159,10 @@ export default {
     getters: {
         IS_AUTHENTICATED: (state) => {
             const token = state.token
+            //TODO
+            /**
+            Добавить синхронизацию с сервером + удаление просроченных токенов
+            */
             return !!token && token.length > 30
         },
         GET_LOGIN_ERROR  : (state) => state.error ?? null,

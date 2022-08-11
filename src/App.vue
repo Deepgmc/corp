@@ -61,6 +61,16 @@ export default {
 
     components: {NavComponent, LoginInfo},
 
+    created() {
+        if(this.isAuthenticated){
+            /**
+            если пользователь уже имеет токен (авториован)
+            то перед запуском приложения надо проверить актуальность этого токена
+            и если не актуален - обнулить его
+            */
+        }
+    },
+
     mounted(){
 
         /**

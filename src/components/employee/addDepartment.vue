@@ -41,6 +41,8 @@ import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
 import { MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
+import utils from '@/utils/utilFunctions'
+
 export default {
 
     name: 'addDept',
@@ -76,6 +78,11 @@ export default {
             const result = await this.v.$validate()
             if(!result){
                 console.warn('Invalid department form validation!')
+                return
+            }
+
+            if(!this.company.id){
+                utils.showDefaultMessage(dispatch, 'save_error')
                 return
             }
 

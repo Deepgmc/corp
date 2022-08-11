@@ -37,9 +37,12 @@ const getUserCompany = async function (req, res, next) {
     if(!user){
         throw new Error('Пользователь с таким токеном не найден')
     }
-    const company = await companyService.getUserCompany(user.companyId)
-
-    res.send({company: company})
+    try {
+        const company = await companyService.getUserCompany(user.companyId)
+        res.send({company: company})
+    } catch(error) {
+        res.send({error: true, message: error.message})
+    }
 }
 
 module.exports = {

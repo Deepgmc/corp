@@ -59,6 +59,9 @@ class companyService extends Service {
     async getUserCompany(companyId){
         if(!companyId) return {}
         const company = await this.findUserCompany(companyId)
+        if(!company || typeof company.id === 'undefined'){
+            throw new Error('Компания не найдена')
+        }
         company.departments = await this.findCompanyDepartments(companyId)
         company.employees = await this.findCompanyEmployees(companyId)
         return company
