@@ -24,4 +24,3 @@ const a = createApp(App)
     .use(Notifications)
 
     .mount('#corp')
-console.log('App config: ', a.config);

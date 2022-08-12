@@ -68,6 +68,8 @@ import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
 import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
+import utils from '@/utils/utilFunctions'
+
 export default {
 
     name: 'AddEmployee',
@@ -107,6 +109,10 @@ export default {
             const result = await this.v.$validate()
             if(!result){
                 console.warn('Invalid addEmployee validation!', this.v.$errors)
+                return
+            }
+            if(!this.company.id){
+                utils.showDefaultMessage(dispatch, 'save_error')
                 return
             }
 

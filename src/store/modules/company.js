@@ -103,7 +103,7 @@ export default {
             })
         },
 
-        async [ACTION_GET_USER_COMPANY]({commit}, {}){
+        async [ACTION_GET_USER_COMPANY]({commit, dispatch, rootGetters}, {}){
             return $api.sendQuery({
                 type      : 'GET',
                 moduleName: 'api',
@@ -112,12 +112,15 @@ export default {
                 data      : {}
             })
             .then((res) => {
-                if(res.data.company){
+                if(res.data && res.data.company){
                     console.info('GetUserCompany:', res.data.company);
                     commit(SET_COMPANY, res.data.company)
                     commit(SET_LOADED, true)
-                } else {
-                    Promise.reject('Компания не найдена')
+                } else if(rootGetters['auth/IS_AUTHENTICATED']) {
+                    if(res.data.error){
+                        Promise.reject(res.data.message)
+                        utils.showDefaultMessage(dispatch, 'save_error', res.data.message)
+                    }
                 }
             })
             .catch((error) => {

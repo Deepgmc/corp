@@ -1,6 +1,20 @@
 const Service = require('./service')
 
 class authService extends Service {
+
+    async checkUserAuth(token){
+        //тут, видимо, нужно еще добавить проверку на TTL токена
+        return new Promise((resolve, reject) => {
+            this.findUserByToken(token)
+                .then((user) => {
+                    resolve(!!user.token)
+                })
+                .catch((error) => {
+                    reject(false)
+                })
+        })
+    }
+
     async createNewUser(user){
         return new Promise((resolve, reject) => {
             this.checkIsUserExist(user.login)
@@ -13,6 +27,7 @@ class authService extends Service {
 
                     const userData = {
                         login   : user.login,
+                        name    : user.name,
                         password: passHash
                     }
                     this._connection.query('INSERT INTO users set ?', userData, function(error, rows){
@@ -65,7 +80,7 @@ class authService extends Service {
     async getUserInfo(getToken){
         const user = await this.findUserByToken(getToken)
         if(!user) {
-            return Promise.reject(`Нет зарегистрированного пользователя с ткеном ${getUser.login}`)
+            return Promise.reject(`Нет зарегистрированного пользователя с токеном ${getUser.login}`)
         }
         delete user.password
         return user

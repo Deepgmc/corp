@@ -1,5 +1,6 @@
 import authApi from '../../utils/auth.js'
 import $api from '../../utils/api.js'
+import router from '../../router/router.js'
 
 import {
     ACTION_REGISTER,
@@ -13,7 +14,8 @@ import {
     ACTION_LOGOUT,
     SET_USER,
     SET_USER_FIELD,
-    ACTION_SAVE_PROFILE_INFO
+    ACTION_SAVE_PROFILE_INFO,
+    ACTION_CHECK_USER_AUTH
 } from '../../utils/STORE_C'
 
 
@@ -38,7 +40,7 @@ export default {
     actions: {
 
         /** REGISTER */
-        async [ACTION_REGISTER]({state, commit, dispatch, getters}, {login, password}){
+        async [ACTION_REGISTER]({state, commit, dispatch, getters}, {login, name, password}){
             if(state.isLoading){
                 return
             }
@@ -48,15 +50,16 @@ export default {
             }
             commit(FLUSH_REGISTER_ERROR_SUCCEESS)
             commit(SET_LOADING)
-            const userData = await authApi.register({login, password})
+            await authApi.register({login, name, password})
                 .then((success) => {
                     console.log('Registered new user: ', success)
+                    utils.showDefaultMessage(dispatch, 'login_success', success.message)
                     commit(SET_LOGIN_SUCCESS, success)
 
                     return {login, password}
                 })
                 //.then(({login, password}) => {
-                    //! NEED LOGIN HERE
+                    //TODO NEED LOGIN HERE
                 //})
                 .catch(function (error) {
                     utils.showDefaultMessage(dispatch, 'register_error', error.message)
@@ -121,7 +124,29 @@ export default {
             .catch((error) => {
                 utils.showDefaultMessage(dispatch, 'save_error')
             })
+        },
 
+        async [ACTION_CHECK_USER_AUTH]({state, commit, dispatch, getters}) {
+            return $api.sendQuery({
+                type      : 'GET',
+                moduleName: 'auth',
+                section   : STORE_MODULE_NAME,
+                operation : 'checkUserAuth',
+                data      : {token: getters.GET_TOKEN}
+            })
+            .then((res) => {
+                let needToLogout = res.data.error
+                if(!needToLogout){
+                    needToLogout = !res.data.foundUser
+                }
+                if(needToLogout){
+                    this.commit('auth/SET_TOKEN', null)
+                    router.push({name: 'login'})
+                }
+            })
+            .catch((error) => {
+                console.log('err', error);
+            })
         }
     },
 
@@ -157,11 +182,18 @@ export default {
     getters: {
         IS_AUTHENTICATED: (state) => {
             const token = state.token
+            //TODO
+            /**
+            Добавить синхронизацию с сервером + удаление просроченных токенов
+            */
             return !!token && token.length > 30
         },
         GET_LOGIN_ERROR  : (state) => state.error ?? null,
         GET_LOGIN_SUCCESS: (state) => {return state.success ?? null},
-        GET_TOKEN        : (state) => state.token,
+        GET_TOKEN        : (state) => {
+            if(state.token === 'null' || state.token === 'undefined') return false
+            return state.token
+        },
         GET_USER         : (state) => {return state.user},
     },
 }
