@@ -1,12 +1,11 @@
 const authS = require('../../services/authService.js')
 
-
-const registerController = function (req, res, next) {
+const authService = new authS()
+const register = function (req, res, next) {
     //! CREATE NEW USER
     console.log('REGISTER Controller starts')
     console.log('Try register user: ', req.body.login, req.body.password)
 
-    const authService = new authS()
     authService.createNewUser(req.body)
         .then((successText) => {
             res.send({error: false, message: successText})
@@ -17,4 +16,14 @@ const registerController = function (req, res, next) {
         })
 }
 
-module.exports = registerController
+const checkUserAuth = function(req, res, next){
+    authService.checkUserAuth(req.query.token)
+        .then((result) => {
+            res.send({error: false, foundUser: result})
+        })
+        .catch((error) => {
+            res.send({error: true})
+        })
+}
+
+module.exports = {register, checkUserAuth}

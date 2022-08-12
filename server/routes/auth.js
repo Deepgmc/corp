@@ -11,11 +11,13 @@ const userInfoController = require('../controllers/auth/userInfoController.js')
 
 router.post('/auth/login', loginController)
 
-router.post('/auth/register', registerController)
+router.post('/auth/register', registerController.register)
 
 router.post('/auth/get_user_info', userInfoController)
 
 router.post('/auth/logout', logoutController)
+
+router.get('/auth/checkUserAuth', registerController.checkUserAuth)
 
 
 router.post('/', function (req, res, next) {

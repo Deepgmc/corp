@@ -2,18 +2,27 @@ const Service = require('./service')
 
 class companyService extends Service {
 
+    async createCompany({companyName, companyAddress}, user){
+        const result = await this.createCompanyQuery({companyName: companyName, companyAddress: companyAddress})
+        await this.updateUserCompanyId(result.insertId, user.id)
+        return true
+    }
+
     async saveUserCompany({name, address}, user){
         let company, result
         if(!user.companyId){
             /** если у юзера еще нет компании - создадим её */
-            result = await this.createCompany({companyName: name, companyAddress: address})
-            result = await this.updateUserCompanyId(result.insertId, user.id)
-            return true
+            result = await this.createCompany({companyName: name, companyAddress: address}, user)
+            return result
         } else {
             /** компания уже была создана ранее - обновим её данные */
             company = await this.findUserCompany(user.companyId)
-            result = await this.updateCompanyData(name, address, company.id)
-            return true
+            if(company && typeof company.id !== 'undefined'){
+                result = await this.updateCompanyData(name, address, company.id)
+            } else {
+                result = await this.createCompany({companyName: name, companyAddress: address}, user)
+            }
+            return result
         }
     }
 
@@ -35,7 +44,7 @@ class companyService extends Service {
         })
     }
 
-    async createCompany({companyName, companyAddress}){
+    async createCompanyQuery({companyName, companyAddress}){
         return new Promise((resolve, reject) => {
             this._connection.query('INSERT INTO company (name, address) VALUES (?, ?)', [companyName, companyAddress], (error, rows) => {
                 if(error) reject(error)
@@ -50,9 +59,6 @@ class companyService extends Service {
                 if(error) reject(error)
                 resolve(rows[0])
             })
-        })
-        .catch((error) => {
-
         })
     }
 

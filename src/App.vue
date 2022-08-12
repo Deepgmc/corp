@@ -46,7 +46,7 @@
 <script>
 import NavComponent from '@/components/NavComponent.vue'
 import LoginInfo from '@/components/LoginInfo.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import umbrellaLogo from './assets/umbrella-logo.png'
 
@@ -68,6 +68,7 @@ export default {
             то перед запуском приложения надо проверить актуальность этого токена
             и если не актуален - обнулить его
             */
+            this.checkUserAuthorisation()
         }
     },
 
@@ -80,7 +81,6 @@ export default {
             - списки сотрудников и счетов?
         */
         //TODO надо ли подгружать тут списки или только суммы по спискам?
-
         /** данные юзера */
         if(this.isAuthenticated){
             this.$auth.getUser.call(this)
@@ -92,9 +92,16 @@ export default {
     computed: {
         ...mapGetters({
             isAuthenticated: 'auth/IS_AUTHENTICATED',
-            token          : 'auth/GET_TOKEN'
+            token          : 'auth/GET_TOKEN',
+            user           : 'auth/GET_USER'
         })
     },
+
+    methods: {
+        ...mapActions('auth', {
+            checkUserAuthorisation: 'ACTION_CHECK_USER_AUTH'
+        }),
+    }
 }
 </script>
 

@@ -10,6 +10,7 @@ const $auth = {
             login() {
                 this.$store.dispatch(`auth/ACTION_${this.isRegistering ? 'REGISTER' : 'LOGIN'}`, {
                     login   : this.login,
+                    name    : this.name,
                     password: this.password
                 })
                 .then((res) => {

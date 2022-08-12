@@ -2,17 +2,17 @@
     <div>
         <form @submit.prevent="saveProfileSettings">
             <div class="mb-3">
-                <label for="login" class="form-label">Логин</label>
+                <label for="name" class="form-label">ФИО</label>
                 <input
-                    @input           ="setLocalLogin"
-                    v-model          ="localLogin"
+                    @input           ="setLocalName"
+                    v-model          ="localName"
                     type             ="text"
-                    :class           ="['form-control', {'is-invalid': errorsList.includes('localLogin')}]"
-                    id               ="login"
-                    aria-describedby ="loginHelp"
+                    :class           ="['form-control', {'is-invalid': errorsList.includes('localName')}]"
+                    id               ="name"
+                    aria-describedby ="nameHelp"
                     required         ="required"
                 />
-                <div id="loginHelp" class="form-text form-help-text">
+                <div id="nameHelp" class="form-text form-help-text">
                     Длина логина не больше {{maxFioLength}} символов, не должно содержать цифр
                 </div>
             </div>
@@ -41,7 +41,7 @@ export default {
 
     data() {
         return {
-            localLogin: '',
+            localName: '',
             maxFioLength: 40,
             minFioLength: 3
         }
@@ -75,13 +75,13 @@ export default {
             }
 
             const newUser = {
-                login: this.localLogin
+                name: this.localName
             }
 
             const settings = {testSetting: 123}
 
             this.saveProfileInfo({
-                newUser: newUser,
+                newUser : newUser,
                 settings: settings
             })
         },
@@ -90,8 +90,8 @@ export default {
             saveProfileInfo: 'ACTION_SAVE_PROFILE_INFO'
         }),
 
-        setLocalLogin ($event) {//при изменении триггерим vuelidate
-            this.v.localLogin.$touch()
+        setLocalName ($event) {//при изменении триггерим vuelidate
+            this.v.localName.$touch()
         },
 
         logout() {
@@ -100,12 +100,13 @@ export default {
     },
 
     mounted(){
-        this.localLogin = this.user.login
+        if(!this.user) this.localName = ''
+        else this.localName = this.user.name
     },
 
     validations () {
         return {
-            localLogin: {
+            localName: {
                 required : helpers.withMessage(REQUIRED, required),
                 onlyWords: helpers.withMessage(ONLY_LETTERS, onlyWords),
                 minLength: helpers.withMessage(`${MIN_LENGTH} ${this.minFioLength}`, minLength(this.minFioLength)),

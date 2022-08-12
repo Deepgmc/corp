@@ -11,6 +11,7 @@ export const ACTION_LOGIN                  = 'ACTION_LOGIN'
 export const ACTION_LOGOUT                 = 'ACTION_LOGOUT'
 export const ACTION_REGISTER               = 'ACTION_REGISTER'
 export const ACTION_GET_USER               = 'ACTION_GET_USER'
+export const ACTION_CHECK_USER_AUTH        = 'ACTION_CHECK_USER_AUTH'
 
 //COMMON
 export const ACTION_SHOW_NOTIFICATION = 'ACTION_SHOW_NOTIFICATION'

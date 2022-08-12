@@ -11,7 +11,8 @@ const saveUserCompany = async function (req, res, next) {
 
     user = await authService.findUserByToken(token)
     if(!user){
-        throw new Error('Пользователь с таким токеном не найден')
+        res.send({error: true, message: 'Пользователь с таким токеном не найден'})
+        return
     }
 
     await companyService.saveUserCompany(req.body.data, user)
@@ -35,7 +36,8 @@ const getUserCompany = async function (req, res, next) {
 
     user = await authService.findUserByToken(token)
     if(!user){
-        throw new Error('Пользователь с таким токеном не найден')
+        res.send({error: true, message: 'Пользователь с таким токеном не найден'})
+        return
     }
     try {
         const company = await companyService.getUserCompany(user.companyId)

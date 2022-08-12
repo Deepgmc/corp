@@ -44,8 +44,8 @@ const authApi = {
 
 
 
-    async register({ login, password }) {
-        return $api.post('/auth/auth/register', { login: login, password: password })
+    async register({ login, name, password }) {
+        return $api.post('/auth/auth/register', { login: login, name: name, password: password })
             .then(function (response) {
                 if (response.data.error) {
                     console.log('REGISTER RESPONSE:', response)
