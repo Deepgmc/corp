@@ -87,13 +87,13 @@ export default {
             }
 
             this.saveNewDepartment({
-                deptName : this.localDeptName,
-                companyId: this.company.id
-            })
-            .then(() => {
-                this.localDeptName = ''
-                this.v.$reset()
-            })
+                    deptName : this.localDeptName,
+                    companyId: this.company.id
+                })
+                .then(() => {
+                    this.localDeptName = ''
+                    this.v.$reset()
+                })
         }
     },
 
