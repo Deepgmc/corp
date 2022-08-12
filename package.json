@@ -8,6 +8,7 @@
     "server": "DEBUG=myapp:* nodemon ./server/bin/www"
   },
   "dependencies": {
+    "@amcharts/amcharts4": "^4.10.26",
     "@kyvg/vue3-notification": "^2.3.4",
     "@vuelidate/core": "^2.0.0-alpha.42",
     "@vuelidate/validators": "^2.0.0-alpha.30",

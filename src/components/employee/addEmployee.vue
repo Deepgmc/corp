@@ -117,12 +117,17 @@ export default {
             }
 
             this.saveUserCompanyInfo({
-                employee: {
-                    fio: this.localEmployeeName
-                },
-                companyId   : this.company.id,
-                departmentId: this.selectedDepartment
-            })
+                    employee: {
+                        fio: this.localEmployeeName
+                    },
+                    companyId   : this.company.id,
+                    departmentId: this.selectedDepartment
+                })
+                .then(() => {
+                        this.localEmployeeName = ''
+                        this.selectedDepartment = ''
+                        this.v.$reset()
+                    })
         }
     },
 

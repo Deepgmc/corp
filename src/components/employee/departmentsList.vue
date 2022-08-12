@@ -1,35 +1,30 @@
 <template>
-    <div class="card mt-2">
-
-        <div class="card-header card-header__colors">
-            Наши отделы
-        </div>
-
-        <list
-            :items="company.departments"
-            :collapsedSize="collapsedSize"
-        >
-            <template #itemSlot="slotParams">
-                <div class="row">
-                    <!-- <div class="col-md-1">{{slotParams.index + 1}}</div> -->
-                    <div class="col-md-11">{{slotParams.item.name}}</div>
-                </div>
-            </template>
-        </list>
-
-    </div>
+    <list-card
+        :items="company.departments"
+        :collapsedSize="collapsedSize"
+        :caption="caption"
+        filterField="name"
+    >
+        <template #listBody="slotParams">
+            <div class="row">
+                <div class="col-md-6">{{slotParams.item.name}}</div>
+                <div class="col-md-6">{{getDepartmentSize(company.employees, slotParams.item.id)}} чел.</div>
+            </div>
+        </template>
+    </list-card>
 </template>
 
 <script>
 
-import List from '@/components/common/List.vue'
+import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
 
 export default {
 
     data(){
         return {
-            collapsedSize: 5
+            collapsedSize: 5,
+            caption      : 'Наши отделы'
         }
     },
 
@@ -39,7 +34,9 @@ export default {
         }),
     },
 
-    components: {List}
+    inject: ['getDepartmentSize'],
+
+    components: {ListCard}
 
 }
 </script>

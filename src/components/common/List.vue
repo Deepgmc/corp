@@ -7,16 +7,21 @@
         </div>
 
         <div v-else class="list-font-size">
+
+
             <div v-for="(item, index) in itemsToRender" :key="index" class="list-group-item">
                 <slot name="itemSlot" :item="item" :index="index"></slot>
             </div>
 
+
             <div v-if="isCollapsed && isNeedShowMore" class="list-group-item showMore" @click="expandItems">
                 ...
             </div>
-            <div v-else-if="isNeedShowMore" class="list-group-item showMore" @click="deExpandItems">
+            <div v-else-if="isNeedShowMore" class="list-group-item showMore" @click="expandItems">
                 свернуть
             </div>
+
+
         </div>
 
     </div>
@@ -67,11 +72,8 @@ export default {
 
     methods: {
         expandItems(){
-            this.isCollapsed = false
+            this.isCollapsed = !this.isCollapsed
         },
-        deExpandItems(){
-            this.isCollapsed = true
-        }
     }
 
 }

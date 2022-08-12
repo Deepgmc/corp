@@ -101,7 +101,13 @@ export default {
         ...mapActions('auth', {
             checkUserAuthorisation: 'ACTION_CHECK_USER_AUTH'
         }),
-    }
+    },
+
+    provide: {
+        getDepartmentSize(employees, departmentId){
+            return employees.filter(emp => emp.departmentId === departmentId).length
+        }
+    },
 }
 </script>
 
