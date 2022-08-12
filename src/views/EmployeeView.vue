@@ -1,34 +1,38 @@
 <template>
     <div class="row">
         <div class="col-md-12">
-            <employee-list></employee-list>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card mt-2">
-                <div class="card-header card-header__colors">
-                    Динамика за год
-                </div>
-                <div class="card-body">
-                    <canvas></canvas>
+            <div class="row">
+                <div class="col-md-12">
+                    <employee-list></employee-list>
                 </div>
             </div>
-        </div>
-    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mt-2">
+                        <div class="card-header card-header__colors">
+                            Динамика за год
+                        </div>
+                        <div class="card-body">
+                            <canvas></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-md-6">
-            <add-department></add-department>
-        </div>
-        <div class="col-md-6">
-            <departments-list></departments-list>
-        </div>
-    </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <add-department></add-department>
+                </div>
+                <div class="col-md-6">
+                    <departments-list></departments-list>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <add-employee></add-employee>
+            <div class="row">
+                <div class="col-md-12">
+                    <add-employee></add-employee>
+                </div>
+            </div>
         </div>
     </div>
 </template>

@@ -134,7 +134,11 @@ class authService extends Service {
         return new Promise((resolve, reject) => {
             this.findUserByTokenQuery(token, (error, rows) => {
                 if(error) reject(error)
-                if(typeof rows === 'undefined') reject('Пользователь не найден')
+                if(!rows || typeof rows === 'undefined' || rows === 'undefined') {
+                    reject('Пользователь не найден')
+                    return
+                }
+
                 resolve(rows[0])
             })
         })
@@ -166,6 +170,7 @@ class authService extends Service {
     }
 
     findUserByTokenQuery(token, callback){
+        if(!token) return []
         this._connection.query('SELECT * FROM users WHERE token = ? LIMIT 1', token, callback)
     }
 

@@ -1,7 +1,6 @@
 const authS = require('../../services/authService.js')
 
 const logoutController = function (req, res, next) {
-    console.log('LOGOUT user: ', req.body.user)
 
     const authService = new authS()
     authService.logoutUser(req.body.token, req.body.user)

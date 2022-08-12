@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-12">
+        <div class="col-md-12">
             <form @submit.prevent="companyFormSubmit">
 
                 <div class="mb-3">

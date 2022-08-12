@@ -90,6 +90,10 @@ export default {
                 deptName : this.localDeptName,
                 companyId: this.company.id
             })
+            .then(() => {
+                this.localDeptName = ''
+                this.v.$reset()
+            })
         }
     },
 
