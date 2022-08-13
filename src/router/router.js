@@ -19,11 +19,25 @@ const routes = [
         name: 'profile',
         component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
     },
+
+
     {
         path: '/employee',
         name: 'employee',
-        component: () => import(/* webpackChunkName: "employee" */ '../views/EmployeeView.vue')
+        component: () => import(/* webpackChunkName: "employee" */ '../views/EmployeeView.vue'),
     },
+        {
+            path: '/employee/add-employee',
+            name: 'addEmployee',
+            component: import(/* webpackChunkName: "add-employee" */ '../views/AddEmployeeView.vue'),
+        },
+        {
+            path: '/employee/departments',
+            name: 'departments',
+            component: import(/* webpackChunkName: "departments" */ '../views/DepartmentsView.vue'),
+        },
+
+
     {
         path: '/bills',
         name: 'bills',
@@ -40,7 +54,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "myCompany" */ '../views/MyCompanyView.vue')
     },
 ]
-
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),

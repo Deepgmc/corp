@@ -9,11 +9,5 @@
 
 <script>
 export default {
-    // props: {
-    //     itemName: {
-    //         type    : String,
-    //         required: false
-    //     }
-    // }
 }
 </script>

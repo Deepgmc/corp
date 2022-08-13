@@ -11,11 +11,23 @@
 
 .card-header__colors {
     @extend .bg-primary;
-    //background-color: $main-blue-color;
     @extend .text-light;
 }
 
 .form-help-text{
     color    : $sub-text-color;
     font-size: $form-sub-text-size;
+}
+
+.card__subcaption_border {
+    @extend .border-bottom;
+    @extend .border-warning;
+}
+
+.nav__subItems_container{
+    margin-left: 15px !important;
+}
+.nav__subItem {
+    color    : $sub-text-color;
+    font-size: $nav-sub-text-size;
 }
