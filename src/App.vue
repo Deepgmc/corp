@@ -30,10 +30,12 @@
             </div>
         </div>
 
-        <div class="row">
-            <footer>
-
-            </footer>
+        <div class="row border-top mt-4">
+            <div class="col-md-12">
+                <footer>
+                    Footer
+                </footer>
+            </div>
         </div>
 
         <!-- global notifications plugin -->

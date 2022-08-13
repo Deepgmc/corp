@@ -28,21 +28,19 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-md-12">
                     <add-employee></add-employee>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
+    <router-view></router-view>
 </template>
 
 
 <script>
 import employeeList from '@/components/employee/employeeList.vue'
-import addEmployee from '@/components/employee/addEmployee.vue'
-import addDepartment from '@/components/employee/addDepartment.vue'
-import departmentsList from '@/components/employee/departmentsList.vue'
 
 // import * as am4core from "@amcharts/amcharts4/core";
 // import * as am4charts from "@amcharts/amcharts4/charts";
@@ -52,7 +50,7 @@ import departmentsList from '@/components/employee/departmentsList.vue'
 export default {
     name: 'EmployeeView',
 
-    components: {employeeList, addEmployee, addDepartment, departmentsList},
+    components: {employeeList},
 
     mounted(){
         // let chart = am4core.create(this.$refs.chartdiv, am4charts.XYChart);
@@ -91,7 +89,7 @@ export default {
 
     beforeDestroy() {
         if (this.chart) {
-        this.chart.dispose();
+            this.chart.dispose();
         }
   }
 }

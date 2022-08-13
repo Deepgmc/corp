@@ -16,7 +16,7 @@
                             @input           ="setDeptName"
                             v-model          ="localDeptName"
                             type             ="text"
-                            :class           ="['form-control', {'is-invalid': errorsList.includes('localDeptName')}]"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localDeptName')}]"
                             id               ="deptName"
                             aria-describedby ="deptNameHelp"
                         >

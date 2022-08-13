@@ -7,8 +7,8 @@
     >
         <template #listBody="slotParams">
             <div class="row">
-                <div class="col-md-6">{{slotParams.item.name}}</div>
-                <div class="col-md-6">{{getDepartmentSize(company.employees, slotParams.item.id)}} чел.</div>
+                <div class="col-md-4">{{slotParams.item.name}}</div>
+                <div class="col-md-8">{{getDepartmentSize(company.employees, slotParams.item.id)}} чел.</div>
             </div>
         </template>
     </list-card>
