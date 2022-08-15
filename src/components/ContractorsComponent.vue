@@ -1,6 +1,6 @@
 <template>
     <div>
-        Transactions component
+        Contractors component
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 
 export default {
 
-    name: 'TransactionsComponent',
+    name: 'ContractorsComponent',
 
     computed: {
 

@@ -14,8 +14,6 @@ const routes = [
         name: 'profile',
         component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
     },
-
-
     {
         path: '/employee',
         name: 'employee',
@@ -31,21 +29,19 @@ const routes = [
             name: 'departments',
             component: () => import(/* webpackChunkName: "departments" */ '../views/DepartmentsView.vue'),
         },
-
-
     {
         path: '/bills',
         name: 'bills',
         component: () => import(/* webpackChunkName: "bills" */ '../views/BillsView.vue')
     },
     {
-        path: '/transactions',
-        name: 'transactions',
-        component: () => import(/* webpackChunkName: "transactions" */ '../views/TransactionsView.vue')
+        path: '/contractors',
+        name: 'contractors',
+        component: () => import(/* webpackChunkName: "contractors" */ '../views/ContractorsView.vue')
     },
     {
         path: '/my-company',
-        name: 'myCompany',
+        name: 'company',
         component: () => import(/* webpackChunkName: "myCompany" */ '../views/MyCompanyView.vue')
     },
     {
