@@ -26,13 +26,17 @@ export default {
                     link: '/',
                     visible: ['all'],
                     name: 'home',
+                    parentName: null,
+                    icon: true,
                     subnav: [],
                 },
                 {
                     text: 'Моя компания',
                     link: '/my-company',
                     visible: ['logined'],
-                    name: 'myCompany',
+                    name: 'company',
+                    parentName: null,
+                    icon: true,
                     subnav: [],
                 },
                 {
@@ -40,12 +44,15 @@ export default {
                     link: '/employee',
                     visible: ['all'],
                     name: 'employee',
+                    parentName: null,
+                    icon: true,
                     subnav: [
                         {
                             text: 'новый сотрудник',
                             link: '/employee/add-employee',
                             visible: ['logined'],
                             name: 'addEmployee',
+                            parentName: 'employee',
                             subnav: [],
                         },
                         {
@@ -53,6 +60,7 @@ export default {
                             link: '/employee/departments',
                             visible: ['all'],
                             name: 'departments',
+                            parentName: 'employee',
                             subnav: [],
                         },
                     ],
@@ -62,13 +70,17 @@ export default {
                     link: '/bills',
                     visible: ['all'],
                     name: 'bills',
+                    parentName: null,
+                    icon: true,
                     subnav: [],
                 },
                 {
                     text: 'Контрагенты',
-                    link: '/transactions',
+                    link: '/contractors',
                     visible: ['all'],
-                    name: 'transactions',
+                    name: 'contractors',
+                    parentName: null,
+                    icon: true,
                     subnav: [],
                 },
                 {
@@ -76,6 +88,8 @@ export default {
                     link: '/login',
                     visible: ['unlogined'],
                     name: 'login',
+                    parentName: null,
+                    icon: false,
                     subnav: [],
                 },
                 {
@@ -83,6 +97,8 @@ export default {
                     link: '/profile',
                     visible: ['logined'],
                     name: 'profile',
+                    parentName: null,
+                    icon: true,
                     subnav: [],
                 }
             ]

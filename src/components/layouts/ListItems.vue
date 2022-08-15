@@ -10,7 +10,16 @@
                         {'text-body': item.name !== $route.name}
                     ]" :to="item.link"
                 >
-                    <div>{{ item.text }}</div>
+                    <div>
+                        <img
+                            v-if="item.icon"
+                            class="nav-icon"
+                            :src="require(
+                                `@/assets/nav-icons/${item.name}${getIsActiveIcon(item)}-active.png`
+                            )"
+                        />
+                        {{ item.text }}
+                    </div>
                 </router-link>
 
                 <div v-if="item.subnav.length > 0">
@@ -46,9 +55,26 @@ export default {
             type    : Array,
             required: true
         }
+    },
+
+    methods: {
+        getIsActiveIcon(item){
+            let activeSuffix = ''
+            if(item.name !== this.$route.name){
+                if(item.subnav.length > 0){
+                    activeSuffix = '-not'
+                    item.subnav.some(subItem => {
+                        if(subItem.name === this.$route.name){
+                            activeSuffix = ''
+                            return true
+                        }
+                    })
+                } else {
+                    activeSuffix = '-not'
+                }
+            }
+            return activeSuffix
+        }
     }
 }
 </script>
-
-<style>
-</style>
