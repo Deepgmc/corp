@@ -4,7 +4,7 @@
             <form @submit.prevent="companyFormSubmit">
 
                 <div class="mb-3">
-                    <label for="companyName" class="form-label">Название вашей компании</label>
+                    <label for="companyName" class="form-label">Название компании</label>
                     <input
                         @input           ="setName"
                         v-model          ="localName"
@@ -19,7 +19,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="address" class="form-label">Адрес вашей компании</label>
+                    <label for="address" class="form-label">Адрес компании</label>
                     <input
                         v-model          = "localAddress"
                         @input           = "setAddress"

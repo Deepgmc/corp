@@ -41,21 +41,20 @@ export default {
 
     actions: {
 
-        async [ACTION_SAVE_NEW_EMPLOYEE]({commit, dispatch}, employee){
+        async [ACTION_SAVE_NEW_EMPLOYEE]({commit, dispatch}, employeeData){
             return $api.sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveNewEmployee',
-                data      : employee
+                data      : employeeData
             })
             .then((res) => {
                 commit(ADD_EMPLOYEE, {
-                    id          : res.data.message.insertId,
-                    fio         : employee.employee.fio,
-                    companyId   : employee.companyId,
-                    departmentId: employee.departmentId,
-                    create_time : Math.floor(Date.now() / 1000)
+                    ...employeeData.employee,
+                    id         : res.data.message.insertId,
+                    companyId  : employeeData.companyId,
+                    create_time: Math.floor(Date.now() / 1000)
                 })
                 utils.showDefaultMessage(dispatch, 'save_success')
             })

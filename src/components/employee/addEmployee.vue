@@ -52,7 +52,9 @@
                         <label for="hireDate" class="form-label">Дата трудоустройтсва</label>
                         <input
                             id="hireDate"
-                            class="form-control  form-control-sm"
+                            v-model ="hireDate"
+                            @change ="setHireDateField"
+                            :class  ="['form-control form-control-sm', {'is-invalid': errorsList.includes('hireDate')}]"
                             type="date"
                         >
                     </div>
@@ -66,32 +68,29 @@
                 </div>
 
                 <div class="row mt-2">
-                    <div class="col-md-6">
-                        <label for="passportSerial" class="form-label">Серия</label>
+                    <div class="col-md-4">
+                        <label for="passportSerial" class="form-label">Серия/номер</label>
                         <input
-                            id="passportSerial"
-                            type="text"
-                            class="form-control form-control-sm"
+                            @input           ="setPassportSerialField"
+                            v-model          ="passportSerial"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('passportSerial')}]"
+                            id               ="passportSerial"
+                            aria-describedby ="passportSerialHelp"
+                            v-mask="'####-######'"
+                            placeholder="0000-000000"
                         >
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="passportNumber" class="form-label">Номер</label>
-                        <input
-                            id="passportNumber"
-                            type="text"
-                            class="form-control form-control-sm"
-                        >
-                    </div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <label for="passportPlace" class="form-label">Кем выдан</label>
                         <input
-                            id="passportPlace"
-                            type="text"
-                            class="form-control form-control-sm"
+                            @input           ="setPassportPlaceField"
+                            v-model          ="passportPlace"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('passportPlace')}]"
+                            id               ="passportPlace"
+                            aria-describedby ="passportPlaceHelp"
                         >
                     </div>
                 </div>
@@ -104,36 +103,47 @@
                 </div>
 
                 <div class="row mt-2">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="innNumber" class="form-label">ИНН</label>
                         <input
-                            id="innNumber"
-                            type="text"
-                            class="form-control form-control-sm"
+                            @input           ="setInnNumberField"
+                            v-model          ="innNumber"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('innNumber')}]"
+                            id               ="innNumber"
+                            aria-describedby ="innNumberHelp"
+                            v-mask="'############'"
+                            placeholder="000000000000"
                         >
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="snilsNumber" class="form-label">Номер страхового свидетельства</label>
                         <input
-                            id="snilsNumber"
-                            type="text"
-                            class="form-control form-control-sm"
+                            @input           ="setSnilsNumberField"
+                            v-model          ="snilsNumber"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('snilsNumber')}]"
+                            id               ="snilsNumber"
+                            aria-describedby ="snilsNumberHelp"
+                            v-mask="'###-###-###-##'"
+                            placeholder="000-000-000-00"
                         >
                     </div>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-md-12">
+                    <div class="col-md-4">
                         <label for="empRecordNumber" class="form-label">Номер трудовой книжки</label>
                         <input
-                            id="empRecordNumber"
-                            type="text"
-                            class="form-control form-control-sm"
+                            @input           ="setEmpRecordNumberField"
+                            v-model          ="empRecordNumber"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('empRecordNumber')}]"
+                            id               ="empRecordNumber"
+                            aria-describedby ="empRecordNumberHelp"
+                            v-mask="'#######'"
+                            placeholder="0000000"
                         >
                     </div>
                 </div>
-
 
 
                 <div class="row mt-2">
@@ -150,11 +160,14 @@
 <script>
 
 import useVuelidate from '@vuelidate/core'
-import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
+import { required, minLength, maxLength, alphaNum, helpers } from '@vuelidate/validators'
 import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
+//import {mask} from 'vue-the-mask'
+
 import utils from '@/utils/utilFunctions'
+
 
 export default {
 
@@ -162,12 +175,41 @@ export default {
 
     data(){
         return {
-            selectedDepartment   : '',
-            employeeName    : '',
-            maxEmployeeNameLength: 50,
-            minEmployeeNameLength: 8
+            selectedDepartment: 2,
+            employeeName      : 'test name',
+            hireDate          : '2022-08-17',
+            passportSerial    : '4009-567890',
+            passportPlace     : 'test passport place, moscow',
+            innNumber         : 123456789012,
+            snilsNumber       : '111-111-111-11',
+            empRecordNumber   : '1234567',
+
+            maxEmployeeNameLength : 50,
+            minEmployeeNameLength : 8,
+
+            minHireDateLength : 12,//TODO формат даты уточнить
+
+            passportSerialLength  : 11,
+            passportPlaceMaxLength: 255,
+            innNumberLength       : 12,
+            snilsNumberLength     : 14,
+            empRecordNumberLength : 7,
+
         }
+
+
     },
+
+    fieldNames: [
+        'selectedDepartment',
+        'employeeName',
+        'hireDate',
+        'passportSerial',
+        'passportPlace',
+        'innNumber',
+        'snilsNumber',
+        'empRecordNumber',
+    ],
 
     computed: {
         errorsList(){
@@ -181,15 +223,21 @@ export default {
 
     methods: {
         ...mapActions('company', {
-            saveUserCompanyInfo: 'ACTION_SAVE_NEW_EMPLOYEE'
+            saveEmployee: 'ACTION_SAVE_NEW_EMPLOYEE'
         }),
 
-        setEmployeeNameField ($event) {
-            this.v.employeeName.$touch()
+        touchFields(){
+
         },
-        setDepartmentField ($event) {
-            this.v.employeeName.$touch()
-        },
+
+        setEmployeeNameField ($event) {this.v.employeeName.$touch()},
+        setDepartmentField ($event) {this.v.employeeName.$touch()},
+        setHireDateField ($event) {this.v.hireDate.$touch()},
+        setPassportSerialField ($event) {this.v.passportSerial.$touch()},
+        setPassportPlaceField ($event) {this.v.passportPlace.$touch()},
+        setInnNumberField ($event) {this.v.innNumber.$touch()},
+        setSnilsNumberField ($event) {this.v.snilsNumber.$touch()},
+        setEmpRecordNumberField ($event) {this.v.empRecordNumber.$touch()},
 
         async saveEmployeeSubmit(){
             const result = await this.v.$validate()
@@ -202,33 +250,71 @@ export default {
                 return
             }
 
-            this.saveUserCompanyInfo({
+            this.saveEmployee({
                     employee: {
-                        fio: this.employeeName
+                        fio            : this.employeeName,
+                        departmentId   : this.selectedDepartment,
+                        hireDate       : Math.floor(new Date(this.hireDate) / 1000),
+                        passportSerial : this.passportSerial,
+                        passportPlace  : this.passportPlace,
+                        innNumber      : this.innNumber,
+                        snilsNumber    : this.snilsNumber,
+                        empRecordNumber: this.empRecordNumber,
+                        companyId      : this.company.id,
                     },
-                    companyId   : this.company.id,
-                    departmentId: this.selectedDepartment
                 })
                 .then(() => {
                         this.employeeName = ''
                         this.selectedDepartment = ''
+                        this.hireDate = ''
+                        this.passportSerial = ''
+                        this.passportPlace = ''
+                        this.innNumber = ''
+                        this.snilsNumber = ''
+                        this.empRecordNumber = ''
                         this.v.$reset()
                     })
         }
     },
 
     validations () {
+        const nFn = helpers.withMessage(NUMBER, number)
+        const requiredFn = helpers.withMessage(REQUIRED, required)
         return {
             employeeName: {
-                required : helpers.withMessage(REQUIRED, required),
+                required : requiredFn,
                 minLength: helpers.withMessage(`${MIN_LENGTH} ${this.minEmployeeNameLength}`, minLength(this.minEmployeeNameLength)),
                 maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.maxEmployeeNameLength}`, maxLength(this.maxEmployeeNameLength)),
                 onlyWords: helpers.withMessage(ONLY_LETTERS, onlyWords),
             },
             selectedDepartment: {
-                required: helpers.withMessage(REQUIRED, required),
-                number  : helpers.withMessage(NUMBER, number)
-            }
+                required: requiredFn,
+                number  : nFn
+            },
+            hireDate: {
+                required: requiredFn,
+            },
+            passportSerial: {
+                required : requiredFn,
+                maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.passportSerialLength}`, maxLength(this.passportSerialLength)),
+            },
+            passportPlace: {
+                required : requiredFn,
+                maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.passportPlaceMaxLength}`, maxLength(this.passportPlaceMaxLength)),
+            },
+            innNumber: {
+                required : requiredFn,
+                maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.innNumberLength}`, maxLength(this.innNumberLength)),
+                minLength: helpers.withMessage(`${MAX_LENGTH} ${this.innNumberLength}`, minLength(this.innNumberLength)),
+            },
+            snilsNumber: {
+                required : requiredFn,
+                maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.snilsNumberLength}`, maxLength(this.snilsNumberLength)),
+            },
+            empRecordNumber: {
+                required : requiredFn,
+                maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.empRecordNumberLength}`, maxLength(this.empRecordNumberLength)),
+            },
         }
     },
 
