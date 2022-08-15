@@ -1,6 +1,6 @@
 <template>
     <div class="card-body text-left">
-        <div class="card-text" v-for="currency in currencies" :key="currency.numCode">
+        <div class="card-text card__small_text" v-for="currency in currencies" :key="currency.numCode">
             <div><strong>{{currency.name}}</strong></div>
             <div>{{currency.nominal}} = {{parseFloat(currency.value).toFixed(1)}} рублей</div>
         </div>
@@ -9,10 +9,8 @@
 
 <script>
 
-
 export default {
     name: 'currencyBody',
-
 
     props: {
         currencies: Array
@@ -20,7 +18,3 @@ export default {
 
 }
 </script>
-
-<style>
-
-</style>

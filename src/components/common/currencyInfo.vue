@@ -4,7 +4,7 @@
         <div v-else>
 
             <div class="card text-center">
-                <div class="card-header">
+                <div class="card-header card-header__colors">
                     Курсы валют
                 </div>
                 <slot name="currencyBody" :previewCurrencies="previewCurrencies" :currencies="currencies"></slot>
@@ -43,7 +43,9 @@ export default {
 
     computed: {
         previewCurrencies(){
-            return this.currencies.filter(currency => this.whatToPreview.includes(currency.charCode))
+            return this.currencies.filter(
+                currency => this.whatToPreview.includes(currency.charCode)
+            )
         }
     },
 
