@@ -103,13 +103,19 @@ class companyService extends Service {
         return new Promise((resolve, reject) => {
             this._connection.query(`
                     INSERT INTO employee
-                    (create_time, fio, companyId, departmentId)
-                    VALUES (?, ?, ?, ?)`,
+                    (create_time, fio, companyId, departmentId, hireDate, passportSerial, passportPlace, innNumber, snilsNumber, empRecordNumber)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
                 [
                     this.getTimestamp(),
                     employeeData.employee.fio,
-                    employeeData.companyId,
-                    employeeData.departmentId
+                    employeeData.employee.companyId,
+                    employeeData.employee.departmentId,
+                    employeeData.employee.hireDate,
+                    employeeData.employee.passportSerial,
+                    employeeData.employee.passportPlace,
+                    employeeData.employee.innNumber,
+                    employeeData.employee.snilsNumber,
+                    employeeData.employee.empRecordNumber,
                 ],
                 (error, insertResult) => {
                     if(error) reject(error)

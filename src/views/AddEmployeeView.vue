@@ -13,9 +13,5 @@ export default {
     name: 'AddEmployeeView',
 
     components: {addEmployee},
-
-    mounted(){
-        console.log('Add Employee View mounted')
-    }
 }
 </script>

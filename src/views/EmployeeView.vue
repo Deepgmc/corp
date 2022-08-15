@@ -19,20 +19,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-md-6">
-                    <add-department></add-department>
-                </div>
-                <div class="col-md-6">
-                    <departments-list></departments-list>
-                </div>
-            </div>
-
-            <!-- <div class="row">
-                <div class="col-md-12">
-                    <add-employee></add-employee>
-                </div>
-            </div> -->
         </div>
     </div>
     <router-view></router-view>

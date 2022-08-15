@@ -10,11 +10,6 @@ const routes = [
         component: HomeView
     },
     {
-        path: '/login',
-        name: 'login',
-        component: () => import(/* webpackChunkName: "login" */ '../views/AuthView.vue')
-    },
-    {
         path: '/profile',
         name: 'profile',
         component: () => import(/* webpackChunkName: "profile" */ '../views/ProfileView.vue')
@@ -29,12 +24,12 @@ const routes = [
         {
             path: '/employee/add-employee',
             name: 'addEmployee',
-            component: import(/* webpackChunkName: "add-employee" */ '../views/AddEmployeeView.vue'),
+            component: () => import(/* webpackChunkName: "add-employee" */ '../views/AddEmployeeView.vue'),
         },
         {
             path: '/employee/departments',
             name: 'departments',
-            component: import(/* webpackChunkName: "departments" */ '../views/DepartmentsView.vue'),
+            component: () => import(/* webpackChunkName: "departments" */ '../views/DepartmentsView.vue'),
         },
 
 
@@ -52,6 +47,11 @@ const routes = [
         path: '/my-company',
         name: 'myCompany',
         component: () => import(/* webpackChunkName: "myCompany" */ '../views/MyCompanyView.vue')
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: () => import(/* webpackChunkName: "login" */ '../views/AuthView.vue')
     },
 ]
 
