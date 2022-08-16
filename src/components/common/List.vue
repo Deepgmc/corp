@@ -1,30 +1,27 @@
 <template>
 
-    <div class="list-group">
 
         <div v-if="itemsToRender.length < 1">
             <div class="p-3">Данных для отображения нет</div>
         </div>
 
-        <div v-else class="list-font-size">
+        <template v-else>
 
 
-            <div v-for="(item, index) in itemsToRender" :key="index" class="list-group-item">
-                <slot name="itemSlot" :item="item" :index="index"></slot>
-            </div>
+            <template v-for="(item, index) in itemsToRender" :key="index">
+                <slot name="itemSlot" :item="item" :index="index" :columns="columns"></slot>
+            </template>
 
 
-            <div v-if="isCollapsed && isNeedShowMore" class="list-group-item showMore" @click="expandItems">
+            <div v-if="isCollapsed && isNeedShowMore" class="text-left showMore" @click="expandItems">
                 ...
             </div>
-            <div v-else-if="isNeedShowMore" class="list-group-item showMore" @click="expandItems">
+            <div v-else-if="isNeedShowMore" class="text-left showMore" @click="expandItems">
                 свернуть
             </div>
 
 
-        </div>
-
-    </div>
+        </template>
 
 </template>
 

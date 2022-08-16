@@ -5,11 +5,17 @@
         :caption="caption"
         filterField="fio"
     >
+        <template #listTableCaption>
+            <tr>
+                <th v-for="column in columns" :key="column.name" class="text-left">{{column.caption}}</th>
+            </tr>
+        </template>
         <template #listBody="slotParams">
-            <div class="row">
-                <div class="col-md-3">{{slotParams.item.fio}}</div>
-                <div class="col-md-3">{{slotParams.item.departmentName}}</div>
-            </div>
+            <tr>
+                <td v-for="column in columns" :key="column.name">
+                    {{slotParams.item[column.name]}}
+                </td>
+            </tr>
         </template>
     </list-card>
 </template>
@@ -25,7 +31,29 @@ export default {
     data(){
         return {
             collapsedSize: 5,
-            caption      : 'Наши сотрудники'
+            caption      : 'Наши сотрудники',
+            columns      : [
+                {
+                    name: 'fio',
+                    caption: 'ФИО',
+                },
+                {
+                    name: 'departmentName',
+                    caption: 'Отдел',
+                },
+                {
+                    name: 'employeeEmail',
+                    caption: 'Почта',
+                },
+                {
+                    name: 'employeePhone',
+                    caption: 'Телефон',
+                },
+                {
+                    name: 'innNumber',
+                    caption: 'ИНН',
+                },
+            ]
         }
     },
 
@@ -50,6 +78,27 @@ export default {
                 }
             })
         }
+    },
+
+    mounted(){
+        /**
+        companyId: 1
+        create_time: 1660332784
+        departmentId: 4
+        departmentName: "Weather monitoring"
+        empRecordNumber: null
+        employeeAddress: null
+        employeeBirthday: null
+        employeeEmail: null
+        employeePhone: null
+        fio: "Davee Jones"
+        hireDate: null
+        id: 1
+        innNumber: null
+        passportPlace: null
+        passportSerial: null
+        snilsNumber: null
+        */
     },
 
     components: {ListCard}

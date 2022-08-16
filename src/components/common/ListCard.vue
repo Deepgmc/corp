@@ -10,14 +10,24 @@
             >
         </div>
 
-        <list
-            :items="filteredItems"
-            :collapsedSize="collapsedSize"
-        >
-            <template #itemSlot="slotParams">
-                <slot name="listBody" :item="slotParams.item"></slot>
-            </template>
-        </list>
+        <table class="table">
+
+            <thead class="list-font-size">
+                <slot name="listTableCaption"></slot>
+            </thead>
+
+            <tbody class="list-font-size">
+                <list
+                    :items="filteredItems"
+                    :collapsedSize="collapsedSize"
+                >
+                    <template #itemSlot="slotParams">
+                        <slot name="listBody" :item="slotParams.item"></slot>
+                    </template>
+                </list>
+            </tbody>
+
+        </table>
 
     </div>
 </template>
