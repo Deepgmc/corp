@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-2">
         <div class="card-header card-header__colors">
-            Новый сотрудник
+            Приём нового сотрудника
         </div>
         <div class="card-body">
             <form @submit.prevent="saveEmployeeSubmit">

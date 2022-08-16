@@ -1,27 +1,36 @@
 <template>
-    <div>
-        <form @submit.prevent="saveProfileSettings">
-            <div class="mb-3">
-                <label for="name" class="form-label">ФИО</label>
-                <input
-                    @input           ="setLocalName"
-                    v-model          ="localName"
-                    type             ="text"
-                    :class           ="['form-control', {'is-invalid': errorsList.includes('localName')}]"
-                    id               ="name"
-                    aria-describedby ="nameHelp"
-                    required         ="required"
-                />
-                <div id="nameHelp" class="form-text form-help-text">
-                    Длина логина не больше {{maxFioLength}} символов, не должно содержать цифр
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mt-2">
+                <div class="card-header card-header__colors">
+
+                </div>
+                <div class="card-body">
+                    <form @submit.prevent="saveProfileSettings">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">ФИО</label>
+                            <input
+                                @input           ="setLocalName"
+                                v-model          ="localName"
+                                type             ="text"
+                                :class           ="['form-control', {'is-invalid': errorsList.includes('localName')}]"
+                                id               ="name"
+                                aria-describedby ="nameHelp"
+                                required         ="required"
+                            />
+                            <div id="nameHelp" class="form-text form-help-text">
+                                Длина логина не больше {{maxFioLength}} символов, не должно содержать цифр
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+
+                    <div class="col offset-11">
+                        <button class="btn btn-sm btn-secondary" v-if="isAuthenticated" @click="logout">Выйти</button>
+                    </div>
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-primary">Сохранить</button>
-        </form>
-
-        <div class="col offset-11">
-            <button class="btn btn-sm btn-secondary" v-if="isAuthenticated" @click="logout">Выйти</button>
         </div>
     </div>
 </template>

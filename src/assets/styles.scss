@@ -9,21 +9,31 @@
     color: $sub-text-color;
 }
 
+/**CARD */
+.card-body{
+    font-size: 12px;
+}
 .card-header__colors {
     @extend .bg-primary;
     @extend .text-light;
 }
+.card__small_text{
+    font-size: 12px;
+}
+.card__subcaption_border {
+    @extend .border-bottom;
+    @extend .border-warning;
+}
+
+/**FORM */
 
 .form-help-text{
     color    : $sub-text-color;
     font-size: $form-sub-text-size;
 }
 
-.card__subcaption_border {
-    @extend .border-bottom;
-    @extend .border-warning;
-}
 
+/**NAV */
 .nav__subItems_container{
     margin-left: 35px !important;
 }
