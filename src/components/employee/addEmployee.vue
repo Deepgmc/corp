@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-2">
         <div class="card-header card-header__colors">
-            Приём нового сотрудника
+            {{mainCaption}}
         </div>
         <div class="card-body">
             <form @submit.prevent="saveEmployeeSubmit">
@@ -13,11 +13,8 @@
                 </div>
 
                 <div class="row mt-2">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label for="employeeName" class="form-label">ФИО</label>
-                        <div id="employeeNameHelp" class="form-text form-help-text">
-                            Длина {{minEmployeeNameLength}}-{{maxEmployeeNameLength}} символов, без цифр
-                        </div>
                         <input
                             @input           ="setEmployeeNameField"
                             v-model          ="employeeName"
@@ -25,6 +22,58 @@
                             :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeeName')}]"
                             id               ="employeeName"
                             aria-describedby ="employeeNameHelp"
+                        >
+                        <div id="employeeNameHelp" class="form-text form-help-text">
+                            Длина {{minEmployeeNameLength}}-{{maxEmployeeNameLength}} символов, без цифр
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="employeeBirthday" class="form-label">Дата рождения</label>
+                        <input
+                            @change          ="setBirthdayField"
+                            v-model          ="employeeBirthday"
+                            type             ="date"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeeBirthday')}]"
+                            id               ="employeeBirthday"
+                        >
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <label for="employeeAddress" class="form-label">Адрес проживания</label>
+                        <input
+                            @input           ="setEmployeeAddressField"
+                            v-model          ="employeeAddress"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeeAddress')}]"
+                            id               ="employeeAddress"
+                        >
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <label for="employeePhone" class="form-label">Телефон</label>
+                        <input
+                            @input           ="setEmployeePhoneField"
+                            v-model          ="employeePhone"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeePhone')}]"
+                            id               ="employeePhone"
+                            v-mask="'+7(###) ###-##-##'"
+                            placeholder="+7(000) 000-00-00"
+                        >
+                    </div>
+                    <div class="col-md-6">
+                        <label for="employeeEmail" class="form-label">Почта</label>
+                        <input
+                            @input           ="setEmployeeEmailField"
+                            v-model          ="employeeEmail"
+                            type             ="text"
+                            :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeeEmail')}]"
+                            id               ="employeeEmail"
+                            placeholder      = "email@email.ru"
                         >
                     </div>
                 </div>
@@ -160,8 +209,8 @@
 <script>
 
 import useVuelidate from '@vuelidate/core'
-import { required, minLength, maxLength, alphaNum, helpers } from '@vuelidate/validators'
-import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
+import { required, minLength, maxLength, email, helpers } from '@vuelidate/validators'
+import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED, EMAIL } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
 //import {mask} from 'vue-the-mask'
@@ -175,8 +224,14 @@ export default {
 
     data(){
         return {
+            mainCaption: 'Приём нового сотрудника',
+
             selectedDepartment: 2,
             employeeName      : 'test name',
+            employeeBirthday  : '1988-01-15',
+            employeeAddress   : 'Moskovsky str 19, 2a',
+            employeePhone     : '',
+            employeeEmail     : '',
             hireDate          : '2022-08-17',
             passportSerial    : '4009-567890',
             passportPlace     : 'test passport place, moscow',
@@ -184,26 +239,31 @@ export default {
             snilsNumber       : '111-111-111-11',
             empRecordNumber   : '1234567',
 
-            maxEmployeeNameLength : 50,
-            minEmployeeNameLength : 8,
+            maxEmployeeNameLength   : 50,
+            minEmployeeNameLength   : 8,
+            maxEmployeeAddressLength: 200,
+            minEmployeeAddressLength: 8,
 
-            minHireDateLength : 12,//TODO формат даты уточнить
+            minHireDateLength     : 12,   //TODO формат даты уточнить
+            employeeBirthdayLength: 12,   //TODO формат даты уточнить
 
             passportSerialLength  : 11,
             passportPlaceMaxLength: 255,
             innNumberLength       : 12,
             snilsNumberLength     : 14,
             empRecordNumberLength : 7,
-
+            empPhoneLength        : 12,
         }
-
-
     },
 
     fieldNames: [
         'selectedDepartment',
         'employeeName',
         'hireDate',
+        'employeeBirthday',
+        'employeeAddress',
+        'employeePhone',
+        'employeeEmail',
         'passportSerial',
         'passportPlace',
         'innNumber',
@@ -226,13 +286,13 @@ export default {
             saveEmployee: 'ACTION_SAVE_NEW_EMPLOYEE'
         }),
 
-        touchFields(){
-
-        },
-
         setEmployeeNameField ($event) {this.v.employeeName.$touch()},
         setDepartmentField ($event) {this.v.employeeName.$touch()},
         setHireDateField ($event) {this.v.hireDate.$touch()},
+        setBirthdayField ($event) {this.v.employeeBirthday.$touch()},
+        setEmployeeAddressField ($event) {this.v.employeeAddress.$touch()},
+        setEmployeePhoneField ($event) {this.v.employeePhone.$touch()},
+        setEmployeeEmailField ($event) {this.v.employeeEmail.$touch()},
         setPassportSerialField ($event) {this.v.passportSerial.$touch()},
         setPassportPlaceField ($event) {this.v.passportPlace.$touch()},
         setInnNumberField ($event) {this.v.innNumber.$touch()},
@@ -252,26 +312,26 @@ export default {
 
             this.saveEmployee({
                     employee: {
-                        fio            : this.employeeName,
-                        departmentId   : this.selectedDepartment,
-                        hireDate       : Math.floor(new Date(this.hireDate) / 1000),
-                        passportSerial : this.passportSerial,
-                        passportPlace  : this.passportPlace,
-                        innNumber      : this.innNumber,
-                        snilsNumber    : this.snilsNumber,
-                        empRecordNumber: this.empRecordNumber,
-                        companyId      : this.company.id,
+                        fio             : this.employeeName,
+                        departmentId    : this.selectedDepartment,
+                        hireDate        : Math.floor(new Date(this.hireDate) / 1000),
+                        employeeBirthday: Math.floor(new Date(this.employeeBirthday) / 1000),
+                        employeeAddress : this.employeeAddress,
+                        employeePhone   : this.employeePhone,
+                        employeeEmail   : this.employeeEmail,
+                        passportSerial  : this.passportSerial,
+                        passportPlace   : this.passportPlace,
+                        innNumber       : this.innNumber,
+                        snilsNumber     : this.snilsNumber,
+                        empRecordNumber : this.empRecordNumber,
+                        companyId       : this.company.id,
                     },
                 })
                 .then(() => {
-                        this.employeeName = ''
-                        this.selectedDepartment = ''
-                        this.hireDate = ''
-                        this.passportSerial = ''
-                        this.passportPlace = ''
-                        this.innNumber = ''
-                        this.snilsNumber = ''
-                        this.empRecordNumber = ''
+                    /**после сабмита - обнуляем форму */
+                        this.fieldNames.forEach(field => {
+                            this[field] = ''
+                        })
                         this.v.$reset()
                     })
         }
@@ -280,6 +340,7 @@ export default {
     validations () {
         const nFn = helpers.withMessage(NUMBER, number)
         const requiredFn = helpers.withMessage(REQUIRED, required)
+        const emailFn = helpers.withMessage(EMAIL, email)
         return {
             employeeName: {
                 required : requiredFn,
@@ -287,11 +348,19 @@ export default {
                 maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.maxEmployeeNameLength}`, maxLength(this.maxEmployeeNameLength)),
                 onlyWords: helpers.withMessage(ONLY_LETTERS, onlyWords),
             },
+            employeeAddress: {
+                required : requiredFn,
+                minLength: helpers.withMessage(`${MIN_LENGTH} ${this.minEmployeeAddressLength}`, minLength(this.minEmployeeAddressLength)),
+                maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.maxEmployeeAddressLength}`, maxLength(this.maxEmployeeAddressLength)),
+            },
             selectedDepartment: {
                 required: requiredFn,
                 number  : nFn
             },
             hireDate: {
+                required: requiredFn,
+            },
+            employeeBirthday: {
                 required: requiredFn,
             },
             passportSerial: {
@@ -305,7 +374,7 @@ export default {
             innNumber: {
                 required : requiredFn,
                 maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.innNumberLength}`, maxLength(this.innNumberLength)),
-                minLength: helpers.withMessage(`${MAX_LENGTH} ${this.innNumberLength}`, minLength(this.innNumberLength)),
+                minLength: helpers.withMessage(`${MIN_LENGTH} ${this.innNumberLength}`, minLength(this.innNumberLength)),
             },
             snilsNumber: {
                 required : requiredFn,
@@ -314,6 +383,14 @@ export default {
             empRecordNumber: {
                 required : requiredFn,
                 maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.empRecordNumberLength}`, maxLength(this.empRecordNumberLength)),
+            },
+            employeePhone: {
+                required : requiredFn,
+                minLength: helpers.withMessage(`${MIN_LENGTH} ${this.empPhoneLength}`, minLength(this.empPhoneLength)),
+            },
+            employeeEmail: {
+                required: requiredFn,
+                email   : emailFn
             },
         }
     },
