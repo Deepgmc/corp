@@ -9,17 +9,20 @@
 
 
             <template v-for="(item, index) in itemsToRender" :key="index">
-                <slot name="itemSlot" :item="item" :index="index" :columns="columns"></slot>
+                <slot name="itemSlot" :item="item" :index="index"></slot>
             </template>
 
 
-            <div v-if="isCollapsed && isNeedShowMore" class="text-left showMore" @click="expandItems">
-                ...
-            </div>
-            <div v-else-if="isNeedShowMore" class="text-left showMore" @click="expandItems">
-                свернуть
-            </div>
-
+            <tr v-if="isCollapsed && isNeedShowMore" class="text-left showMore" @click="expandItems">
+                <td colspan=20>
+                    ...
+                </td>
+            </tr>
+            <tr v-else-if="isNeedShowMore" class="text-left showMore" @click="expandItems">
+                <td colspan=20>
+                    свернуть
+                </td>
+            </tr>
 
         </template>
 

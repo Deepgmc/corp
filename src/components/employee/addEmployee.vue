@@ -6,7 +6,7 @@
         <div class="card-body">
             <form @submit.prevent="saveEmployeeSubmit">
 
-                <div class="row mt-4 card__subcaption_border">
+                <div class="row card__subcaption_border">
                     <div class="col-md-12">
                         <h6>Общие данные</h6>
                     </div>

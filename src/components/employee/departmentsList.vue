@@ -5,11 +5,22 @@
         :caption="caption"
         filterField="name"
     >
+        <template #listTableCaption>
+            <tr>
+                <th v-for="column in columns" :key="column.name" class="text-left">{{column.caption}}</th>
+            </tr>
+        </template>
         <template #listBody="slotParams">
-            <div class="row">
-                <div class="col-md-4">{{slotParams.item.name}}</div>
-                <div class="col-md-8">{{getDepartmentSize(company.employees, slotParams.item.id)}} чел.</div>
-            </div>
+            <tr>
+                <td v-for="column in columns" :key="column.name">
+                    <template v-if="column.action">
+                        {{column.action(slotParams)}}
+                    </template>
+                    <template v-else>
+                        {{slotParams.item[column.name]}}
+                    </template>
+                </td>
+            </tr>
         </template>
     </list-card>
 </template>
@@ -24,7 +35,21 @@ export default {
     data(){
         return {
             collapsedSize: 5,
-            caption      : 'Наши отделы'
+            caption      : 'Наши сотрудники',
+            columns      : [
+                {
+                    name   : 'name',
+                    action : null,
+                    caption: 'Название',
+                },
+                {
+                    name   : 'quantity',
+                    action: (slotParams) => {
+                        return this.getDepartmentSize(this.company.employees, slotParams.item.id) + ' чел.'
+                    },
+                    caption: 'Кол-во сотрудников',
+                },
+            ]
         }
     },
 
