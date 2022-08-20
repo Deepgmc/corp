@@ -16,8 +16,8 @@ export default {
 
         chartData(){
             const employeeQuantity = new Map()
-            const finalData = []
-            const sortedEmployee = [...this.employees].sort((emp1, emp2) => {
+            const finalData = [];
+            [...this.employees].sort((emp1, emp2) => {
                 if(emp1.hireDate === emp2.hireDate) return 0
                 if(emp1.hireDate < emp2.hireDate) return -1
                 else return 1
