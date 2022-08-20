@@ -13,7 +13,12 @@
         <template #listBody="slotParams">
             <tr>
                 <td v-for="column in columns" :key="column.name">
-                    {{slotParams.item[column.name]}}
+                    <template v-if="column.action">
+                        {{column.action(slotParams)}}
+                    </template>
+                    <template v-else>
+                        {{slotParams.item[column.name]}}
+                    </template>
                 </td>
             </tr>
         </template>
@@ -34,24 +39,33 @@ export default {
             caption      : 'Наши сотрудники',
             columns      : [
                 {
-                    name: 'fio',
+                    name   : 'fio',
                     caption: 'ФИО',
+                    action : null,
                 },
                 {
-                    name: 'departmentName',
+                    name   : 'departmentName',
                     caption: 'Отдел',
+                    action : null,
                 },
                 {
-                    name: 'employeeEmail',
-                    caption: 'Почта',
+                    name   : 'employeeContacts',
+                    caption: 'Контакты',
+                    action : (slotParams) => {
+                        return `${slotParams.item.employeePhone} / ${slotParams.item.employeeEmail}`
+                    },
                 },
                 {
-                    name: 'employeePhone',
-                    caption: 'Телефон',
-                },
-                {
-                    name: 'innNumber',
+                    name   : 'innNumber',
                     caption: 'ИНН',
+                    action : null
+                },
+                {
+                    name   : 'hireDate',
+                    caption: 'Начало работы',
+                    action : (slotParams) => {
+                        return this.timestampToNumbers(slotParams.item.hireDate)
+                    },
                 },
             ]
         }
@@ -100,6 +114,8 @@ export default {
         snilsNumber: null
         */
     },
+
+    inject: ['timestampToNumbers'],
 
     components: {ListCard}
 }

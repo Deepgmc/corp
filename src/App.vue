@@ -106,8 +106,15 @@ export default {
     },
 
     provide: {
+        /**
+            различные мелкие утилитарные функции глобального назначения
+        */
         getDepartmentSize(employees, departmentId){
             return employees.filter(emp => emp.departmentId === departmentId).length
+        },
+        timestampToNumbers(timestamp, locale = null){
+            const formatter = new Intl.DateTimeFormat(locale ?? 'ru')
+            return formatter.format(timestamp * 1000)
         }
     },
 }

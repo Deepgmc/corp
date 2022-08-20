@@ -14,7 +14,7 @@
                                 @input           ="setName"
                                 v-model          ="localName"
                                 type             ="text"
-                                :class           ="['form-control', {'is-invalid': errorsList.includes('localName')}]"
+                                :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localName')}]"
                                 id               ="companyName"
                                 aria-describedby ="nameHelp"
                             />
@@ -29,7 +29,7 @@
                                 v-model          = "localAddress"
                                 @input           = "setAddress"
                                 type             = "text"
-                                :class           ="['form-control', {'is-invalid': errorsList.includes('localAddress')}]"
+                                :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localAddress')}]"
                                 id               = "address"
                                 aria-describedby = "addressHelp"
                             />

@@ -12,9 +12,10 @@ import {
 function showDefaultMessage(dispatcher, type, message = null){
     if(!message){
         switch(type){
-            case 'save_success': message = SAVE_SUCCESS; break;
-            case 'save_error': message   = SAVE_ERROR; break;
-            case 'login_error': message  = ALREADY_LOGINED; break;
+            case 'save_success': message   = SAVE_SUCCESS; break;
+            case 'save_error': message     = SAVE_ERROR; break;
+            case 'login_error': message    = ALREADY_LOGINED; break;
+            case 'register_error': message = REGISTER_ERROR; break;
         }
     }
     type = type.split('_')[1]

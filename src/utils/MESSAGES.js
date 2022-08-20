@@ -3,3 +3,4 @@ export const TOKEN_VALIDATION_FAIL  = 'Ошибка валидации токе�
 export const INVALID_HTTP_OPERATION = 'Неверный тип сетевой операции'
 export const SAVE_SUCCESS           = 'Сохранено успешно!'
 export const SAVE_ERROR             = 'Ошибка сохранения!'
+export const REGISTER_ERROR         = 'Ошибка регистрации'

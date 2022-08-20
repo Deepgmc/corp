@@ -13,7 +13,7 @@
                                 @input           ="setLocalName"
                                 v-model          ="localName"
                                 type             ="text"
-                                :class           ="['form-control', {'is-invalid': errorsList.includes('localName')}]"
+                                :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localName')}]"
                                 id               ="name"
                                 aria-describedby ="nameHelp"
                                 required         ="required"

@@ -213,8 +213,6 @@ import { required, minLength, maxLength, email, helpers } from '@vuelidate/valid
 import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED, EMAIL } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
-//import {mask} from 'vue-the-mask'
-
 import utils from '@/utils/utilFunctions'
 
 
@@ -230,8 +228,8 @@ export default {
             employeeName      : 'test name',
             employeeBirthday  : '1988-01-15',
             employeeAddress   : 'Moskovsky str 19, 2a',
-            employeePhone     : '',
-            employeeEmail     : '',
+            employeePhone     : '+7(543) 543-53-45',
+            employeeEmail     : 'email@email.ru',
             hireDate          : '2022-08-17',
             passportSerial    : '4009-567890',
             passportPlace     : 'test passport place, moscow',
