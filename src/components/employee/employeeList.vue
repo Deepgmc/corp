@@ -58,8 +58,8 @@ export default {
                     },
                 },
                 {
-                    name   : 'innNumber',
-                    caption: 'ИНН',
+                    name   : 'employeeSalary',
+                    caption: 'Месячная оплата',
                     action : null
                 },
                 {

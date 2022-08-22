@@ -135,6 +135,20 @@
                             type="date"
                         >
                     </div>
+                    <div class="col-md-6">
+                        <label for="employeeSalary" class="form-label">Заработная плата (до НДФЛ)</label>
+                        <input
+                            id="employeeSalary"
+                            v-model ="employeeSalary"
+                            @change ="setEmployeeSalaryField"
+                            :class  ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeeSalary')}]"
+                            type="number"
+                            aria-describedby ="employeeSalaryHelp"
+                        >
+                        <div id="employeeSalaryHelp" class="form-text form-help-text">
+                            Без учёта налогов, целое число
+                        </div>
+                    </div>
                 </div>
 
                 <!--###########################-->
@@ -259,6 +273,7 @@ export default {
             employeeAddress   : 'Moskovsky str 19, 2a',
             employeePhone     : '+7(543) 543-53-45',
             employeeEmail     : 'email@email.ru',
+            employeeSalary    : 50000,
             hireDate          : '2022-08-17',
             passportSerial    : '4009-567890',
             passportPlace     : 'test passport place, moscow',
@@ -292,6 +307,7 @@ export default {
         'employeeAddress',
         'employeePhone',
         'employeeEmail',
+        'employeeSalary',
         'passportSerial',
         'passportPlace',
         'innNumber',
@@ -325,6 +341,7 @@ export default {
         setEmployeeAddressField ($event) {this.v.employeeAddress.$touch()},
         setEmployeePhoneField ($event) {this.v.employeePhone.$touch()},
         setEmployeeEmailField ($event) {this.v.employeeEmail.$touch()},
+        setEmployeeSalaryField ($event) {this.v.employeeSalary.$touch()},
         setPassportSerialField ($event) {this.v.passportSerial.$touch()},
         setPassportPlaceField ($event) {this.v.passportPlace.$touch()},
         setInnNumberField ($event) {this.v.innNumber.$touch()},
@@ -352,6 +369,7 @@ export default {
                         employeeAddress : this.employeeAddress,
                         employeePhone   : this.employeePhone,
                         employeeEmail   : this.employeeEmail,
+                        employeeSalary  : this.employeeSalary,
                         passportSerial  : this.passportSerial,
                         passportPlace   : this.passportPlace,
                         innNumber       : this.innNumber,
@@ -420,6 +438,10 @@ export default {
             empRecordNumber: {
                 required : requiredFn,
                 maxLength: helpers.withMessage(`${MAX_LENGTH} ${this.empRecordNumberLength}`, maxLength(this.empRecordNumberLength)),
+            },
+            employeeSalary: {
+                required : requiredFn,
+                number   : nFn
             },
             employeePhone: {
                 required : requiredFn,
