@@ -70,6 +70,7 @@ class companyService extends Service {
         }
         company.departments = await this.findCompanyDepartments(companyId)
         company.employees = await this.findCompanyEmployees(companyId)
+        company.positions = await this.findCompanyPositions(companyId)
         return company
     }
 
@@ -89,10 +90,27 @@ class companyService extends Service {
             })
         })
     }
+    async findCompanyPositions(companyId){
+        return new Promise((resolve, reject) => {
+            this._connection.query('SELECT * FROM positions WHERE companyId = ?', companyId, (error, rows) => {
+                if(error) reject(error)
+                resolve(rows)
+            })
+        })
+    }
 
     saveNewDepartment(data){
         return new Promise((resolve, reject) => {
             this._connection.query('INSERT INTO departments (name, companyId) VALUES (?, ?)', [data.deptName, data.companyId], (error, insertResult) => {
+                if(error) reject(error)
+                resolve(insertResult)
+            })
+        })
+    }
+
+    saveNewPosition(data){
+        return new Promise((resolve, reject) => {
+            this._connection.query('INSERT INTO positions (name, companyId, departmentId) VALUES (?, ?, ?)', [data.positionName, data.companyId, data.departmentId], (error, insertResult) => {
                 if(error) reject(error)
                 resolve(insertResult)
             })

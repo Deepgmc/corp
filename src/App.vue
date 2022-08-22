@@ -50,6 +50,10 @@ import NavComponent from '@/components/NavComponent.vue'
 import LoginInfo from '@/components/LoginInfo.vue'
 import { mapGetters, mapActions } from 'vuex'
 
+import {
+    showDefaultMessage
+} from '@/utils/utilFunctions'
+
 import umbrellaLogo from './assets/umbrella-logo.png'
 
 export default {
@@ -115,7 +119,8 @@ export default {
         timestampToNumbers(timestamp, locale = null){
             const formatter = new Intl.DateTimeFormat(locale ?? 'ru')
             return formatter.format(timestamp * 1000)
-        }
+        },
+        showDefaultMessage: showDefaultMessage
     },
 }
 </script>

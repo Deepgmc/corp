@@ -41,8 +41,6 @@ import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
 import { MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
-import utils from '@/utils/utilFunctions'
-
 export default {
 
     name: 'addDept',
@@ -82,7 +80,7 @@ export default {
             }
 
             if(!this.company.id){
-                utils.showDefaultMessage(dispatch, 'save_error')
+                this.utils.showDefaultMessage(dispatch, 'save_error')
                 return
             }
 
@@ -106,6 +104,8 @@ export default {
             },
         }
     },
+
+    inject: ['showDefaultMessage'],
 
     setup () {
         return {

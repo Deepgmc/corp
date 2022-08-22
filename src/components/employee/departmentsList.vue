@@ -35,7 +35,7 @@ export default {
     data(){
         return {
             collapsedSize: 5,
-            caption      : 'Наши сотрудники',
+            caption      : 'Департаменты компании',
             columns      : [
                 {
                     name   : 'name',

@@ -213,8 +213,6 @@ import { required, minLength, maxLength, email, helpers } from '@vuelidate/valid
 import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED, EMAIL } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
-import utils from '@/utils/utilFunctions'
-
 
 export default {
 
@@ -304,7 +302,7 @@ export default {
                 return
             }
             if(!this.company.id){
-                utils.showDefaultMessage(dispatch, 'save_error')
+                this.showDefaultMessage(dispatch, 'save_error')
                 return
             }
 
@@ -392,6 +390,8 @@ export default {
             },
         }
     },
+
+    inject: ['showDefaultMessage'],
 
     setup () {
         return {

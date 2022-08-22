@@ -3,8 +3,10 @@ import $api from '../../utils/api.js'
 import {
     ACTION_SAVE_USER_COMPANY_INFO,
     ACTION_SAVE_NEW_DEPARTMENT,
+    ACTION_SAVE_NEW_POSITION,
     SET_COMPANY,
     ADD_DEPARTMENT,
+    ADD_POSITION,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
     SET_COMPANY_FIELD,
@@ -85,6 +87,33 @@ export default {
             })
         },
 
+        async [ACTION_SAVE_NEW_POSITION]({commit, dispatch}, {positionName, companyId, departmentId}){
+            return $api.sendQuery({
+                type      : 'POST',
+                moduleName: 'api',
+                section   : STORE_MODULE_NAME,
+                operation : 'saveNewPosition',
+                data      : {
+                    positionName,
+                    departmentId,
+                    companyId
+                }
+            })
+            .then((res) => {
+                commit(ADD_POSITION, {
+                    id          : res.data.message.insertId,
+                    name        : positionName,
+                    departmentId: departmentId,
+                    companyId   : companyId
+                })
+                utils.showDefaultMessage(dispatch, 'save_success')
+            })
+            .catch((error) => {
+                console.log('Save position error', error);
+                utils.showDefaultMessage(dispatch, 'save_error')
+            })
+        },
+
         async [ACTION_SAVE_USER_COMPANY_INFO]({commit, dispatch}, company){
             return $api.sendQuery({
                 type      : 'POST',
@@ -144,8 +173,10 @@ export default {
             state.company = company
         },
         [ADD_DEPARTMENT](state, newDepartment){
-            console.log('ADD_DEPARTMENT', state.company.departments);
             state.company.departments.push(newDepartment)
+        },
+        [ADD_POSITION](state, newPosition){
+            state.company.positions.push(newPosition)
         },
         [ADD_EMPLOYEE](state, newEmployee){
             state.company.employees.push(newEmployee)
