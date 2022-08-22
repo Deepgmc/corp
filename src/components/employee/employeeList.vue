@@ -14,10 +14,10 @@
             <tr>
                 <td v-for="column in columns" :key="column.name">
                     <template v-if="column.action">
-                        {{column.action(slotParams)}}
+                        <span v-html="column.action(slotParams)"></span>
                     </template>
                     <template v-else>
-                        {{slotParams.item[column.name]}}
+                        <span v-html="slotParams.item[column.name]"></span>
                     </template>
                 </td>
             </tr>
@@ -44,15 +44,17 @@ export default {
                     action : null,
                 },
                 {
-                    name   : 'departmentName',
-                    caption: 'Отдел',
-                    action : null,
+                    name   : 'departmentPositionName',
+                    caption: 'Отдел/должность',
+                    action : (slotParams) => {
+                        return `<div>${slotParams.item.departmentName}</div><div>${slotParams.item.positionName}</div>`
+                    },
                 },
                 {
                     name   : 'employeeContacts',
                     caption: 'Контакты',
                     action : (slotParams) => {
-                        return `${slotParams.item.employeePhone} / ${slotParams.item.employeeEmail}`
+                        return `<div>${slotParams.item.employeePhone}</div><div>${slotParams.item.employeeEmail}</div>`
                     },
                 },
                 {
@@ -88,7 +90,10 @@ export default {
                     ...emp,
                     departmentName: [...this.company.departments].find((department) => {
                         return department.id === emp.departmentId
-                    }).name
+                    }).name,
+                    positionName: [...this.company.positions].find((position) => {
+                        return position.id === emp.positionId
+                    }).name,
                 }
             })
         }

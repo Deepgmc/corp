@@ -1,6 +1,6 @@
 <template>
     <div>
-        Bills component
+        Finnance component
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 
 export default {
 
-    name: 'BillsComponent',
+    name: 'FillsComponent',
 
     computed: {
 

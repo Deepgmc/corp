@@ -78,6 +78,13 @@
                     </div>
                 </div>
 
+                <!--###########################-->
+                <div class="row mt-4 card__subcaption_border">
+                    <div class="col-md-12">
+                        <h6>Внутренние данные компании</h6>
+                    </div>
+                </div>
+
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <label for="selectedDepartment" class="form-label">Департамент</label>
@@ -97,6 +104,27 @@
                             </option>
                         </select>
                     </div>
+                    <div class="col-md-6">
+                        <label for="selectedPosition" class="form-label">Штатная должность</label>
+                        <select
+                            id="selectedPosition"
+                            v-model ="selectedPosition"
+                            @change ="setPositionField"
+                            :class  ="['form-control form-control-sm', {'is-invalid': errorsList.includes('selectedPosition')}]"
+                        >
+                            <option disabled value="">выберите должность</option>
+                            <option
+                                v-for ="position in positionsToChoose"
+                                :key  ="position.id"
+                                :value="position.id"
+                            >
+                                {{position.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
                     <div class="col-md-6">
                         <label for="hireDate" class="form-label">Дата трудоустройтсва</label>
                         <input
@@ -213,6 +241,8 @@ import { required, minLength, maxLength, email, helpers } from '@vuelidate/valid
 import { onlyWords, number, ONLY_LETTERS, NUMBER, MAX_LENGTH, MIN_LENGTH, REQUIRED, EMAIL } from '../../utils/customValidations'
 import { mapState, mapActions } from 'vuex'
 
+import utils from '@/utils/utilFunctions'
+
 
 export default {
 
@@ -222,7 +252,8 @@ export default {
         return {
             mainCaption: 'Приём нового сотрудника',
 
-            selectedDepartment: 2,
+            selectedDepartment: 1,
+            selectedPosition  : '',
             employeeName      : 'test name',
             employeeBirthday  : '1988-01-15',
             employeeAddress   : 'Moskovsky str 19, 2a',
@@ -254,6 +285,7 @@ export default {
 
     fieldNames: [
         'selectedDepartment',
+        'selectedPosition',
         'employeeName',
         'hireDate',
         'employeeBirthday',
@@ -275,6 +307,9 @@ export default {
         ...mapState('company', {
             company: state => state.company
         }),
+        positionsToChoose(){
+            return this.company.positions.filter(position => position.departmentId === this.selectedDepartment)
+        }
     },
 
     methods: {
@@ -284,6 +319,7 @@ export default {
 
         setEmployeeNameField ($event) {this.v.employeeName.$touch()},
         setDepartmentField ($event) {this.v.employeeName.$touch()},
+        setPositionField ($event) {this.v.employeeName.$touch()},
         setHireDateField ($event) {this.v.hireDate.$touch()},
         setBirthdayField ($event) {this.v.employeeBirthday.$touch()},
         setEmployeeAddressField ($event) {this.v.employeeAddress.$touch()},
@@ -302,7 +338,7 @@ export default {
                 return
             }
             if(!this.company.id){
-                this.showDefaultMessage(dispatch, 'save_error')
+                utils.showDefaultMessage(dispatch, 'save_error')
                 return
             }
 
@@ -310,6 +346,7 @@ export default {
                     employee: {
                         fio             : this.employeeName,
                         departmentId    : this.selectedDepartment,
+                        positionId      : this.selectedPosition,
                         hireDate        : Math.floor(new Date(this.hireDate) / 1000),
                         employeeBirthday: Math.floor(new Date(this.employeeBirthday) / 1000),
                         employeeAddress : this.employeeAddress,
@@ -353,6 +390,10 @@ export default {
                 required: requiredFn,
                 number  : nFn
             },
+            selectedPosition: {
+                required: requiredFn,
+                number  : nFn
+            },
             hireDate: {
                 required: requiredFn,
             },
@@ -390,8 +431,6 @@ export default {
             },
         }
     },
-
-    inject: ['showDefaultMessage'],
 
     setup () {
         return {

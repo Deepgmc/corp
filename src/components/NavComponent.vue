@@ -66,10 +66,10 @@ export default {
                     ],
                 },
                 {
-                    text: 'Счета',
-                    link: '/bills',
+                    text: 'Финансы',
+                    link: '/finnance',
                     visible: ['all'],
-                    name: 'bills',
+                    name: 'finnance',
                     parentName: null,
                     icon: true,
                     subnav: [],
