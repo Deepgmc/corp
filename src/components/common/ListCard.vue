@@ -6,12 +6,11 @@
             <input
                 type="text"
                 class="list__search_input form-control form-control-sm"
-                @input="filterByField"
+                @input="filterByField($event.target.value)"
             >
         </div>
 
         <table class="table">
-
             <thead class="list-font-size">
                 <slot name="listTableCaption"></slot>
             </thead>
@@ -26,7 +25,6 @@
                     </template>
                 </list>
             </tbody>
-
         </table>
 
     </div>
@@ -39,9 +37,13 @@ export default {
 
     data(){
         return {
-            filteredItems: this.items
+            sortedItems     : [],
+            filteredItems   : [],
+            sortingDirection: 1,
+            filterText      : ''
         }
     },
+
     props: {
         items: {
             type    : Array,
@@ -62,17 +64,51 @@ export default {
             type    : String,
             required: true,
             default : 'name'
-        }
+        },
+        sorting: {
+            type    : Object,
+            required: true
+        },
+    },
+
+    mounted(){
+        this.sortBasicData(this.sorting)
     },
 
     methods: {
-        filterByField(event){
-            this.filteredItems = this.items.filter(
+        filterByField(text){
+            if(!text) {
+                this.filterText = ''
+                this.filteredItems = this.sortedItems
+                return
+            }
+            this.filterText = text
+            this.filteredItems = this.sortedItems.filter(
                 item => item[this.filterField].toLowerCase().includes(
-                    event.target.value.toLowerCase()
+                    text.toLowerCase()
                 )
             )
+        },
+        sortBasicData(sorting){
+            let tmpList = [...this.items]
+            tmpList.sort((item1, item2) => {
+                const aText = item1[sorting.field]
+                const bText = item2[sorting.field]
+
+                if(aText === bText) return 0
+                if(aText < bText) return this.sortingDirection * -1
+                else return this.sortingDirection
+            })
+            this.sortedItems = tmpList
+            this.filterByField(this.filterText)
         }
+    },
+
+    watch: {
+        sorting(newSorting, oldSorting){
+            this.sortingDirection = newSorting.direction
+            this.sortBasicData(newSorting)
+        },
     },
 
     components: {List},

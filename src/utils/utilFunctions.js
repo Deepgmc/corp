@@ -22,7 +22,18 @@ function showDefaultMessage(dispatcher, type, message = null){
     dispatcher(ACTION_SHOW_NOTIFICATION, {type: type, message: message }, { root: true } )
 }
 
+function sortList({name, sorting}){
+    this.sorting = {
+        field    : name,
+        type     : sorting.type,
+        direction: sorting.direction
+    }
+    sorting.direction = sorting.direction * -1
+}
+
+
 
 export default {
-    showDefaultMessage
+    showDefaultMessage,
+    sortList
 }
