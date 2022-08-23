@@ -4,10 +4,14 @@
         :collapsedSize="collapsedSize"
         :caption="caption"
         filterField="fio"
+        :sorting="sorting"
     >
         <template #listTableCaption>
             <tr>
-                <th v-for="column in columns" :key="column.name" class="text-left">{{column.caption}}</th>
+                <th v-for="column in columns" :key="column.name" class="text-left">
+                    {{column.caption}}
+                    <span v-if="column.sorting" @click="localSortList(column)" style="color:green;cursor:pointer;">&#8645;</span>
+                </th>
             </tr>
         </template>
         <template #listBody="slotParams">
@@ -28,6 +32,7 @@
 <script>
 import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
+import utils from '@/utils/utilFunctions.js'
 
 export default {
 
@@ -37,15 +42,25 @@ export default {
         return {
             collapsedSize: 5,
             caption      : 'Наши сотрудники',
+            sorting      : {
+                field    : 'fio',
+                type     : 'string',
+                direction: 1
+            },
             columns      : [
                 {
                     name   : 'fio',
                     caption: 'ФИО',
+                    sorting: {
+                        type: 'string',
+                        direction: -1
+                    },
                     action : null,
                 },
                 {
                     name   : 'departmentPositionName',
                     caption: 'Отдел/должность',
+                    sorting: null,
                     action : (slotParams) => {
                         return `<div>${slotParams.item.departmentName}</div><div>${slotParams.item.positionName}</div>`
                     },
@@ -53,6 +68,7 @@ export default {
                 {
                     name   : 'employeeContacts',
                     caption: 'Контакты',
+                    sorting: null,
                     action : (slotParams) => {
                         return `<div>${slotParams.item.employeePhone}</div><div>${slotParams.item.employeeEmail}</div>`
                     },
@@ -60,11 +76,16 @@ export default {
                 {
                     name   : 'employeeSalary',
                     caption: 'Месячная оплата',
+                    sorting: {
+                        type: 'number',
+                        direction: -1
+                    },
                     action : null
                 },
                 {
                     name   : 'hireDate',
                     caption: 'Начало работы',
+                    sorting: null,
                     action : (slotParams) => {
                         return this.timestampToNumbers(slotParams.item.hireDate)
                     },
@@ -99,25 +120,8 @@ export default {
         }
     },
 
-    mounted(){
-        /**
-        companyId: 1
-        create_time: 1660332784
-        departmentId: 4
-        departmentName: "Weather monitoring"
-        empRecordNumber: null
-        employeeAddress: null
-        employeeBirthday: null
-        employeeEmail: null
-        employeePhone: null
-        fio: "Davee Jones"
-        hireDate: null
-        id: 1
-        innNumber: null
-        passportPlace: null
-        passportSerial: null
-        snilsNumber: null
-        */
+    methods: {
+        localSortList: utils.sortList
     },
 
     inject: ['timestampToNumbers'],

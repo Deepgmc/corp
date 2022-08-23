@@ -1,13 +1,17 @@
 <template>
     <list-card
-        :items="company.departments"
+        :items="localEmployees"
         :collapsedSize="collapsedSize"
         :caption="caption"
         filterField="name"
+        :sorting="sorting"
     >
         <template #listTableCaption>
             <tr>
-                <th v-for="column in columns" :key="column.name" class="text-left">{{column.caption}}</th>
+                <th v-for="column in columns" :key="column.name" class="text-left">
+                    {{column.caption}}
+                    <span v-if="column.sorting" @click="localSortList(column)" style="color:green;cursor:pointer;">&#8645;</span>
+                </th>
             </tr>
         </template>
         <template #listBody="slotParams">
@@ -29,6 +33,7 @@
 
 import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
+import utils from '@/utils/utilFunctions.js'
 
 export default {
 
@@ -36,18 +41,29 @@ export default {
         return {
             collapsedSize: 5,
             caption      : 'Департаменты компании',
-            columns      : [
+            sorting      : {
+                field    : 'name',
+                type     : 'string',
+                direction: 1
+            },
+            columns: [
                 {
                     name   : 'name',
-                    action : null,
                     caption: 'Название',
+                    sorting: {
+                        type     : 'string',
+                        direction: -1
+                    },
+                    action : null,
                 },
                 {
                     name   : 'quantity',
-                    action: (slotParams) => {
-                        return this.getDepartmentSize(this.company.employees, slotParams.item.id) + ' чел.'
-                    },
                     caption: 'Кол-во сотрудников',
+                    sorting: {
+                        type     : 'number',
+                        direction: -1
+                    },
+                    action : null
                 },
             ]
         }
@@ -57,6 +73,19 @@ export default {
         ...mapState('company', {
             company: state => state.company
         }),
+
+        localEmployees(){
+            return [...this.company.departments].map(dep => {
+                return {
+                    ...dep,
+                    quantity: this.getDepartmentSize(this.company.employees, dep.id) + ' чел.'
+                }
+            })
+        }
+    },
+
+    methods: {
+        localSortList: utils.sortList,
     },
 
     inject: ['getDepartmentSize'],

@@ -7,7 +7,6 @@
 
         <template v-else>
 
-
             <template v-for="(item, index) in itemsToRender" :key="index">
                 <slot name="itemSlot" :item="item" :index="index"></slot>
             </template>
