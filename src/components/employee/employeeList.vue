@@ -15,7 +15,12 @@
             </tr>
         </template>
         <template #listBody="slotParams">
-            <tr>
+            <!--@click="loadEmployeeRedactingForm"-->
+            <tr
+                class="listItem__activating"
+                @click="loadEmployeeRedactingForm($event, slotParams.item)"
+                data-bs-toggle="modal" data-bs-target="#redactEmployeeModal"
+            >
                 <td v-for="column in columns" :key="column.name">
                     <template v-if="column.action">
                         <span v-html="column.action(slotParams)"></span>
@@ -26,13 +31,32 @@
                 </td>
             </tr>
         </template>
+
     </list-card>
+
+    <div class="modal fade" id="redactEmployeeModal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-body" ref="redactComponentContainer">
+                    <redact-employee-component
+                        :loadingEmployeeId="loadingEmployeeId"
+                        :isModal="true"
+                    ></redact-employee-component>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script>
 import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
+//import { defineAsyncComponent } from 'vue'
 import utils from '@/utils/utilFunctions.js'
+import redactEmployeeComponent from '@/components/employee/addEmployee.vue'
+
+
 
 export default {
 
@@ -47,6 +71,7 @@ export default {
                 type     : 'string',
                 direction: 1
             },
+            loadingEmployeeId: null,
             columns      : [
                 {
                     name   : 'fio',
@@ -97,22 +122,24 @@ export default {
     computed: {
 
         ...mapState('company', {
-            company: state => state.company
+            employees: state => state.company.employees,
+            departments: state => state.company.departments,
+            positions: state => state.company.positions,
         }),
 
         localEmployees() {
-            if(!this.company.employees) return []
-            return [...this.company.employees].map(emp => {
+            if(!this.employees) return []
+            return [...this.employees].map(emp => {
                 /**
                     нужно из company.departments выцепить имя департамента по id
                     и вставить в список employees
                 */
                 return {
                     ...emp,
-                    departmentName: [...this.company.departments].find((department) => {
+                    departmentName: [...this.departments].find((department) => {
                         return department.id === emp.departmentId
                     }).name,
-                    positionName: [...this.company.positions].find((position) => {
+                    positionName: [...this.positions].find((position) => {
                         return position.id === emp.positionId
                     }).name,
                 }
@@ -121,11 +148,16 @@ export default {
     },
 
     methods: {
-        localSortList: utils.sortList
+        localSortList: utils.sortList,
+
+        loadEmployeeRedactingForm(event, emp){
+            //this.loadingEmployee = defineAsyncComponent(() => import('./addEmployee.vue'))
+            this.loadingEmployeeId = emp.id
+        }
     },
 
     inject: ['timestampToNumbers'],
 
-    components: {ListCard}
+    components: {ListCard, redactEmployeeComponent}
 }
 </script>

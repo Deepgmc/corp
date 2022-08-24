@@ -13,7 +13,8 @@ import {
     GET_IS_LOADED,
     SET_LOADED,
     ACTION_SAVE_NEW_EMPLOYEE,
-    ADD_EMPLOYEE
+    ADD_EMPLOYEE,
+    UPDATE_EMPLOYEE,
 } from '../../utils/STORE_C'
 
 import utils from '../../utils/utilFunctions'
@@ -52,12 +53,18 @@ export default {
                 data      : employeeData
             })
             .then((res) => {
-                commit(ADD_EMPLOYEE, {
-                    ...employeeData.employee,
-                    id         : res.data.message.insertId,
-                    companyId  : employeeData.companyId,
-                    create_time: Math.floor(Date.now() / 1000)
-                })
+                if(employeeData.isRedacting){
+                    commit(UPDATE_EMPLOYEE, {
+                        ...employeeData.employee
+                    })
+                } else {
+                    commit(ADD_EMPLOYEE, {
+                        ...employeeData.employee,
+                        id         : res.data.message.insertId,
+                        companyId  : employeeData.companyId,
+                        create_time: Math.floor(Date.now() / 1000)
+                    })
+                }
                 utils.showDefaultMessage(dispatch, 'save_success')
             })
             .catch((error) => {
@@ -180,6 +187,14 @@ export default {
         },
         [ADD_EMPLOYEE](state, newEmployee){
             state.company.employees.push(newEmployee)
+        },
+        [UPDATE_EMPLOYEE](state, employee){
+            let i
+            state.company.employees.find((emp, index) => {
+                i = index
+                return emp.id === employee.id
+            })
+            state.company.employees.splice(i, 1, employee)
         },
         [SET_LOADED](state, status){
             state.isLoaded = status
