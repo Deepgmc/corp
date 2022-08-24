@@ -109,6 +109,9 @@ export default {
             this.sortingDirection = newSorting.direction
             this.sortBasicData(newSorting)
         },
+        items(newItems){
+            this.sortBasicData(this.sorting)
+        }
     },
 
     components: {List},

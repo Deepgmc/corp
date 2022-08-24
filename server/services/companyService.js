@@ -119,32 +119,65 @@ class companyService extends Service {
 
     saveNewEmployee(employeeData){
         return new Promise((resolve, reject) => {
-            this._connection.query(`
+            const insertRedactArray = [
+                this.getTimestamp(),
+                employeeData.employee.fio,
+                employeeData.employee.companyId,
+                employeeData.employee.departmentId,
+                employeeData.employee.positionId,
+                employeeData.employee.hireDate,
+                employeeData.employee.employeeBirthday,
+                employeeData.employee.employeePhone,
+                employeeData.employee.employeeEmail,
+                employeeData.employee.employeeAddress,
+                employeeData.employee.passportSerial,
+                employeeData.employee.passportPlace,
+                employeeData.employee.innNumber,
+                employeeData.employee.snilsNumber,
+                employeeData.employee.empRecordNumber,
+                employeeData.employee.employeeSalary,
+            ];
+            if(!employeeData.isRedacting){
+                this._connection.query(`
                     INSERT INTO employee
                     (create_time, fio, companyId, departmentId, positionId, hireDate, employeeBirthday, employeePhone, employeeEmail, employeeAddress, passportSerial, passportPlace, innNumber, snilsNumber, empRecordNumber, employeeSalary)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [
-                    this.getTimestamp(),
-                    employeeData.employee.fio,
-                    employeeData.employee.companyId,
-                    employeeData.employee.departmentId,
-                    employeeData.employee.positionId,
-                    employeeData.employee.hireDate,
-                    employeeData.employee.employeeBirthday,
-                    employeeData.employee.employeePhone,
-                    employeeData.employee.employeeEmail,
-                    employeeData.employee.employeeAddress,
-                    employeeData.employee.passportSerial,
-                    employeeData.employee.passportPlace,
-                    employeeData.employee.innNumber,
-                    employeeData.employee.snilsNumber,
-                    employeeData.employee.empRecordNumber,
-                    employeeData.employee.employeeSalary,
-                ],
+                    insertRedactArray,
                 (error, insertResult) => {
                     if(error) reject(error)
                     resolve(insertResult)
                 })
+            } else {
+                this._connection.query(`
+                    UPDATE employee
+                    SET
+                        create_time = ?,
+                        fio = ?,
+                        companyId = ?,
+                        departmentId = ?,
+                        positionId = ?,
+                        hireDate = ?,
+                        employeeBirthday = ?,
+                        employeePhone = ?,
+                        employeeEmail = ?,
+                        employeeAddress = ?,
+                        passportSerial = ?,
+                        passportPlace = ?,
+                        innNumber = ?,
+                        snilsNumber = ?,
+                        empRecordNumber = ?,
+                        employeeSalary = ?
+                    WHERE id = ?`,
+                    [
+                        ...insertRedactArray,
+                        employeeData.employee.id,
+                    ],
+                    (error, insertResult) => {
+                        if(error) reject(error)
+                        resolve(insertResult)
+                    }
+                )
+            }//else
         })
     }
 

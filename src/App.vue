@@ -122,6 +122,13 @@ export default {
             return formatter.format(timestamp * 1000)
         },
 
+        formatDateToInput(date){
+            /** меняет местами год месяц, потому что дефолтный инпут принимает дату не в локализованном формате... */
+            const day = ('0' + date.getDate()).slice(-2)
+            const month = ('0' + (date.getMonth() + 1)).slice(-2)
+            return `${date.getFullYear()}-${month}-${day}`
+        },
+
         showDefaultMessage
     },
 }

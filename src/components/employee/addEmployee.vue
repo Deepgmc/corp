@@ -239,7 +239,8 @@
 
                 <div class="row mt-2">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Сохранить</button>
+                        <span v-if="this.isModal" type="button" class="btn btn-secondary" style="margin-left:10px;" data-bs-dismiss="modal">Закрыть</span>
                     </div>
                 </div>
 
@@ -270,17 +271,18 @@ export default {
             selectedPosition  : '',
             employeeName      : 'test name',
             employeeBirthday  : '1988-01-15',
+            hireDate          : '2022-08-17',
             employeeAddress   : 'Moskovsky str 19, 2a',
             employeePhone     : '+7(543) 543-53-45',
             employeeEmail     : 'email@email.ru',
             employeeSalary    : 50000,
-            hireDate          : '2022-08-17',
             passportSerial    : '4009-567890',
             passportPlace     : 'test passport place, moscow',
             innNumber         : 123456789012,
             snilsNumber       : '111-111-111-11',
             empRecordNumber   : '1234567',
 
+            /** validations */
             maxEmployeeNameLength   : 50,
             minEmployeeNameLength   : 8,
             maxEmployeeAddressLength: 200,
@@ -295,6 +297,36 @@ export default {
             snilsNumberLength     : 14,
             empRecordNumberLength : 7,
             empPhoneLength        : 12,
+        }
+    },
+
+    watch: {
+        loadingEmployeeId(){
+            /*
+                приобновлении входящего индекса (при редактировании) -
+                применим редактируемого сотрудника
+            */
+            if(this.loadingEmployeeId){
+                this.mainCaption = 'Редактирование данных сотрудника'
+                const thisEmployee = this.company.employees.find(emp => emp.id === this.loadingEmployeeId)
+
+                this.selectedDepartment = thisEmployee.departmentId
+                this.selectedPosition   = thisEmployee.positionId
+                this.employeeName       = thisEmployee.fio
+
+                this.employeeBirthday = this.formatDateToInput(new Date(thisEmployee.employeeBirthday * 1000))
+                this.hireDate         = this.formatDateToInput(new Date(thisEmployee.hireDate * 1000))
+
+                this.employeeAddress    = thisEmployee.employeeAddress
+                this.employeePhone      = thisEmployee.employeePhone
+                this.employeeEmail      = thisEmployee.employeeEmail
+                this.employeeSalary     = thisEmployee.employeeSalary
+                this.passportSerial     = thisEmployee.passportSerial
+                this.passportPlace      = thisEmployee.passportPlace
+                this.innNumber          = thisEmployee.innNumber
+                this.snilsNumber        = thisEmployee.snilsNumber
+                this.empRecordNumber    = thisEmployee.empRecordNumber
+            }
         }
     },
 
@@ -314,6 +346,19 @@ export default {
         'snilsNumber',
         'empRecordNumber',
     ],
+
+    props: {
+        loadingEmployeeId: {
+            type    : Number,
+            required: false,
+            default : null
+        },
+        isModal: {
+            type    : Boolean,
+            required: false,
+            default : false
+        }
+    },
 
     computed: {
         errorsList(){
@@ -360,7 +405,9 @@ export default {
             }
 
             this.saveEmployee({
+                    isRedacting: !!this.loadingEmployeeId,
                     employee: {
+                        id              : this.loadingEmployeeId,
                         fio             : this.employeeName,
                         departmentId    : this.selectedDepartment,
                         positionId      : this.selectedPosition,
@@ -375,12 +422,12 @@ export default {
                         innNumber       : this.innNumber,
                         snilsNumber     : this.snilsNumber,
                         empRecordNumber : this.empRecordNumber,
-                        companyId       : this.company.id,
+                        companyId       : this.company.id
                     },
                 })
                 .then(() => {
                     /**после сабмита - обнуляем форму */
-                        this.fieldNames.forEach(field => {
+                        this.$options.fieldNames.forEach(field => {
                             this[field] = ''
                         })
                         this.v.$reset()
@@ -453,6 +500,8 @@ export default {
             },
         }
     },
+
+    inject: ['formatDateToInput'],
 
     setup () {
         return {

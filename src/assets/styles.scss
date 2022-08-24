@@ -45,3 +45,11 @@
     width:20px;
     height:20px;
 }
+
+/**LISTS */
+.listItem__activating{
+    cursor:pointer;
+}
+.listItem__activating:hover{
+    background-color: azure;
+}
