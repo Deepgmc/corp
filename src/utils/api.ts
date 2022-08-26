@@ -1,6 +1,8 @@
 import axios from 'axios'
-import store from '../store/store.js'
+import store from '../store/store'
 import { CORP_AUTH_TOKEN_NAME } from './STORAGE_C'
+
+import { IAxiosQuery } from '@/types/globalTypes'
 
 import {
     TOKEN_VALIDATION_FAIL,
@@ -15,18 +17,19 @@ const config = {
     }
 }
 
+
+
 const $api = axios.create(config)
 
-// POST, /auth/auth/login, {data}
-$api.sendQuery = async function({
+const sendQuery = async function({
     type,
     moduleName,
     section,
     operation,
     data
-}){
+}: IAxiosQuery){
     type = type.toLowerCase()
-    const token = store.getters['auth/GET_TOKEN']
+    const token: string = store.getters['auth/GET_TOKEN']
     if(
         !token ||
         (token && !validateToken(token))
@@ -64,4 +67,4 @@ const validateToken = function(token){
 }
 
 
-export default $api
+export default sendQuery

@@ -104,7 +104,7 @@ export default {
             }
 
             if(!this.companyId){
-                this.showDefaultMessage(dispatch, 'save_error')
+                console.error('add position error')
                 return
             }
 

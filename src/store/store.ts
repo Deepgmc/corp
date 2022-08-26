@@ -1,14 +1,18 @@
-import { createStore } from 'vuex'
-import auth from './modules/auth.js'
-import company from './modules/company.js'
+import { createStore, StoreOptions } from 'vuex'
+
+import auth from '@/store/modules/auth'
+import company from '@/store/modules/company'
+
 import {
     SET_NOTIFICATION
-} from '../utils/STORE_C.js'
-import store_actions from './store_actions.js'
+} from '@/utils/STORE_C'
 
-export default createStore({
+import store_actions from './store_actions'
+import { RootState } from '@/types/StoreTypes'
+
+export default createStore<RootState>({
     state: {
-        notification: null,
+        notification: {}
     },
 
     getters: {

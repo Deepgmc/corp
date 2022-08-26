@@ -239,7 +239,7 @@
 
                 <div class="row mt-2">
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Сохранить</button>
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
                         <span v-if="this.isModal" type="button" class="btn btn-secondary" style="margin-left:10px;" data-bs-dismiss="modal">Закрыть</span>
                     </div>
                 </div>
@@ -314,8 +314,8 @@ export default {
                 this.selectedPosition   = thisEmployee.positionId
                 this.employeeName       = thisEmployee.fio
 
-                this.employeeBirthday = this.formatDateToInput(new Date(thisEmployee.employeeBirthday * 1000))
-                this.hireDate         = this.formatDateToInput(new Date(thisEmployee.hireDate * 1000))
+                this.employeeBirthday   = this.formatDateToInput(new Date(thisEmployee.employeeBirthday * 1000))
+                this.hireDate           = this.formatDateToInput(new Date(thisEmployee.hireDate * 1000))
 
                 this.employeeAddress    = thisEmployee.employeeAddress
                 this.employeePhone      = thisEmployee.employeePhone
@@ -378,20 +378,20 @@ export default {
             saveEmployee: 'ACTION_SAVE_NEW_EMPLOYEE'
         }),
 
-        setEmployeeNameField ($event) {this.v.employeeName.$touch()},
-        setDepartmentField ($event) {this.v.employeeName.$touch()},
-        setPositionField ($event) {this.v.employeeName.$touch()},
-        setHireDateField ($event) {this.v.hireDate.$touch()},
-        setBirthdayField ($event) {this.v.employeeBirthday.$touch()},
-        setEmployeeAddressField ($event) {this.v.employeeAddress.$touch()},
-        setEmployeePhoneField ($event) {this.v.employeePhone.$touch()},
-        setEmployeeEmailField ($event) {this.v.employeeEmail.$touch()},
-        setEmployeeSalaryField ($event) {this.v.employeeSalary.$touch()},
-        setPassportSerialField ($event) {this.v.passportSerial.$touch()},
-        setPassportPlaceField ($event) {this.v.passportPlace.$touch()},
-        setInnNumberField ($event) {this.v.innNumber.$touch()},
-        setSnilsNumberField ($event) {this.v.snilsNumber.$touch()},
-        setEmpRecordNumberField ($event) {this.v.empRecordNumber.$touch()},
+        setEmployeeNameField (/*$event*/) {this.v.employeeName.$touch()},
+        setDepartmentField (/*$event*/) {this.v.employeeName.$touch()},
+        setPositionField (/*$event*/) {this.v.employeeName.$touch()},
+        setHireDateField (/*$event*/) {this.v.hireDate.$touch()},
+        setBirthdayField (/*$event*/) {this.v.employeeBirthday.$touch()},
+        setEmployeeAddressField (/*$event*/) {this.v.employeeAddress.$touch()},
+        setEmployeePhoneField (/*$event*/) {this.v.employeePhone.$touch()},
+        setEmployeeEmailField (/*$event*/) {this.v.employeeEmail.$touch()},
+        setEmployeeSalaryField (/*$event*/) {this.v.employeeSalary.$touch()},
+        setPassportSerialField (/*$event*/) {this.v.passportSerial.$touch()},
+        setPassportPlaceField (/*$event*/) {this.v.passportPlace.$touch()},
+        setInnNumberField (/*$event*/) {this.v.innNumber.$touch()},
+        setSnilsNumberField (/*$event*/) {this.v.snilsNumber.$touch()},
+        setEmpRecordNumberField (/*$event*/) {this.v.empRecordNumber.$touch()},
 
         async saveEmployeeSubmit(){
             const result = await this.v.$validate()
@@ -400,7 +400,7 @@ export default {
                 return
             }
             if(!this.company.id){
-                utils.showDefaultMessage(dispatch, 'save_error')
+                console.error('add employee error')
                 return
             }
 

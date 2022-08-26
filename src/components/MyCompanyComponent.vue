@@ -57,8 +57,8 @@ import { mapState, mapMutations, mapActions } from 'vuex'
 
 import {
     ACTION_SAVE_USER_COMPANY_INFO,
-    SET_COMPANY_FIELD
-} from '../utils/STORE_C.js'
+    //SET_COMPANY_FIELD
+} from '../utils/STORE_C'
 
 export default {
 
@@ -91,9 +91,9 @@ export default {
             saveUserCompanyInfo: ACTION_SAVE_USER_COMPANY_INFO
         }),
 
-        ...mapMutations('company', {
-            setCompanyField: SET_COMPANY_FIELD
-        }),
+        // ...mapMutations('company', {
+        //     setCompanyField: SET_COMPANY_FIELD
+        // }),
 
         setName ($event) {
             this.v.localName.$touch()

@@ -1,6 +1,5 @@
 <template>
 
-
         <div v-if="itemsToRender.length < 1">
             <div class="p-3">Данных для отображения нет</div>
         </div>
@@ -31,6 +30,8 @@
 
 export default {
 
+    name: 'ListComponent',
+
     data(){
         return {
             isCollapsed: true,
@@ -53,6 +54,7 @@ export default {
             } else if(!this.isCollapsed){
                 return this.items
             }
+            return this.items
         }
     },
 
@@ -60,7 +62,7 @@ export default {
         items: {
             type    : Array,
             required: false,
-            default : []
+            default : () => []
         },
         collapsedSize: {
             type    : Number,

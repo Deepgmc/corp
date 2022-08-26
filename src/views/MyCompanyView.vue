@@ -5,14 +5,15 @@
 </template>
 
 
-<script>
+<script lang="ts">
 
 import MyCompanyComponent from '@/components/MyCompanyComponent.vue'
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
     name: 'MyCompanyView',
 
     components: {MyCompanyComponent},
-}
+})
 
 </script>

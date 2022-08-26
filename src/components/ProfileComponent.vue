@@ -87,11 +87,8 @@ export default {
                 name: this.localName
             }
 
-            const settings = {testSetting: 123}
-
             this.saveProfileInfo({
-                newUser : newUser,
-                settings: settings
+                newUser : newUser
             })
         },
 

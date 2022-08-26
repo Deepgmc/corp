@@ -26,8 +26,8 @@ export const ACTION_GET_USER_COMPANY       = 'ACTION_GET_USER_COMPANY'
 export const SET_COMPANY                   = 'SET_COMPANY'
 export const ADD_DEPARTMENT                = 'ADD_DEPARTMENT'
 export const SET_LOADED                    = 'SET_LOADED'
-export const SET_COMPANY_FIELD             = 'SET_COMPANY_FIELD'
-export const SET_USER_FIELD                = 'SET_USER_FIELD'
+//export const SET_COMPANY_FIELD             = 'SET_COMPANY_FIELD'
+//export const SET_USER_FIELD                = 'SET_USER_FIELD'
 
 //EMPLOYEE
 export const ACTION_SAVE_NEW_EMPLOYEE = 'ACTION_SAVE_NEW_EMPLOYEE'

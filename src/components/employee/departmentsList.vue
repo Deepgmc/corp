@@ -33,7 +33,7 @@
 
 import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
-import utils from '@/utils/utilFunctions.js'
+import utils from '@/utils/utilFunctions'
 
 export default {
 
