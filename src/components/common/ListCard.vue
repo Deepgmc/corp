@@ -48,7 +48,7 @@ export default {
         items: {
             type    : Array,
             required: false,
-            default : []
+            default : () => []
         },
         collapsedSize: {
             type    : Number,
@@ -58,7 +58,7 @@ export default {
         caption: {
             type    : String,
             required: false,
-            default : 5
+            default : 'default caption'
         },
         filterField: {
             type    : String,

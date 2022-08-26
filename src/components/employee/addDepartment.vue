@@ -80,7 +80,7 @@ export default {
             }
 
             if(!this.company.id){
-                this.utils.showDefaultMessage(dispatch, 'save_error')
+                console.error('add department error')
                 return
             }
 

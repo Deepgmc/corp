@@ -1,20 +1,20 @@
 /** Vue default */
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router/router.js'
-import store from './store/store.js'
+import router from './router/router'
+import store from './store/store'
 
 // import 'bootstrap/dist/css/bootstrap.min.css'
  import 'bootstrap'
 
 /** Plugins */
-import $auth from './plugins/auth/auth.plugin.js'
+import $auth from './plugins/auth/auth.plugin'
 import Notifications from '@kyvg/vue3-notification'
-import VueTheMask from 'vue-the-mask'
+//import VueTheMask from 'vue-the-mask'
 
 
 
-const a = createApp(App)
+createApp(App)
 
     /** Vue default */
     .use(store)
@@ -23,6 +23,6 @@ const a = createApp(App)
     /** Plugins */
     .use($auth)
     .use(Notifications)
-    .use(VueTheMask)
+    //.use(VueTheMask)
 
     .mount('#corp')

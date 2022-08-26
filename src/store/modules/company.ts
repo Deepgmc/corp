@@ -1,4 +1,7 @@
-import $api from '../../utils/api.js'
+/* 1eslint-disable */
+import { Commit, Dispatch, GetterTree} from 'vuex'
+
+import sendQuery from '@/utils/api'
 
 import {
     ACTION_SAVE_USER_COMPANY_INFO,
@@ -9,7 +12,7 @@ import {
     ADD_POSITION,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
-    SET_COMPANY_FIELD,
+    //SET_COMPANY_FIELD,
     GET_IS_LOADED,
     SET_LOADED,
     ACTION_SAVE_NEW_EMPLOYEE,
@@ -21,31 +24,51 @@ import utils from '../../utils/utilFunctions'
 
 const STORE_MODULE_NAME = 'company'
 
-const companyDummy = {
-    name       : null,
+import {
+    ICompanyState,
+    ICompany,
+    IEmployee,
+    IDepartment,
+    IPosition,
+    IEmp,
+    //ValueOf
+} from '@/types/StoreTypes'
+
+interface StoreFn {
+    state   : ICompanyState,
+    commit  : Commit,
+    dispatch: Dispatch,
+    getters : GetterTree<ICompanyState, any>,
+}
+
+const companyDummy: ICompany = {
+    name       : '',
     departments: [],
-    employee   : [],
+    employees  : [],
+    positions  : [],
+    address    : '',
+    id         : null
 }
 
 export default {
 
     namespaced: true,
 
-    state() {
+    state(): ICompanyState {
         return {
             /**
                 компания вошедшего юзера
                 все остальные сущности - сотрудники, счета и т.п. относятся к этой компании, являются её подсущностями
             */
             isLoaded: false,
-            company: companyDummy
+            company : companyDummy
         }
     },
 
     actions: {
 
-        async [ACTION_SAVE_NEW_EMPLOYEE]({commit, dispatch}, employeeData){
-            return $api.sendQuery({
+        async [ACTION_SAVE_NEW_EMPLOYEE]<T extends StoreFn>(storeFn: T, employeeData: IEmployee){
+            return sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
@@ -54,27 +77,27 @@ export default {
             })
             .then((res) => {
                 if(employeeData.isRedacting){
-                    commit(UPDATE_EMPLOYEE, {
+                    storeFn.commit(UPDATE_EMPLOYEE, {
                         ...employeeData.employee
                     })
                 } else {
-                    commit(ADD_EMPLOYEE, {
+                    storeFn.commit(ADD_EMPLOYEE, {
                         ...employeeData.employee,
                         id         : res.data.message.insertId,
-                        companyId  : employeeData.companyId,
+                        companyId  : employeeData.employee.companyId,
                         create_time: Math.floor(Date.now() / 1000)
                     })
                 }
-                utils.showDefaultMessage(dispatch, 'save_success')
+                utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
             .catch((error) => {
                 console.warn('Save department error', error);
-                utils.showDefaultMessage(dispatch, 'save_error')
+                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
             })
         },
 
-        async [ACTION_SAVE_NEW_DEPARTMENT]({commit, dispatch}, {deptName, companyId}){
-            return $api.sendQuery({
+        async [ACTION_SAVE_NEW_DEPARTMENT]<T extends StoreFn>(storeFn: T, {deptName, companyId}: {deptName: string, companyId: number}){
+            return sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
@@ -85,17 +108,17 @@ export default {
                 }
             })
             .then((res) => {
-                commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
-                utils.showDefaultMessage(dispatch, 'save_success')
+                storeFn.commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
+                utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
             .catch((error) => {
                 console.log('Save department error', error);
-                utils.showDefaultMessage(dispatch, 'save_error')
+                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
             })
         },
 
-        async [ACTION_SAVE_NEW_POSITION]({commit, dispatch}, {positionName, companyId, departmentId}){
-            return $api.sendQuery({
+        async [ACTION_SAVE_NEW_POSITION]<T extends StoreFn>(storeFn: T, {positionName, companyId, departmentId}: {positionName: string, companyId: number, departmentId: number}){
+            return sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
@@ -107,39 +130,39 @@ export default {
                 }
             })
             .then((res) => {
-                commit(ADD_POSITION, {
+                storeFn.commit(ADD_POSITION, {
                     id          : res.data.message.insertId,
                     name        : positionName,
                     departmentId: departmentId,
                     companyId   : companyId
                 })
-                utils.showDefaultMessage(dispatch, 'save_success')
+                utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
             .catch((error) => {
                 console.log('Save position error', error);
-                utils.showDefaultMessage(dispatch, 'save_error')
+                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
             })
         },
 
-        async [ACTION_SAVE_USER_COMPANY_INFO]({commit, dispatch}, company){
-            return $api.sendQuery({
+        async [ACTION_SAVE_USER_COMPANY_INFO]<T extends StoreFn>(storeFn: T, company: ICompany){
+            return sendQuery({
                 type      : 'POST',
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveUserCompany',
                 data      : company
             })
-            .then((res) => {
-                commit(SET_COMPANY, company)
-                utils.showDefaultMessage(dispatch, 'save_success')
+            .then(() => {
+                storeFn.commit(SET_COMPANY, company)
+                utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
-            .catch((error) => {
-                utils.showDefaultMessage(dispatch, 'save_error')
+            .catch(() => {
+                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
             })
         },
 
-        async [ACTION_GET_USER_COMPANY]({commit, dispatch, rootGetters}, {}){
-            return $api.sendQuery({
+        async [ACTION_GET_USER_COMPANY]<T extends StoreFn>(storeFn: T){
+            return sendQuery({
                 type      : 'GET',
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
@@ -149,12 +172,12 @@ export default {
             .then((res) => {
                 if(res.data && res.data.company){
                     console.info('GetUserCompany:', res.data.company);
-                    commit(SET_COMPANY, res.data.company)
-                    commit(SET_LOADED, true)
-                } else if(rootGetters['auth/IS_AUTHENTICATED']) {
+                    storeFn.commit(SET_COMPANY, res.data.company)
+                    storeFn.commit(SET_LOADED, true)
+                } else if(storeFn.getters['auth/IS_AUTHENTICATED']) {
                     if(res.data.error){
                         Promise.reject(res.data.message)
-                        utils.showDefaultMessage(dispatch, 'save_error', res.data.message)
+                        utils.showDefaultMessage(storeFn.dispatch, 'save_error', res.data.message)
                     }
                 }
             })
@@ -166,41 +189,42 @@ export default {
     },
 
     getters: {
-        [GET_USER_COMPANY]: (state) => {
+        [GET_USER_COMPANY]: (state: ICompanyState) => {
             return state.company ?? null
         },
-        [GET_IS_LOADED]: (state) => {
+        [GET_IS_LOADED]: (state: ICompanyState) => {
             return state.isLoaded
         },
     },
 
     mutations: {
-        [SET_COMPANY](state, company){
+        [SET_COMPANY](state: ICompanyState, company: ICompany){
             if(typeof company.departments === 'undefined') company = companyDummy
             state.company = company
         },
-        [ADD_DEPARTMENT](state, newDepartment){
+        [ADD_DEPARTMENT](state: ICompanyState, newDepartment: IDepartment){
             state.company.departments.push(newDepartment)
         },
-        [ADD_POSITION](state, newPosition){
+        [ADD_POSITION](state: ICompanyState, newPosition: IPosition){
             state.company.positions.push(newPosition)
         },
-        [ADD_EMPLOYEE](state, newEmployee){
+        [ADD_EMPLOYEE](state: ICompanyState, newEmployee: IEmp){
             state.company.employees.push(newEmployee)
         },
-        [UPDATE_EMPLOYEE](state, employee){
-            let i
-            state.company.employees.find((emp, index) => {
-                i = index
+        [UPDATE_EMPLOYEE](state: ICompanyState, employee: IEmp){
+            const i: number = state.company.employees.findIndex((emp) => {
                 return emp.id === employee.id
             })
             state.company.employees.splice(i, 1, employee)
         },
-        [SET_LOADED](state, status){
+        [SET_LOADED](state: ICompanyState, status: boolean){
             state.isLoaded = status
         },
-        [SET_COMPANY_FIELD](state, {field, value}){
-            state.company[field] = value
-        }
+        // [SET_COMPANY_FIELD](state: ICompanyState, {field, value}: {
+        //     field: keyof ICompany,
+        //     value: ValueOf<ICompany>
+        // }){
+        //     state.company[field] = value
+        // }
     }
 }

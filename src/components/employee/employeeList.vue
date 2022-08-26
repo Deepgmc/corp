@@ -15,7 +15,6 @@
             </tr>
         </template>
         <template #listBody="slotParams">
-            <!--@click="loadEmployeeRedactingForm"-->
             <tr
                 class="listItem__activating"
                 @click="loadEmployeeRedactingForm($event, slotParams.item)"
@@ -53,7 +52,7 @@
 import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
 //import { defineAsyncComponent } from 'vue'
-import utils from '@/utils/utilFunctions.js'
+import utils from '@/utils/utilFunctions'
 import redactEmployeeComponent from '@/components/employee/addEmployee.vue'
 
 

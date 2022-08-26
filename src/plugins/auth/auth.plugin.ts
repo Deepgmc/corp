@@ -3,8 +3,11 @@
     можно из любого компонента разлогиниться, например, если что
     или проверить валидность токена
  */
+
+import { App } from 'vue'
+
 const $auth = {
-    install(app, options){
+    install(app: App /*, options: object*/){
         app.config.globalProperties.$auth = {
 
             login() {
@@ -13,7 +16,7 @@ const $auth = {
                     name    : this.name,
                     password: this.password
                 })
-                .then((res) => {
+                .then(() => {
                     if(!this.isRegistering) {
                         //если происходит регистрация (а не авторизация), то перекидывать дальше не нужно
                         this.$router.push({name: 'home'})

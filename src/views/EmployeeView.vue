@@ -13,7 +13,7 @@
                             Динамика отдела кадров
                         </div>
                         <div class="card-body">
-                            <employee-dynamic></employee-dynamic>
+                            <!-- <employee-dynamic></employee-dynamic> -->
                         </div>
                     </div>
                 </div>
@@ -26,17 +26,17 @@
 
 <script>
 import employeeList from '@/components/employee/employeeList.vue'
-import employeeDynamic from '@/components/employee/employeeDynamic.vue'
+// import employeeDynamic from '@/components/employee/employeeDynamic.vue'
 
 export default {
     name: 'EmployeeView',
 
-    components: {employeeList, employeeDynamic},
+    components: {employeeList, /*employeeDynamic*/},
 
-    beforeDestroy() {
-        if (this.chart) {
-            this.chart.dispose();
-        }
-  }
+    // beforeDestroy() {
+    //     if (this.chart) {
+    //         this.chart.dispose()
+    //     }
+    // }
 }
 </script>

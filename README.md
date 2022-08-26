@@ -1,14 +1,10 @@
-# CORP app. Managing employee
+# corp_ts
 
-## PROJECT SETUP >>>>>>>>>
+## Project setup
 ```
 npm install
 ```
-## SERVER >>>>>>>>>
-## Just starts the www
-node server/index.js
 
-## CLIENT >>>>>>>>>
 ### Compiles and hot-reloads for development
 ```
 npm run serve
@@ -17,3 +13,12 @@ npm run serve
 ### Compiles and minifies for production
 ```
 npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
