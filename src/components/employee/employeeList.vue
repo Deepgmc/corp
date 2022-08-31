@@ -147,7 +147,9 @@ export default {
     },
 
     methods: {
-        localSortList: utils.sortList,
+        localSortList: () => {
+            this.sorting = utils.sortList()
+        },
 
         loadEmployeeRedactingForm(event, emp){
             //this.loadingEmployee = defineAsyncComponent(() => import('./addEmployee.vue'))

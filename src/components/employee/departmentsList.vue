@@ -85,7 +85,9 @@ export default {
     },
 
     methods: {
-        localSortList: utils.sortList,
+        localSortList: () => {
+            this.sorting = utils.sortList()
+        },
     },
 
     inject: ['getDepartmentSize'],

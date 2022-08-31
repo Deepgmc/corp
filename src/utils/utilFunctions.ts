@@ -2,6 +2,8 @@ import {
     ACTION_SHOW_NOTIFICATION,
 } from './STORE_C'
 
+import { Dispatch } from 'vuex'
+
 import {
     SAVE_SUCCESS,
     SAVE_ERROR,
@@ -9,7 +11,9 @@ import {
     REGISTER_ERROR
 } from './MESSAGES'
 
-function showDefaultMessage(dispatcher, type, message = null){
+import { ISorting } from '@/types/globalTypes'
+
+function showDefaultMessage(dispatcher: Dispatch, type: string, message = ''){
     if(!message){
         switch(type){
             case 'save_success': message   = SAVE_SUCCESS; break;
@@ -22,13 +26,14 @@ function showDefaultMessage(dispatcher, type, message = null){
     dispatcher(ACTION_SHOW_NOTIFICATION, {type: type, message: message }, { root: true } )
 }
 
-function sortList({name, sorting}){
-    this.sorting = {
+function sortList({name, sorting}: {name: string, sorting: ISorting}){
+    const resSorting = {
         field    : name,
         type     : sorting.type,
         direction: sorting.direction
     }
-    sorting.direction = sorting.direction * -1
+    resSorting.direction = sorting.direction * -1
+    return resSorting
 }
 
 

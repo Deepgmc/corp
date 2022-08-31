@@ -5,12 +5,12 @@ export const REQUIRED = 'Обязательное поле'
 export const EMAIL = 'Неверно указана почта'
 export const NUMBER = 'Число'
 
-export function onlyWords(value) {
+export function onlyWords(value: string) {
     //нет цифр
     return !/\d/.test(value)
 }
 
-export function number(value) {
+export function number(value: string) {
     //только одно число
     return /\d/.test(value)
 }

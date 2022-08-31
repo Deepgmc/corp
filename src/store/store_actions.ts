@@ -10,7 +10,7 @@ interface IMsg {
 }
 
 export default {
-    [ACTION_SHOW_NOTIFICATION]<T extends object, D extends IMsg>(storeFn: T, data: D): void {
+    [ACTION_SHOW_NOTIFICATION]<T extends object, D extends IMsg>(_storeFn: T, data: D): void {
         let title = ''
         switch(data.type){
             case 'error'  : title = 'Внимание!'; break

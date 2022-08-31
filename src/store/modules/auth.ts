@@ -1,4 +1,3 @@
-import { StoreOptions, Commit, Dispatch, GetterTree } from 'vuex'
 
 import authApi from '@/utils/auth'
 import sendQuery from '@/utils/api'
@@ -15,25 +14,19 @@ import {
     SET_TOKEN,
     ACTION_LOGOUT,
     SET_USER,
-    //SET_USER_FIELD,
     ACTION_SAVE_PROFILE_INFO,
     ACTION_CHECK_USER_AUTH
 } from '@/utils/STORE_C'
 
 import { ALREADY_LOGINED } from '@/utils/MESSAGES'
 import utils from '@/utils/utilFunctions'
+import { AxiosResponse } from 'axios'
 
 import { ILoginData, IAuthState, IRegisterData, IUser } from '@/types/StoreTypes'
+import { requestTypes } from '@/types/globalTypes'
+import { StoreFn } from '@/types/StoreTypes'
 
 const STORE_MODULE_NAME = 'auth'
-
-
-interface StoreFn {
-    state   : IAuthState,
-    commit  : Commit,
-    dispatch: Dispatch,
-    getters : GetterTree<IAuthState, any>,
-}
 
 export default {
 
@@ -63,10 +56,10 @@ export default {
             storeFn.commit(FLUSH_REGISTER_ERROR_SUCCEESS)
             storeFn.commit(SET_LOADING)
             await authApi.register({ login: data.login, name: data.name, password: data.password })
-                .then((success) => {
-                    console.log('Registered new user: ', success)
-                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', success.message)
-                    storeFn.commit(SET_LOGIN_SUCCESS, success)
+                .then((response: AxiosResponse) => {
+                    console.log('Registered new user: ', response)
+                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', response.data.message.message)
+                    storeFn.commit(SET_LOGIN_SUCCESS, response)
 
                     return {
                         login   : data.login,
@@ -113,8 +106,8 @@ export default {
         },
 
         /** LOGOUT */
-        async [ACTION_LOGOUT]<T extends StoreFn>(storeFn: T, { token, user }: {token: string, user: IUser}) {
-            const logoutResult = await authApi.logout(token, user)
+        async [ACTION_LOGOUT]<T extends StoreFn>(storeFn: T, { token/*, user*/ }: {token: string, user: IUser}) {
+            const logoutResult = await authApi.logout(token/*, user*/)
             if (logoutResult) {
                 storeFn.commit(SET_TOKEN, null)
                 storeFn.commit(SET_USER, null)
@@ -123,15 +116,15 @@ export default {
 
         async [ACTION_SAVE_PROFILE_INFO]<T extends StoreFn>(storeFn: T, { newUser }: { newUser: IUser}) {
             return sendQuery({
-                type      : 'POST',
+                type      : requestTypes.post,
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveUserProfile',
                 data      : { user: newUser }
             })
-                .then((res) => {
+                .then((res: AxiosResponse) => {
                     storeFn.commit(SET_USER, newUser)
-                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', res.data.message)
+                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', res.data.message.message)
                 })
                 .catch(() => {
                     utils.showDefaultMessage(storeFn.dispatch, 'save_error')
@@ -140,16 +133,16 @@ export default {
 
         async [ACTION_CHECK_USER_AUTH]<T extends StoreFn>(storeFn: T) {
             return sendQuery({
-                type      : 'GET',
+                type      : requestTypes.get,
                 moduleName: 'auth',
                 section   : STORE_MODULE_NAME,
                 operation : 'checkUserAuth',
                 data      : { token: storeFn.getters.GET_TOKEN }
             })
-                .then((res) => {
+                .then((res: AxiosResponse) => {
                     let needToLogout = res.data.error
                     if (!needToLogout) {
-                        needToLogout = !res.data.foundUser
+                        needToLogout = res.data.foundUser
                     }
                     if (needToLogout) {
                         storeFn.commit('auth/SET_TOKEN', null)

@@ -1,6 +1,3 @@
-/* 1eslint-disable */
-import { Commit, Dispatch, GetterTree} from 'vuex'
-
 import sendQuery from '@/utils/api'
 
 import {
@@ -12,15 +9,16 @@ import {
     ADD_POSITION,
     ACTION_GET_USER_COMPANY,
     GET_USER_COMPANY,
-    //SET_COMPANY_FIELD,
     GET_IS_LOADED,
     SET_LOADED,
     ACTION_SAVE_NEW_EMPLOYEE,
     ADD_EMPLOYEE,
     UPDATE_EMPLOYEE,
-} from '../../utils/STORE_C'
+} from '@/utils/STORE_C'
 
-import utils from '../../utils/utilFunctions'
+import utils from '@/utils/utilFunctions'
+
+import { AxiosResponse } from 'axios'
 
 const STORE_MODULE_NAME = 'company'
 
@@ -31,15 +29,10 @@ import {
     IDepartment,
     IPosition,
     IEmp,
-    //ValueOf
+    StoreFn
 } from '@/types/StoreTypes'
 
-interface StoreFn {
-    state   : ICompanyState,
-    commit  : Commit,
-    dispatch: Dispatch,
-    getters : GetterTree<ICompanyState, any>,
-}
+import { requestTypes } from '@/types/globalTypes'
 
 const companyDummy: ICompany = {
     name       : '',
@@ -69,13 +62,13 @@ export default {
 
         async [ACTION_SAVE_NEW_EMPLOYEE]<T extends StoreFn>(storeFn: T, employeeData: IEmployee){
             return sendQuery({
-                type      : 'POST',
+                type      : requestTypes.post,
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveNewEmployee',
                 data      : employeeData
             })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 if(employeeData.isRedacting){
                     storeFn.commit(UPDATE_EMPLOYEE, {
                         ...employeeData.employee
@@ -98,7 +91,7 @@ export default {
 
         async [ACTION_SAVE_NEW_DEPARTMENT]<T extends StoreFn>(storeFn: T, {deptName, companyId}: {deptName: string, companyId: number}){
             return sendQuery({
-                type      : 'POST',
+                type      : requestTypes.post,
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveNewDepartment',
@@ -107,7 +100,7 @@ export default {
                     companyId
                 }
             })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 storeFn.commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
                 utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
@@ -119,7 +112,7 @@ export default {
 
         async [ACTION_SAVE_NEW_POSITION]<T extends StoreFn>(storeFn: T, {positionName, companyId, departmentId}: {positionName: string, companyId: number, departmentId: number}){
             return sendQuery({
-                type      : 'POST',
+                type      : requestTypes.post,
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveNewPosition',
@@ -129,7 +122,7 @@ export default {
                     companyId
                 }
             })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 storeFn.commit(ADD_POSITION, {
                     id          : res.data.message.insertId,
                     name        : positionName,
@@ -146,7 +139,7 @@ export default {
 
         async [ACTION_SAVE_USER_COMPANY_INFO]<T extends StoreFn>(storeFn: T, company: ICompany){
             return sendQuery({
-                type      : 'POST',
+                type      : requestTypes.post,
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'saveUserCompany',
@@ -163,13 +156,13 @@ export default {
 
         async [ACTION_GET_USER_COMPANY]<T extends StoreFn>(storeFn: T){
             return sendQuery({
-                type      : 'GET',
+                type      : requestTypes.get,
                 moduleName: 'api',
                 section   : STORE_MODULE_NAME,
                 operation : 'getUserCompany',
                 data      : {}
             })
-            .then((res) => {
+            .then((res: AxiosResponse) => {
                 if(res.data && res.data.company){
                     console.info('GetUserCompany:', res.data.company);
                     storeFn.commit(SET_COMPANY, res.data.company)

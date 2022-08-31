@@ -2,6 +2,15 @@ export interface RootState {
     notification: object
 }
 
+import { Commit, Dispatch, GetterTree } from 'vuex'
+
+export interface StoreFn {
+    state   : IAuthState,
+    commit  : Commit,
+    dispatch: Dispatch,
+    getters : GetterTree<IAuthState, any>,
+}
+
 export interface ILoginData {
     login   : string,
     password: string
@@ -78,3 +87,4 @@ export interface ICompanyState {
     isLoaded: boolean,
     company : ICompany
 }
+
