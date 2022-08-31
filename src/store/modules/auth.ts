@@ -36,7 +36,7 @@ export default {
         return {
             isLoading: false,
             user     : null,
-            token    : authApi.getToken() ?? null,
+            token    : authApi.getToken() ?? '',
             error    : null,
             success  : null
         }
@@ -58,7 +58,7 @@ export default {
             await authApi.register({ login: data.login, name: data.name, password: data.password })
                 .then((response: AxiosResponse) => {
                     console.log('Registered new user: ', response)
-                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', response.data.message.message)
+                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', response.data.message)
                     storeFn.commit(SET_LOGIN_SUCCESS, response)
 
                     return {
@@ -124,7 +124,7 @@ export default {
             })
                 .then((res: AxiosResponse) => {
                     storeFn.commit(SET_USER, newUser)
-                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', res.data.message.message)
+                    utils.showDefaultMessage(storeFn.dispatch, 'login_success', res.data.message)
                 })
                 .catch(() => {
                     utils.showDefaultMessage(storeFn.dispatch, 'save_error')
@@ -142,10 +142,10 @@ export default {
                 .then((res: AxiosResponse) => {
                     let needToLogout = res.data.error
                     if (!needToLogout) {
-                        needToLogout = res.data.foundUser
+                        needToLogout = !res.data.foundUser
                     }
                     if (needToLogout) {
-                        storeFn.commit('auth/SET_TOKEN', null)
+                        storeFn.commit('SET_TOKEN', null)
                         router.push({ name: 'login' })
                     }
                 })
@@ -193,10 +193,10 @@ export default {
             */
             return !!token && token.length > 30
         },
-        GET_LOGIN_ERROR: (state: IAuthState) => state.error ?? null,
+        GET_LOGIN_ERROR  : (state: IAuthState) => state.error ?? null,
         GET_LOGIN_SUCCESS: (state: IAuthState) => { return state.success ?? null },
-        GET_TOKEN: (state: IAuthState) => {
-            if (state.token === 'null' || state.token === 'undefined') return false
+        GET_TOKEN        : (state: IAuthState) => {
+            if (state.token === '' || state.token === 'null' || state.token === 'undefined') return false
             return state.token
         },
         GET_USER: (state: IAuthState) => { return state.user },

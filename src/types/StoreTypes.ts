@@ -31,7 +31,7 @@ export interface IUser {
 export interface IAuthState {
     isLoading: boolean,
     user     : IUser | null,
-    token    : string | null,
+    token    : string,
     error    : string | null,
     success  : string | null
 }

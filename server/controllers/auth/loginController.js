@@ -4,8 +4,8 @@ const loginController = function (req, res, next) {
     //! AUTHENTICATE USER
 
     const authService = new authS()
-    console.log('Попытка авторизации юзера: ', req.body.login, req.body.password)
-    authService.loginUser(req.body)
+    console.log('Попытка авторизации юзера: ', req.body.data.login, req.body.data.password)
+    authService.loginUser(req.body.data)
         .then((user) => {
             res.send({ authData: user, error: false, message: '' })
         })

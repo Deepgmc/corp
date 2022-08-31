@@ -17,8 +17,6 @@ const authApi = {
           "Content-type": "application/json"
         },
         */
-
-
         return sendQuery({
             type      : requestTypes.post,
             moduleName: 'auth',
@@ -112,7 +110,7 @@ const authApi = {
     },
 
     getToken(){
-        return localStorage.getItem(CORP_AUTH_TOKEN_NAME) || null
+        return localStorage.getItem(CORP_AUTH_TOKEN_NAME) || ''
     },
 
 }

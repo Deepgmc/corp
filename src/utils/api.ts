@@ -32,8 +32,11 @@ const sendQuery = async function({
     const lowerType = type.toLowerCase()
     const token: string = store.getters['auth/GET_TOKEN']
     if(
-        !token ||
-        (token && !validateToken(token))
+        operation !== 'register' && operation !== 'login'
+        &&
+        (
+            !token || (token && !validateToken(token))
+        )
     ){
         console.warn(`Api: ${TOKEN_VALIDATION_FAIL}`, token)
         return Promise.reject(`Api: ${TOKEN_VALIDATION_FAIL} ${token}`)

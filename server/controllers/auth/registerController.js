@@ -3,12 +3,12 @@ const authS = require('../../services/authService.js')
 const authService = new authS()
 const register = function (req, res, next) {
     //! CREATE NEW USER
-    console.log('REGISTER Controller starts')
-    console.log('Try register user: ', req.body.login, req.body.password)
+    console.log('REGISTER Controller starts', req.body)
+    console.log('Try register user: ', req.body.data.login, req.body.data.password)
 
-    authService.createNewUser(req.body)
+    authService.createNewUser(req.body.data)
         .then((successText) => {
-            res.send({error: false, message: successText})
+            res.send({data: {error: false, message: successText}})
         })
         .catch((error) => {
             res.send({error: true, message: error})
