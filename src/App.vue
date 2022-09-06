@@ -50,11 +50,9 @@ import NavComponent from '@/components/NavComponent.vue'
 import LoginInfo from '@/components/LoginInfo.vue'
 import { mapGetters, mapActions } from 'vuex'
 
-import {
-    showDefaultMessage
-} from '@/utils/utilFunctions'
+import showDefaultMessage from '@/utils/utilFunctions'
 
-import umbrellaLogo from './assets/umbrella-logo.png'
+import umbrellaLogo from '@/assets/umbrella-logo.png'
 
 export default {
     name: 'App',

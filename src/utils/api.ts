@@ -9,7 +9,6 @@ import {
     INVALID_HTTP_OPERATION
 } from './MESSAGES'
 
-import { TError  } from '@/types/globalTypes'
 
 const config: AxiosRequestConfig = {
     baseURL: process.env.VUE_APP_BASE_URL,

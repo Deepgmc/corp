@@ -76,8 +76,6 @@
             </div>
 
 
-
-
         </form>
     </div>
 </template>
@@ -106,8 +104,7 @@ export default {
         }),
 
         loginErorr () {
-            const error = this.$store.getters['auth/GET_LOGIN_ERROR']
-            return error
+            return this.$store.getters['auth/GET_LOGIN_ERROR']
         }
     },
 

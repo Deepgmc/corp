@@ -87,4 +87,3 @@ export interface ICompanyState {
     isLoaded: boolean,
     company : ICompany
 }
-

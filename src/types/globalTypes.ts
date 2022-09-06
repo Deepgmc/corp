@@ -1,7 +1,5 @@
-import { ICompany, IUser } from './StoreTypes'
 
 export enum requestTypes {get = 'get', post = 'post'}
-import { AxiosResponse } from 'axios'
 
 export interface IAxiosQuery {
     type      : requestTypes,
@@ -13,32 +11,9 @@ export interface IAxiosQuery {
 
 export type TError = string
 
-// export interface IResponseDataFormat {
-//     authData: {
-//         user: IUser,
-//     },
-//     error: TError,
-//     message: {
-//         message: string,
-//         insertId: number
-//     },
-//     foundUser: string,
-//     company: ICompany
-// }
-// export interface IResponseFormat {
-//     value: void,
-//     data: IResponseDataFormat
-// }
-
-// export interface IAxiosResponse {
-//     res: void | Promise<AxiosResponse>
-// }
-
-
-
 export interface ISuccess {
     message: string,
-    error?: object
+    error? : object
 }
 
 export interface ISorting {
