@@ -1,12 +1,12 @@
 const {connection} = require('../mysql_connection.js')
 const crypto = require('crypto')
+const messages = require('../MESSAGES')
 
 class Service {
 
     _crypto = crypto
     _connection = connection
-    _update_error = 'Ошибка обновления данных'
-
+    _update_error = messages.SAVE_ERROR
 
     getMD5(pass){
         return this._crypto.createHash('md5').update(pass).digest('hex')

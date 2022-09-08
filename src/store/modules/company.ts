@@ -96,9 +96,13 @@ export default {
                     companyId
                 }
             })
-            .then((res: AxiosResponse) => {
-                storeFn.commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
-                utils.showDefaultMessage(storeFn.dispatch, 'save_success')
+            .then((result: AxiosResponse) => {
+                if(result.data.error){
+                    utils.showDefaultMessage(storeFn.dispatch, 'save_error', result.data.message)
+                } else {
+                    storeFn.commit(ADD_DEPARTMENT, {id: result.data.message.insertId, name: deptName})
+                    utils.showDefaultMessage(storeFn.dispatch, 'save_success')
+                }
             })
         },
 

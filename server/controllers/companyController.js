@@ -1,5 +1,15 @@
 const companyS = require('../services/companyService')
 const authS = require('../services/authService.js')
+const messages = require('../MESSAGES')
+
+const save_error = {
+    error: true,
+    message: messages.SAVE_ERROR
+}
+const save_success = {
+    error: false,
+    message: ''
+}
 
 const companyService = new companyS()
 const authService = new authS()
@@ -11,26 +21,41 @@ const saveUserCompany = async function (req, res, next) {
 
     user = await authService.findUserByToken(token)
     if(!user){
-        res.send({error: true, message: 'Пользователь с таким токеном не найден'})
+        res.send({error: true, message: messages.USER_NOT_FOUND})
         return
     }
 
     const result = await companyService.saveUserCompany(req.body.data, user)
-    res.send({error: result.error, message: result.error ? result.message : 'save_success'})
+    if(result.error) {
+        save_error.message = result.message
+        res.send(save_error)
+    } else res.send(save_success)
 }
 
 const saveNewDepartment = async function (req, res, next) {
-    const saveResult = await companyService.saveNewDepartment(req.body.data)
-    res.send({error: false, message: saveResult})
+    try {
+        await companyService.saveNewDepartment(req.body.data)
+        res.send(save_success)
+    } catch (error){
+        res.send(save_error)
+    }
 }
 const saveNewPosition = async function (req, res, next) {
-    const saveResult = await companyService.saveNewPosition(req.body.data)
-    res.send({error: false, message: saveResult})
+    try {
+        await companyService.saveNewPosition(req.body.data)
+        res.send(save_success)
+    } catch (error){
+        res.send(save_error)
+    }
 }
 
 const saveNewEmployee = async function (req, res, next) {
-    const saveResult = await companyService.saveNewEmployee(req.body.data)
-    res.send({error: false, message: saveResult})
+    try {
+        await companyService.saveNewEmployee(req.body.data)
+        res.send(save_success)
+    } catch (error){
+        res.send(save_error)
+    }
 }
 
 const getUserCompany = async function (req, res, next) {
