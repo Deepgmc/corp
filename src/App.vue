@@ -4,6 +4,9 @@
         <div class="row">
             <div class="col-md-9">
                 <img alt="Corp logo" :src="umbrellaLogo">
+                <div class="spinner-border text-secondary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
             <div class="col-md-3">
 

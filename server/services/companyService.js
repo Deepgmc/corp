@@ -9,16 +9,27 @@ class companyService extends Service {
     }
 
     async saveUserCompany({name, address}, user){
-        let company, result
+        let result
         if(!user.companyId){
             /** если у юзера еще нет компании - создадим её */
             result = await this.createCompany({companyName: name, companyAddress: address}, user)
             return result
         } else {
             /** компания уже была создана ранее - обновим её данные */
-            company = await this.findUserCompany(user.companyId)
-            if(company && typeof company.id !== 'undefined'){
-                result = await this.updateCompanyData(name, address, company.id)
+            const company = await this.findUserCompany(user.companyId)
+
+
+            //if(company && typeof company.id !== 'undefined'){
+            if(company && company.id){
+
+
+                try {
+                    result = await this.updateCompanyData(name, address, company.id)
+                } catch (error){
+                    result = this.getUpdateError()
+                }
+
+
             } else {
                 result = await this.createCompany({companyName: name, companyAddress: address}, user)
             }

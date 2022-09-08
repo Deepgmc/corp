@@ -33,7 +33,7 @@ export default {
 
     components: {employeeList, /*employeeDynamic*/},
 
-    // beforeDestroy() {
+    // beforeUnmount() {
     //     if (this.chart) {
     //         this.chart.dispose()
     //     }

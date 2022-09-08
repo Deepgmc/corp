@@ -83,10 +83,6 @@ export default {
                 }
                 utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
-            .catch((error) => {
-                console.warn('Save department error', error);
-                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
-            })
         },
 
         async [ACTION_SAVE_NEW_DEPARTMENT]<T extends StoreFn>(storeFn: T, {deptName, companyId}: {deptName: string, companyId: number}){
@@ -103,10 +99,6 @@ export default {
             .then((res: AxiosResponse) => {
                 storeFn.commit(ADD_DEPARTMENT, {id: res.data.message.insertId, name: deptName})
                 utils.showDefaultMessage(storeFn.dispatch, 'save_success')
-            })
-            .catch((error) => {
-                console.log('Save department error', error);
-                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
             })
         },
 
@@ -131,10 +123,6 @@ export default {
                 })
                 utils.showDefaultMessage(storeFn.dispatch, 'save_success')
             })
-            .catch((error) => {
-                console.log('Save position error', error);
-                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
-            })
         },
 
         async [ACTION_SAVE_USER_COMPANY_INFO]<T extends StoreFn>(storeFn: T, company: ICompany){
@@ -145,12 +133,13 @@ export default {
                 operation : 'saveUserCompany',
                 data      : company
             })
-            .then(() => {
-                storeFn.commit(SET_COMPANY, company)
-                utils.showDefaultMessage(storeFn.dispatch, 'save_success')
-            })
-            .catch(() => {
-                utils.showDefaultMessage(storeFn.dispatch, 'save_error')
+            .then((result: AxiosResponse) => {
+                if(result.data.error){
+                    utils.showDefaultMessage(storeFn.dispatch, 'save_error', result.data.message)
+                } else {
+                    storeFn.commit(SET_COMPANY, company)
+                    utils.showDefaultMessage(storeFn.dispatch, 'save_success')
+                }
             })
         },
 
@@ -164,7 +153,6 @@ export default {
             })
             .then((res: AxiosResponse) => {
                 if(res.data && res.data.company){
-                    console.info('GetUserCompany:', res.data.company);
                     storeFn.commit(SET_COMPANY, res.data.company)
                     storeFn.commit(SET_LOADED, true)
                 } else if(storeFn.getters['auth/IS_AUTHENTICATED']) {
@@ -173,9 +161,6 @@ export default {
                         utils.showDefaultMessage(storeFn.dispatch, 'save_error', res.data.message)
                     }
                 }
-            })
-            .catch((error) => {
-                console.log('error', error)
             })
         },
 
@@ -213,11 +198,5 @@ export default {
         [SET_LOADED](state: ICompanyState, status: boolean){
             state.isLoaded = status
         },
-        // [SET_COMPANY_FIELD](state: ICompanyState, {field, value}: {
-        //     field: keyof ICompany,
-        //     value: ValueOf<ICompany>
-        // }){
-        //     state.company[field] = value
-        // }
     }
 }

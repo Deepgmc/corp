@@ -5,6 +5,7 @@ class Service {
 
     _crypto = crypto
     _connection = connection
+    _update_error = 'Ошибка обновления данных'
 
 
     getMD5(pass){
@@ -31,6 +32,13 @@ class Service {
 
     getTimestamp(){
         return Math.floor(Date.now() / 1000)
+    }
+
+    getUpdateError(){
+        return {
+            error: true,
+            message: this._update_error
+        }
     }
 }
 

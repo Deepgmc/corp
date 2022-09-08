@@ -15,8 +15,8 @@ const saveUserCompany = async function (req, res, next) {
         return
     }
 
-    await companyService.saveUserCompany(req.body.data, user)
-    res.send({error: false, message: 'Saved success'})
+    const result = await companyService.saveUserCompany(req.body.data, user)
+    res.send({error: result.error, message: result.error ? result.message : 'save_success'})
 }
 
 const saveNewDepartment = async function (req, res, next) {
