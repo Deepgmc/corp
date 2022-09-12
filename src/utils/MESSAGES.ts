@@ -4,3 +4,8 @@ export const INVALID_HTTP_OPERATION = 'Неверный тип сетевой о
 export const SAVE_SUCCESS           = 'Сохранено успешно!'
 export const SAVE_ERROR             = 'Ошибка сохранения!'
 export const REGISTER_ERROR         = 'Ошибка регистрации'
+
+export const COMPANY_TREE_TXT      = 'Дерево компании'
+export const COMPANY_STRUCTURE_TXT = 'Структура компании'
+export const NEW_EMPLOYEE_TXT      = 'Нанятые сотрудники'
+export const EMPLOYEE_DYNAMIC_TXT  = 'Динамика найма сотрудников'

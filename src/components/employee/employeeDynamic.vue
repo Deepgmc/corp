@@ -1,13 +1,31 @@
 <template>
-    <chart-xy :data="chartData" :fieldX="'date'" :fieldY="'value'"></chart-xy>
+    <chart-component
+        type="xy"
+        :chartDataName="chartDataName"
+        :chartCaption="chartCaption"
+        :data="chartData"
+        :fieldX="'date'"
+        :fieldY="'value'"
+    >
+    </chart-component>
 </template>
 
 <script>
 
 import { mapState } from 'vuex'
-import chartXy from '@/components/common/chart/chartXy.vue'
+import chartComponent from '@/components/common/chart/ChartComponent.vue'
+import {
+    NEW_EMPLOYEE_TXT,
+    EMPLOYEE_DYNAMIC_TXT
+} from '@/utils/MESSAGES'
 
 export default {
+    data(){
+        return {
+            chartDataName: NEW_EMPLOYEE_TXT,
+            chartCaption : EMPLOYEE_DYNAMIC_TXT,
+        }
+    },
 
     computed: {
         ...mapState('company', {
@@ -36,7 +54,7 @@ export default {
         }
     },
 
-    components: {chartXy},
+    components: {chartComponent},
 
     inject: ['timestampToNumbers'],
 }

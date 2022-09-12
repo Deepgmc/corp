@@ -1,66 +1,62 @@
 <template>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card mt-2">
-                <div class="card-header card-header__colors">
+<div class="card mt-2">
+    <div class="card-header card-header__colors">
 
-                </div>
-                <div class="card-body">
-                    <form @submit.prevent="companyFormSubmit">
+    </div>
+    <div class="card-body">
+        <form @submit.prevent="companyFormSubmit">
 
-                        <div class="mb-3">
-                            <label for="companyName" class="form-label">Название компании</label>
-                            <input
-                                @input           ="setName"
-                                v-model          ="localName"
-                                type             ="text"
-                                :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localName')}]"
-                                id               ="companyName"
-                                aria-describedby ="nameHelp"
-                            />
-                            <div id="nameHelp" class="form-text">
-                                Длина названия не больше 40 символов
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="address" class="form-label">Адрес компании</label>
-                            <input
-                                v-model          = "localAddress"
-                                @input           = "setAddress"
-                                type             = "text"
-                                :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localAddress')}]"
-                                id               = "address"
-                                aria-describedby = "addressHelp"
-                            />
-                            <div id="addressHelp" class="form-text">
-                                Длина адреса не больше 40 символов, но не менее 10
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </form>
+            <div class="mb-3">
+                <label for="companyName" class="form-label">Название компании</label>
+                <input
+                    @input           ="setName"
+                    v-model          ="localName"
+                    type             ="text"
+                    :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localName')}]"
+                    id               ="companyName"
+                    aria-describedby ="nameHelp"
+                />
+                <div id="nameHelp" class="form-text">
+                    Длина названия не больше 40 символов
                 </div>
             </div>
-        </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Адрес компании</label>
+                <input
+                    v-model          = "localAddress"
+                    @input           = "setAddress"
+                    type             = "text"
+                    :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('localAddress')}]"
+                    id               = "address"
+                    aria-describedby = "addressHelp"
+                />
+                <div id="addressHelp" class="form-text">
+                    Длина адреса не больше 40 символов, но не менее 10
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+        </form>
     </div>
+</div>
 </template>
 
-<script>
+<script lang="ts">
+
+import { defineComponent } from 'vue'
+import { mapState, mapActions } from 'vuex'
 
 /* Валидация через vuelidate */
 import useVuelidate from '@vuelidate/core'
 import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
 import { onlyWords, ONLY_LETTERS, MAX_LENGTH, MIN_LENGTH, REQUIRED } from '../utils/customValidations'
 
-import { mapState, mapMutations, mapActions } from 'vuex'
-
 import {
     ACTION_SAVE_USER_COMPANY_INFO,
-    //SET_COMPANY_FIELD
 } from '../utils/STORE_C'
 
-export default {
+export default defineComponent({
 
     name: 'MyCompanyComponent',
 
@@ -76,13 +72,11 @@ export default {
     },
 
     computed: {
-        errorsList(){
+        errorsList(): Array<any>{
             return this.v.$errors.map((error) => error.$property)
         },
 
-        ...mapState('company', {
-            company: state => state.company
-        }),
+        ...mapState('company', ['company']),
     },
 
     methods: {
@@ -91,15 +85,11 @@ export default {
             saveUserCompanyInfo: ACTION_SAVE_USER_COMPANY_INFO
         }),
 
-        // ...mapMutations('company', {
-        //     setCompanyField: SET_COMPANY_FIELD
-        // }),
-
-        setName ($event) {
+        setName () {
             this.v.localName.$touch()
         },
 
-        setAddress ($event) {
+        setAddress () {
             this.v.localAddress.$touch()
         },
 
@@ -153,5 +143,5 @@ export default {
             v: useVuelidate()
         }
     },
-};
+});
 </script>

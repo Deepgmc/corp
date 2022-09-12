@@ -21,3 +21,8 @@ export interface ISorting {
     type     : string,
     direction: number
 }
+
+export interface IDepartmentsSummary {
+    department: string,
+    empNumber : number
+}

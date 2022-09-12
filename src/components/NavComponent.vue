@@ -8,7 +8,6 @@
 
 
 <script>
-
 import ListItems from '@/components/layouts/ListItems.vue'
 import { mapGetters } from 'vuex'
 
