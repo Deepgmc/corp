@@ -105,11 +105,11 @@ export default {
     },
 
     watch: {
-        sorting(newSorting, oldSorting){
+        sorting(newSorting/*, oldSorting*/){
             this.sortingDirection = newSorting.direction
             this.sortBasicData(newSorting)
         },
-        items(newItems){
+        items(/*newItems*/){
             this.sortBasicData(this.sorting)
         }
     },

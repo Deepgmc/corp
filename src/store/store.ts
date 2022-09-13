@@ -1,4 +1,4 @@
-import { createStore, StoreOptions } from 'vuex'
+import { createStore/*, StoreOptions*/ } from 'vuex'
 
 import auth from '@/store/modules/auth'
 import company from '@/store/modules/company'

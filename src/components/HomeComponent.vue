@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import $api from '@/utils/api'
 import currencyInfo from '@/components/common/currencyInfo'
 import currencyBody from '@/components/common/currencyBody'
 export default {
@@ -63,7 +62,7 @@ export default {
 
     methods: {
         loadCurrency(){
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 /**
                 чтобы на этапе тестирования не тягать АПИ ЦБ РФ, убрать в реальном проекте
                 */
@@ -82,28 +81,6 @@ export default {
                 this.isLoading = false
                 this.currencies = c
                 resolve(c)
-
-
-
-
-                // $api.sendQuery({
-                //     type      : 'GET',
-                //     moduleName: 'api',
-                //     section   : 'common',
-                //     operation : 'getCBRFCurrency',
-                //     data      : {
-                //         forDate: this.currentDateXMLFormat
-                //     }
-                // })
-                // .then((res) => {
-                //     this.isLoading = false
-                //     this.currencies = res.data.currencies
-                //     resolve(res.data.currencies)
-                // })
-                // .catch((error) => {
-                //     reject('Ошибка загрузки валют')
-                //     console.log('Currency error: ', error);
-                // })
 
             })
         }

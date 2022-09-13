@@ -68,7 +68,7 @@ export default {
             saveNewDepartment: 'ACTION_SAVE_NEW_DEPARTMENT'
         }),
 
-        setDeptName ($event) {
+        setDeptName (/*$event*/) {
             this.v.localDeptName.$touch()
         },
 

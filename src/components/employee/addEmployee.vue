@@ -55,7 +55,6 @@
                 <div class="row mt-2">
                     <div class="col-md-6">
                         <label for="employeePhone" class="form-label">Телефон</label>
-                        <!-- v-mask="'+7(###) ###-##-##'" -->
                         <input
                             @input           ="setEmployeePhoneField"
                             v-model          ="employeePhone"
@@ -63,6 +62,7 @@
                             :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('employeePhone')}]"
                             id               ="employeePhone"
                             placeholder="+7(000) 000-00-00"
+                            v-maska="'+7(###) ###-##-##'"
                         >
                     </div>
                     <div class="col-md-6">
@@ -161,7 +161,6 @@
                 <div class="row mt-2">
                     <div class="col-md-4">
                         <label for="passportSerial" class="form-label">Серия/номер</label>
-                        <!-- v-mask="'####-######'" -->
                         <input
                             @input           ="setPassportSerialField"
                             v-model          ="passportSerial"
@@ -169,7 +168,8 @@
                             :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('passportSerial')}]"
                             id               ="passportSerial"
                             aria-describedby ="passportSerialHelp"
-                            placeholder="0000-000000"
+                            placeholder      ="0000-000000"
+                            v-maska          ="'####-######'"
                         >
                     </div>
 
@@ -196,7 +196,6 @@
                 <div class="row mt-2">
                     <div class="col-md-4">
                         <label for="innNumber" class="form-label">ИНН</label>
-                        <!-- v-mask="'############'" -->
                         <input
                             @input           ="setInnNumberField"
                             v-model          ="innNumber"
@@ -204,13 +203,13 @@
                             :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('innNumber')}]"
                             id               ="innNumber"
                             aria-describedby ="innNumberHelp"
-                            placeholder="000000000000"
+                            placeholder      ="000000000000"
+                            v-maska          ="'############'"
                         >
                     </div>
 
                     <div class="col-md-4">
                         <label for="snilsNumber" class="form-label">Номер страхового свидетельства</label>
-                        <!-- v-mask="'###-###-###-##'" -->
                         <input
                             @input           ="setSnilsNumberField"
                             v-model          ="snilsNumber"
@@ -218,12 +217,12 @@
                             :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('snilsNumber')}]"
                             id               ="snilsNumber"
                             aria-describedby ="snilsNumberHelp"
-                            placeholder="000-000-000-00"
+                            placeholder      ="000-000-000-00"
+                            v-maska          ="'###-###-###-##'"
                         >
                     </div>
                     <div class="col-md-4">
                         <label for="empRecordNumber" class="form-label">Номер трудовой книжки</label>
-                        <!-- v-mask="'#######'" -->
                         <input
                             @input           ="setEmpRecordNumberField"
                             v-model          ="empRecordNumber"
@@ -231,7 +230,8 @@
                             :class           ="['form-control form-control-sm', {'is-invalid': errorsList.includes('empRecordNumber')}]"
                             id               ="empRecordNumber"
                             aria-describedby ="empRecordNumberHelp"
-                            placeholder="0000000"
+                            placeholder      ="0000000"
+                            v-maska          ="'#######'"
                         >
                     </div>
                 </div>

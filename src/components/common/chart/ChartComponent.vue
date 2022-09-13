@@ -9,6 +9,12 @@
                 <span class="visually-hidden">Loading...</span>
             </div>
             <div v-show="isLoaded" class="mainChart" ref="chartdiv"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <slot name="subTableSlot"></slot>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -48,49 +54,86 @@ export default {
         type: {
             type    : String,
             required: true
-        }
+        },
+        chartItemClick: {
+            type    : Function,
+            required: false
+        },
     },
+
+    columnSeries: null,
 
     data() {
         return {
-            isLoaded     : false,
-            chart        : null
+            isLoaded: false,
+            chart   : null,
         }
     },
 
     mounted(){
-        let series, legend
         const root = am5.Root.new(this.$refs.chartdiv)
 
         root.setThemes([am5themes_Animated.new(root)])
-        root.locale = am5lang_ru_RU
+        this.setLocale(root)
 
         const axis = this.getChartAndAxis(root)
         const seriesConfig = this.getSeriesConfig(axis)
+        const series = this.setSeriesAndLegend(root, seriesConfig)
 
-        if(this.type === 'xy'){
-            series = this.chart.series.push(am5xy.ColumnSeries.new(root, seriesConfig))
-            legend = this.chart.children.push(am5.Legend.new(root, {}))
-            this.chart.set('cursor', am5xy.XYCursor.new(root, {}))
-            legend.data.setAll(this.chart.series.values)
-        } else if(this.type === 'pie'){
-            series = this.chart.series.push(am5pie.PieSeries.new(root, seriesConfig))
+        this.setSeriesTooltip(series)
+
+        if(this.isColumnsGraph()){
+            this.$options.columnSeries.columns.template.events.on('click', this.chartClickHandler)
+        } else {
+            this.$options.columnSeries.slices._values.forEach(slice => slice.events.on('click', this.chartClickHandler))
         }
-
-        series.data.setAll(this.data)
-
-        series[this.type === 'pie' ? 'slices' : 'columns'].template.setAll({
-            tooltipText: `{category${this.type === 'pie' ? '' : 'X'}}: {value${this.type === 'pie' ? '' : 'Y'}} чел.`
-        })
 
         this.isLoaded = true
     },
 
 
     methods: {
+
+        setSeriesAndLegend(root, seriesConfig){
+            let series, legend
+            if(this.isColumnsGraph()){
+                this.$options.columnSeries = am5xy.ColumnSeries.new(root, seriesConfig)
+                series = this.chart.series.push(this.$options.columnSeries)
+                legend = this.chart.children.push(am5.Legend.new(root, {}))
+                legend.data.setAll(this.chart.series.values)
+                //this.chart.set('cursor', am5xy.XYCursor.new(root, {}))
+            } else {
+                this.$options.columnSeries = am5pie.PieSeries.new(root, seriesConfig)
+                series = this.chart.series.push(this.$options.columnSeries)
+                series.labels.template.setAll({
+                    text: '{category}',
+                    textType: 'circular',
+                    inside: true,
+                    radius: 20
+                })
+            }
+
+            series.data.setAll(this.data)
+            return series
+        },
+
+        setLocale(root){
+            root.locale = am5lang_ru_RU
+        },
+
+        chartClickHandler(event) {
+            console.log('Clicked value: ', event.target.dataItem.dataContext)
+            if(this.chartItemClick){
+                this.chartItemClick(event.target.dataItem.dataContext)
+            }
+            // console.log('Clicked on a column', event.target.uid)
+            // console.log(event.target.dataItem)
+            // console.log(event.target.dataItem.component)
+        },
+
         getChartAndAxis(root){
             let xAxis, yAxis
-            if(this.type === 'xy'){
+            if(this.isColumnsGraph()){
                 this.chart = root.container.children.push(
                     am5xy.XYChart.new(root, {
                         panY: false,
@@ -109,7 +152,7 @@ export default {
                     })
                 )
                 xAxis.data.setAll(this.data)
-            } else if(this.type === 'pie'){
+            } else {
                 this.chart = root.container.children.push(
                     am5pie.PieChart.new(root, {})
                 )
@@ -121,21 +164,36 @@ export default {
             const seriesConfig = {
                 name: this.chartDataName
             }
-            if(this.type === 'xy'){
+            if(this.isColumnsGraph()){
                 seriesConfig.xAxis          = axis.xAxis,
                 seriesConfig.yAxis          = axis.yAxis,
                 seriesConfig.valueYField    = this.fieldY
                 seriesConfig.categoryXField = this.fieldX
-            } else if(this.type === 'pie'){
+            } else {
                 seriesConfig.valueField    = this.fieldY
                 seriesConfig.categoryField = this.fieldX
             }
             return seriesConfig
         },
+
+        setSeriesTooltip(series){
+            series[this.chartBarTypeName()].template.setAll({
+                tooltipText: `{category${this.isColumnsGraph() ? 'X' : ''}}: {value${this.isColumnsGraph() ? 'Y' : ''}} чел.`
+            })
+        },
+
+        isColumnsGraph(){
+            return this.type === 'xy'
+        },
+
+        chartBarTypeName() {
+            return this.isColumnsGraph() ? 'columns' : 'slices'
+        }
     },
 
     beforeUnmount() {
         if (this.chart) {
+            this.$options.columnSeries[this.chartBarTypeName()].template.events.off('click', this.chartClickHandler)
             this.chart.dispose()
         }
     },

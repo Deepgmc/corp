@@ -93,7 +93,7 @@ export default {
             this.$auth.getUser.call(this)
         }
         /** данные по компании юзера */
-        this.$store.dispatch(`company/ACTION_GET_USER_COMPANY`, {})
+        this.$store.dispatch('company/ACTION_GET_USER_COMPANY', {})
     },
 
     computed: {
