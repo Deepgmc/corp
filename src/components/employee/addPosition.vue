@@ -92,7 +92,7 @@ export default {
             saveNewPosition: 'ACTION_SAVE_NEW_POSITION'
         }),
 
-        setPositionName ($event) {
+        setPositionName (/*$event*/) {
             this.v.localPositionName.$touch()
         },
 

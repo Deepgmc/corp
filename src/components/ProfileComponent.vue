@@ -96,7 +96,7 @@ export default {
             saveProfileInfo: 'ACTION_SAVE_PROFILE_INFO'
         }),
 
-        setLocalName ($event) {//при изменении триггерим vuelidate
+        setLocalName (/*$event*/) {//при изменении триггерим vuelidate
             this.v.localName.$touch()
         },
 

@@ -1,8 +1,8 @@
+import { Commit, Dispatch, GetterTree } from 'vuex'
+
 export interface RootState {
     notification: object
 }
-
-import { Commit, Dispatch, GetterTree } from 'vuex'
 
 export interface StoreFn {
     state   : IAuthState,
@@ -21,11 +21,11 @@ export interface IRegisterData extends ILoginData {
 }
 
 export interface IUser {
-    companyId: number,
-    id       : number,
-    login    : string,
-    name     : string,
-    token    : string
+    readonly id: number,
+    companyId  : number,
+    login      : string,
+    name       : string,
+    token      : string
 }
 
 export interface IAuthState {
@@ -37,6 +37,7 @@ export interface IAuthState {
 }
 
 export interface IEmp {
+    //[key: string]: string - для неограниченного числа записей
     companyId       : number,
     create_time     : number,
     departmentId    : number,
@@ -48,7 +49,7 @@ export interface IEmp {
     employeeSalary  : number,
     fio             : string,
     hireDate        : number,
-    id              : number,
+    readonly id     : number,
     innNumber       : string,
     passportPlace   : string,
     passportSerial  : string,
@@ -61,15 +62,15 @@ export interface IEmployee {
 }
 
 export interface IDepartment {
-    companyId: number,
-    id       : number,
-    name     : string
+    companyId   : number,
+    readonly id : number,
+    name        : string
 }
 
 export interface IPosition {
     companyId   : number,
     departmentId: number,
-    id          : number,
+    readonly id : number,
     name        : string
 }
 
@@ -77,7 +78,7 @@ export interface ICompany {
     address     : string,
     departments : Array<IDepartment>,
     employees   : Array<IEmp>,
-    id          : number | null,
+    readonly id : number | null,
     name        : string
     positions   : Array<IPosition>
 }

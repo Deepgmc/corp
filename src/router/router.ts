@@ -55,8 +55,7 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  const f = from
+router.beforeEach((to, _from, next) => {
   if (to.name !== 'login' && !store.getters['auth/IS_AUTHENTICATED']) {
       next('/login')
   } else {

@@ -1,5 +1,8 @@
 
-export enum requestTypes {get = 'get', post = 'post'}
+export enum requestTypes {
+    get  = 'get',
+    post = 'post'
+}
 
 export interface IAxiosQuery {
     type      : requestTypes,
@@ -20,4 +23,10 @@ export interface ISorting {
     field    : string,
     type     : string,
     direction: number
+}
+
+export interface IDepartmentsGraphSummary {
+    department  : string,
+    empNumber   : number,
+    departmentId: number
 }

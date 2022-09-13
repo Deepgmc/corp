@@ -10,7 +10,7 @@ import store from './store/store'
 /** Plugins */
 import $auth from './plugins/auth/auth.plugin'
 import Notifications from '@kyvg/vue3-notification'
-//import VueTheMask from 'vue-the-mask'
+import Maska from 'maska'
 
 
 
@@ -23,6 +23,6 @@ createApp(App)
     /** Plugins */
     .use($auth)
     .use(Notifications)
-    //.use(VueTheMask)
+    .use(Maska)
 
     .mount('#corp')

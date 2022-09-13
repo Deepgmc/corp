@@ -28,7 +28,7 @@ const $auth = {
             },
 
             logout() {
-                this.$store.dispatch(`auth/ACTION_LOGOUT`, {
+                this.$store.dispatch('auth/ACTION_LOGOUT', {
                     token: this.token,
                     user: this.user
                 })
@@ -41,7 +41,7 @@ const $auth = {
                 if(!this.token){
                     console.error('Invalid token')
                 }
-                this.$store.dispatch(`auth/ACTION_GET_USER`, {
+                this.$store.dispatch('auth/ACTION_GET_USER', {
                     token: this.token
                 })
             },
