@@ -62,9 +62,9 @@ export interface IEmployee {
 }
 
 export interface IDepartment {
+    name        : string
     companyId   : number,
     readonly id : number,
-    name        : string
 }
 
 export interface IPosition {

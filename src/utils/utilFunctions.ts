@@ -36,9 +36,15 @@ function sortList({name, sorting}: {name: string, sorting: ISorting}){
     return resSorting
 }
 
+function timestampToNumbers(timestamp: number, locale: string) {
+    const formatter = new Intl.DateTimeFormat(locale ?? 'ru')
+    return formatter.format(timestamp * 1000)
+}
+
 
 
 export default {
     showDefaultMessage,
-    sortList
+    sortList,
+    timestampToNumbers
 }

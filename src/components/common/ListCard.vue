@@ -50,24 +50,24 @@ export default {
             required: false,
             default : () => []
         },
-        collapsedSize: {
+        collapsedSize: { // размер таблицы в свернутом состоянии
             type    : Number,
             required: false,
             default : 5
         },
-        caption: {
+        caption: { // заголовок таблицы
             type    : String,
             required: false,
             default : 'default caption'
         },
         filterField: {
             type    : String,
-            required: true,
+            required: false,
             default : 'name'
         },
         sorting: {
             type    : Object,
-            required: true
+            required: false
         },
     },
 

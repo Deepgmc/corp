@@ -18,6 +18,7 @@ import {
     NEW_EMPLOYEE_TXT,
     EMPLOYEE_DYNAMIC_TXT
 } from '@/utils/MESSAGES'
+import utils from '@/utils/utilFunctions'
 
 export default {
     data(){
@@ -41,7 +42,7 @@ export default {
                 else return 1
             })
             .forEach((emp) => {
-                const thisEmpDate = new Date(this.timestampToNumbers(emp.hireDate, 'en'))
+                const thisEmpDate = new Date(utils.timestampToNumbers(emp.hireDate, 'en'))
                 employeeQuantity.set(emp.hireDate, {
                     date : thisEmpDate,
                     value: typeof employeeQuantity.get(emp.hireDate) === 'undefined' ? 1: employeeQuantity.get(emp.hireDate).value + 1
@@ -56,6 +57,5 @@ export default {
 
     components: {chartComponent},
 
-    inject: ['timestampToNumbers'],
 }
 </script>
