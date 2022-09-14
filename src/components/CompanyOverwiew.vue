@@ -9,8 +9,37 @@
         :chartItemClick="chartItemClick"
     >
         <template #subTableSlot>
-            <div v-if="clickedChartItem">
-                {{clickedChartItem}}
+            <div v-if="clickedChartDepartmentId">
+
+                <list-card
+                    :items="selectedEmployees"
+                    :collapsedSize="collapsedSize"
+                    :caption="tableCaption"
+                    :sorting="sorting"
+                >
+                    <template #listTableCaption>
+                        <tr>
+                            <th v-for="column in columns" :key="column.name" class="text-left">
+                                {{column.caption}}
+                            </th>
+                        </tr>
+                    </template>
+                    <template #listBody="slotParams">
+                        <tr
+                            class="listItem__activating"
+                        >
+                            <td v-for="column in columns" :key="column.name">
+                                <template v-if="column.action">
+                                    <span v-html="column.action(slotParams)"></span>
+                                </template>
+                                <template v-else>
+                                    <span v-html="slotParams.item[column.name]"></span>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </list-card>
+
             </div>
         </template>
     </chart-component>
@@ -19,20 +48,31 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapState } from 'vuex'
-import { IEmp, IDepartment } from '@/types/StoreTypes'
-import { IDepartmentsGraphSummary } from '@/types/globalTypes'
+import { IEmp, IDepartment, IPosition } from '@/types/StoreTypes'
+import { IDepartmentsGraphSummary, IEmpListItem } from '@/types/globalTypes'
 import {
     COMPANY_TREE_TXT,
     COMPANY_STRUCTURE_TXT
 } from '@/utils/MESSAGES'
 import chartComponent from '@/components/common/chart/ChartComponent.vue'
+import ListCard from '@/components/common/ListCard.vue'
+import { employeeListColumns } from '@/components/common/ListCardColumns'
+import utils from '@/utils/utilFunctions'
 
 export default defineComponent({
     data(){
         return {
-            chartDataName   : COMPANY_TREE_TXT,
-            chartCaption    : COMPANY_STRUCTURE_TXT,
-            clickedChartItem: null as null | string,
+            collapsedSize           : 5,
+            tableCaption            : '',
+            chartDataName           : COMPANY_TREE_TXT,
+            chartCaption            : COMPANY_STRUCTURE_TXT,
+            clickedChartDepartmentId: null as null | number,
+            columns                 : employeeListColumns(utils.timestampToNumbers),
+            sorting      : {
+                field    : 'fio',
+                type     : 'string',
+                direction: 1
+            },
         }
     },
 
@@ -45,6 +85,11 @@ export default defineComponent({
             departments: (state: any): Array<IDepartment> => {
                 return state.company.company.departments
             },
+
+            positions: (state: any): Array<IPosition> => {
+                return state.company.company.positions
+            },
+
         }),
 
         chartData(): Array<IDepartmentsGraphSummary> {
@@ -62,17 +107,40 @@ export default defineComponent({
                 }
             })
             return empViaDep
+        },
+
+        selectedEmployees(): Array<IEmpListItem> {
+            if(!this.employees) return []
+
+            const foundEmp = this.employees
+                .filter(emp => {
+                    return emp.departmentId === this.clickedChartDepartmentId
+                })
+                .map(emp => {
+                    const departmentName = [...this.departments].find((department: IDepartment) => {
+                                            return department.id === emp.departmentId
+                                        })
+                    const positionName = [...this.positions].find((position: IDepartment) => {
+                                            return position.id === emp.positionId
+                                        })
+                    return {
+                        ...emp,
+                        departmentName: departmentName ? departmentName.name: '',
+                        positionName  : positionName ? positionName.name    : ''
+                    }
+                })
+            return foundEmp
         }
     },
 
     methods: {
         chartItemClick (clickedItem: IDepartmentsGraphSummary) {
             //динамически подгрузить компонент с таблицей сотрудников
-            console.log('clickedItem!', clickedItem)
-            this.clickedChartItem = `${clickedItem.department} - ${clickedItem.departmentId} - ${clickedItem.empNumber} чел.`
+            this.tableCaption = `${clickedItem.department} (${clickedItem.empNumber} чел.)`
+            this.clickedChartDepartmentId = clickedItem.departmentId
         }
     },
 
-    components: {chartComponent},
+    components: {chartComponent, ListCard},
 })
 </script>

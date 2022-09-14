@@ -1,9 +1,9 @@
 <template>
     <list-card
+        filterField="fio"
         :items="localEmployees"
         :collapsedSize="collapsedSize"
         :caption="caption"
-        filterField="fio"
         :sorting="sorting"
     >
         <template #listTableCaption>
@@ -18,7 +18,8 @@
             <tr
                 class="listItem__activating"
                 @click="loadEmployeeRedactingForm($event, slotParams.item)"
-                data-bs-toggle="modal" data-bs-target="#redactEmployeeModal"
+                data-bs-toggle="modal"
+                data-bs-target="#redactEmployeeModal"
             >
                 <td v-for="column in columns" :key="column.name">
                     <template v-if="column.action">
@@ -30,7 +31,6 @@
                 </td>
             </tr>
         </template>
-
     </list-card>
 
     <div class="modal fade" id="redactEmployeeModal">
@@ -51,11 +51,9 @@
 <script>
 import ListCard from '@/components/common/ListCard.vue'
 import { mapState } from 'vuex'
-//import { defineAsyncComponent } from 'vue'
 import utils from '@/utils/utilFunctions'
 import redactEmployeeComponent from '@/components/employee/addEmployee.vue'
-
-
+import { employeeListColumns } from '@/components/common/ListCardColumns'
 
 export default {
 
@@ -71,50 +69,7 @@ export default {
                 direction: 1
             },
             loadingEmployeeId: null,
-            columns      : [
-                {
-                    name   : 'fio',
-                    caption: 'ФИО',
-                    sorting: {
-                        type: 'string',
-                        direction: -1
-                    },
-                    action : null,
-                },
-                {
-                    name   : 'departmentPositionName',
-                    caption: 'Отдел/должность',
-                    sorting: null,
-                    action : (slotParams) => {
-                        return `<div>${slotParams.item.departmentName}</div><div>${slotParams.item.positionName}</div>`
-                    },
-                },
-                {
-                    name   : 'employeeContacts',
-                    caption: 'Контакты',
-                    sorting: null,
-                    action : (slotParams) => {
-                        return `<div>${slotParams.item.employeePhone}</div><div>${slotParams.item.employeeEmail}</div>`
-                    },
-                },
-                {
-                    name   : 'employeeSalary',
-                    caption: 'Месячная оплата',
-                    sorting: {
-                        type: 'number',
-                        direction: -1
-                    },
-                    action : null
-                },
-                {
-                    name   : 'hireDate',
-                    caption: 'Начало работы',
-                    sorting: null,
-                    action : (slotParams) => {
-                        return this.timestampToNumbers(slotParams.item.hireDate)
-                    },
-                },
-            ]
+            columns          : employeeListColumns(utils.timestampToNumbers)
         }
     },
 
@@ -156,8 +111,6 @@ export default {
             this.loadingEmployeeId = emp.id
         }
     },
-
-    inject: ['timestampToNumbers'],
 
     components: {ListCard, redactEmployeeComponent}
 }

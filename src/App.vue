@@ -114,16 +114,11 @@ export default {
         /**
             различные мелкие утилитарные функции глобального назначения
         */
-        getDepartmentSize(employees, departmentId){
+        getDepartmentSize(employees, departmentId) {
             return employees.filter(emp => emp.departmentId === departmentId).length
         },
 
-        timestampToNumbers(timestamp, locale = null){
-            const formatter = new Intl.DateTimeFormat(locale ?? 'ru')
-            return formatter.format(timestamp * 1000)
-        },
-
-        formatDateToInput(date){
+        formatDateToInput(date) {
             /** меняет местами год месяц, потому что дефолтный инпут принимает дату не в локализованном формате... */
             const day = ('0' + date.getDate()).slice(-2)
             const month = ('0' + (date.getMonth() + 1)).slice(-2)

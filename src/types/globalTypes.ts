@@ -1,8 +1,17 @@
 
+//тип используемый ListCard для формирования строки данных
+export interface IEmpListItem {
+    [key:string]   : any, //TODO узнать, как назначить тип из IEmp  //import { IEmp } from './StoreTypes'
+    departmentName?: string | undefined,
+    positionName  ?: string | undefined
+}
+
 export enum requestTypes {
     get  = 'get',
     post = 'post'
 }
+
+export type FnType = (a: number, b: string) => string
 
 export interface IAxiosQuery {
     type      : requestTypes,
