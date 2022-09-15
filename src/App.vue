@@ -53,7 +53,7 @@ import NavComponent from '@/components/NavComponent.vue'
 import LoginInfo from '@/components/LoginInfo.vue'
 import { mapGetters, mapActions } from 'vuex'
 
-import showDefaultMessage from '@/utils/utilFunctions'
+import {showDefaultMessage, getDepartmentSize} from '@/utils/utilFunctions'
 
 import umbrellaLogo from '@/assets/umbrella-logo.png'
 
@@ -114,10 +114,6 @@ export default {
         /**
             различные мелкие утилитарные функции глобального назначения
         */
-        getDepartmentSize(employees, departmentId) {
-            return employees.filter(emp => emp.departmentId === departmentId).length
-        },
-
         formatDateToInput(date) {
             /** меняет местами год месяц, потому что дефолтный инпут принимает дату не в локализованном формате... */
             const day = ('0' + date.getDate()).slice(-2)
@@ -125,7 +121,8 @@ export default {
             return `${date.getFullYear()}-${month}-${day}`
         },
 
-        showDefaultMessage
+        getDepartmentSize: getDepartmentSize,
+        showDefaultMessage: showDefaultMessage
     },
 }
 </script>

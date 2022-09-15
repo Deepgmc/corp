@@ -3,6 +3,7 @@ import { IEmpListItem, FnType } from '@/types/globalTypes'
 export function employeeListColumns(timestampToNumbers: FnType) {
     return [
         {
+            field  : 'fio',
             name   : 'fio',
             caption: 'ФИО',
             sorting: {
@@ -12,6 +13,7 @@ export function employeeListColumns(timestampToNumbers: FnType) {
             action : null,
         },
         {
+            field  : 'departmentPositionName',
             name   : 'departmentPositionName',
             caption: 'Отдел/должность',
             sorting: null,
@@ -28,6 +30,7 @@ export function employeeListColumns(timestampToNumbers: FnType) {
             },
         },
         {
+            field  : 'employeeSalary',
             name   : 'employeeSalary',
             caption: 'Месячная оплата',
             sorting: {

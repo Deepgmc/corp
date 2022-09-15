@@ -12,6 +12,7 @@ import {
 } from './MESSAGES'
 
 import { ISorting } from '@/types/globalTypes'
+import { IDepartment, IEmp } from '@/types/StoreTypes'
 
 function showDefaultMessage(dispatcher: Dispatch, type: string, message = ''){
     if(!message){
@@ -28,6 +29,7 @@ function showDefaultMessage(dispatcher: Dispatch, type: string, message = ''){
 
 function sortList({name, sorting}: {name: string, sorting: ISorting}){
     const resSorting = {
+        name     : name,
         field    : name,
         type     : sorting.type,
         direction: sorting.direction
@@ -41,10 +43,21 @@ function timestampToNumbers(timestamp: number, locale: string) {
     return formatter.format(timestamp * 1000)
 }
 
+function getDepartmentSize(employees: Array<IEmp>, departmentId: number) {
+    return employees.filter(emp => emp.departmentId === departmentId).length
+}
+function getDepartmentById(departments: Array<IDepartment>, departmentId: number): IDepartment | null{
+    const department = departments.find(dep => dep.id === departmentId)
+    if(!department) return null
+    else return department
+}
+
 
 
 export default {
     showDefaultMessage,
     sortList,
-    timestampToNumbers
+    timestampToNumbers,
+    getDepartmentSize,
+    getDepartmentById
 }

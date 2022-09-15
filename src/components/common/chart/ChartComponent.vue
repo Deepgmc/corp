@@ -24,8 +24,10 @@ import am5lang_ru_RU from '@amcharts/amcharts5/locales/ru_RU'
 import * as am5 from '@amcharts/amcharts5'
 import * as am5xy from '@amcharts/amcharts5/xy'
 import * as am5pie from '@amcharts/amcharts5/percent'
-import am5themes_Animated from '@amcharts/amcharts5/themes/Animated'
 
+import am5themes_Frozen from '@amcharts/amcharts5/themes/Frozen'
+
+const labelTextDefault = '{category}: {value} чел.'
 
 export default {
     name: 'chartComponent',
@@ -59,6 +61,10 @@ export default {
             type    : Function,
             required: false
         },
+        clickFirstItem: {
+            type    : Function,
+            required: false
+        },
     },
 
     columnSeries: null,
@@ -73,7 +79,7 @@ export default {
     mounted(){
         const root = am5.Root.new(this.$refs.chartdiv)
 
-        root.setThemes([am5themes_Animated.new(root)])
+        root.setThemes([am5themes_Frozen.new(root)])
         this.setLocale(root)
 
         const axis = this.getChartAndAxis(root)
@@ -81,18 +87,29 @@ export default {
         const series = this.setSeriesAndLegend(root, seriesConfig)
 
         this.setSeriesTooltip(series)
-
         if(this.isColumnsGraph()){
             this.$options.columnSeries.columns.template.events.on('click', this.chartClickHandler)
         } else {
+            this.disablePieChartAnimation()
             this.$options.columnSeries.slices._values.forEach(slice => slice.events.on('click', this.chartClickHandler))
+            this.clickFirstItem()
         }
 
         this.isLoaded = true
     },
 
-
     methods: {
+
+        /** отмена анимации по клику */
+        disablePieChartAnimation(){
+            if(!this.isColumnsGraph()){
+                this.$options.columnSeries[this.chartBarTypeName()].template.states.create('active', {
+                    shiftRadius: 0,
+                    stroke: am5.color(0x777777),
+                    strokeWidth: 1
+                })
+            }
+        },
 
         setSeriesAndLegend(root, seriesConfig){
             let series, legend
@@ -106,10 +123,11 @@ export default {
                 this.$options.columnSeries = am5pie.PieSeries.new(root, seriesConfig)
                 series = this.chart.series.push(this.$options.columnSeries)
                 series.labels.template.setAll({
-                    text: '{category}',
-                    textType: 'circular',
-                    inside: true,
-                    radius: 20
+                    text    : '{category}',
+                    textType: 'radial',
+                    centerX : am5.percent(100),
+                    // inside  : true,
+                    // radius  : 10
                 })
             }
 
@@ -123,12 +141,22 @@ export default {
 
         chartClickHandler(event) {
             console.log('Clicked value: ', event.target.dataItem.dataContext)
+
+            /** делаем все слайсы неактивными, чтобы был в итоге активен только один */
+            if(!this.isColumnsGraph()) this.setAllInacive()
             if(this.chartItemClick){
                 this.chartItemClick(event.target.dataItem.dataContext)
             }
+
             // console.log('Clicked on a column', event.target.uid)
             // console.log(event.target.dataItem)
             // console.log(event.target.dataItem.component)
+        },
+
+        setAllInacive(){
+            this.$options.columnSeries.slices._values.forEach(slice => {
+                slice.set('active', false)
+            })
         },
 
         getChartAndAxis(root){
@@ -176,10 +204,18 @@ export default {
             return seriesConfig
         },
 
-        setSeriesTooltip(series){
-            series[this.chartBarTypeName()].template.setAll({
-                tooltipText: `{category${this.isColumnsGraph() ? 'X' : ''}}: {value${this.isColumnsGraph() ? 'Y' : ''}} чел.`
-            })
+        setSeriesTooltip(){
+            if(this.isColumnsGraph()){
+                this.$options.columnSeries[this.chartBarTypeName()].template.set({
+                    tooltipText: '{categoryX}: {valueY} чел.'
+                })
+            } else {
+                this.$options.columnSeries.slices._values.forEach(slice => {
+                    slice.setAll({
+                        tooltipText: labelTextDefault
+                    })
+                })
+            }
         },
 
         isColumnsGraph(){

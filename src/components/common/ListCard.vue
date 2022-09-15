@@ -4,6 +4,7 @@
         <div class="card-header card-header__colors">
             {{caption}}
             <input
+                v-if="isSearchField"
                 type="text"
                 class="list__search_input form-control form-control-sm"
                 @input="filterByField($event.target.value)"
@@ -69,6 +70,11 @@ export default {
             type    : Object,
             required: false
         },
+        isSearchField: {
+            type    : Boolean,
+            required: false,
+            default : true
+        },
     },
 
     mounted(){
@@ -89,6 +95,7 @@ export default {
                 )
             )
         },
+
         sortBasicData(sorting){
             let tmpList = [...this.items]
             tmpList.sort((item1, item2) => {
@@ -105,7 +112,7 @@ export default {
     },
 
     watch: {
-        sorting(newSorting/*, oldSorting*/){
+        sorting(newSorting, /*oldSorting*/){
             this.sortingDirection = newSorting.direction
             this.sortBasicData(newSorting)
         },

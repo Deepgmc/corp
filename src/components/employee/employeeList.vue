@@ -66,10 +66,11 @@ export default {
             sorting      : {
                 field    : 'fio',
                 type     : 'string',
-                direction: 1
+                direction: 1,
+                base     : true
             },
             loadingEmployeeId: null,
-            columns          : employeeListColumns(utils.timestampToNumbers)
+            columns      : employeeListColumns(utils.timestampToNumbers)
         }
     },
 
@@ -102,8 +103,12 @@ export default {
     },
 
     methods: {
-        localSortList: () => {
-            this.sorting = utils.sortList()
+        localSortList (column) {
+            if(this.sorting.base){
+                this.sorting = utils.sortList(column)
+            } else {
+                this.sorting = utils.sortList({name: this.sorting.name, sorting: this.sorting})
+            }
         },
 
         loadEmployeeRedactingForm(event, emp){

@@ -44,13 +44,15 @@ export default {
             sorting      : {
                 field    : 'name',
                 type     : 'string',
-                direction: 1
+                direction: 1,
+                base     : true
             },
             columns: [
                 {
                     name   : 'name',
                     caption: 'Название',
                     sorting: {
+                        field    : 'name',
                         type     : 'string',
                         direction: -1
                     },
@@ -60,6 +62,7 @@ export default {
                     name   : 'quantity',
                     caption: 'Кол-во сотрудников',
                     sorting: {
+                        field    : 'quantity',
                         type     : 'number',
                         direction: -1
                     },
@@ -78,19 +81,21 @@ export default {
             return [...this.company.departments].map(dep => {
                 return {
                     ...dep,
-                    quantity: this.getDepartmentSize(this.company.employees, dep.id) + ' чел.'
+                    quantity: utils.getDepartmentSize(this.company.employees, dep.id) + ' чел.'
                 }
             })
         }
     },
 
     methods: {
-        localSortList: () => {
-            this.sorting = utils.sortList()
+        localSortList(column) {
+            if(this.sorting.base){
+                this.sorting = utils.sortList(column)
+            } else {
+                this.sorting = utils.sortList({name: this.sorting.name, sorting: this.sorting})
+            }
         },
     },
-
-    inject: ['getDepartmentSize'],
 
     components: {ListCard}
 

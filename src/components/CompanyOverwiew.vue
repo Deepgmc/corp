@@ -7,6 +7,7 @@
         :fieldX="'department'"
         :fieldY="'empNumber'"
         :chartItemClick="chartItemClick"
+        :clickFirstItem="clickFirstItem"
     >
         <template #subTableSlot>
             <div v-if="clickedChartDepartmentId">
@@ -16,6 +17,7 @@
                     :collapsedSize="collapsedSize"
                     :caption="tableCaption"
                     :sorting="sorting"
+                    :isSearchField="false"
                 >
                     <template #listTableCaption>
                         <tr>
@@ -138,7 +140,20 @@ export default defineComponent({
             //динамически подгрузить компонент с таблицей сотрудников
             this.tableCaption = `${clickedItem.department} (${clickedItem.empNumber} чел.)`
             this.clickedChartDepartmentId = clickedItem.departmentId
-        }
+        },
+
+        /**после загрузки чарта делаем нажатым 1й попавшийся слайс департамента */
+        clickFirstItem(){
+            if(this.departments.length < 1) return
+            const department = utils.getDepartmentById(this.departments, this.departments[0].id)
+
+            this.chartItemClick({
+                department: department ? department.name : '',
+                empNumber: utils.getDepartmentSize(this.employees, this.departments[0].id),
+                departmentId: this.departments[0].id
+            })
+        },
+
     },
 
     components: {chartComponent, ListCard},
