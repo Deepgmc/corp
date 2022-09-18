@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import addDepartment from '@/components/employee/addDepartment.vue'
-import addPosition from '@/components/employee/addPosition.vue'
-import departmentsList from '@/components/employee/departmentsList.vue'
+import addDepartment from '@/components/departments/addDepartment.vue'
+import addPosition from '@/components/departments/addPosition.vue'
+import departmentsList from '@/components/departments/departmentsList.vue'
 export default {
     components: {addDepartment, departmentsList, addPosition}
 }

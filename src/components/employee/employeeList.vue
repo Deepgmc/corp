@@ -17,9 +17,6 @@
         <template #listBody="slotParams">
             <tr
                 class="listItem__activating"
-                @click="loadEmployeeRedactingForm($event, slotParams.item)"
-                data-bs-toggle="modal"
-                data-bs-target="#redactEmployeeModal"
             >
                 <td v-for="column in columns" :key="column.name">
                     <template v-if="column.action">
@@ -29,14 +26,24 @@
                         <span v-html="slotParams.item[column.name]"></span>
                     </template>
                 </td>
+                <td>
+                    <template v-for="button in buttons" :key="button">
+                        <button-component
+                            :buttonType="button.type"
+                            :itemData="slotParams.item"
+                            partition="employee"
+                            @buttonClick="loadEmployeeRedactingForm($event, employeeId)"
+                        ></button-component>
+                    </template>
+                </td>
             </tr>
         </template>
     </list-card>
 
-    <div class="modal fade" id="redactEmployeeModal">
+    <div class="modal fade" id="employeeRedactModal">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
-                <div class="modal-body" ref="redactComponentContainer">
+                <div class="modal-body">
                     <redact-employee-component
                         :loadingEmployeeId="loadingEmployeeId"
                         :isModal="true"
@@ -54,6 +61,7 @@ import { mapState } from 'vuex'
 import utils from '@/utils/utilFunctions'
 import redactEmployeeComponent from '@/components/employee/addEmployee.vue'
 import { employeeListColumns } from '@/components/common/ListCardColumns'
+import ButtonComponent from '@/components/common/buttons/ButtonComponent.vue'
 
 export default {
 
@@ -70,7 +78,19 @@ export default {
                 base     : true
             },
             loadingEmployeeId: null,
-            columns      : employeeListColumns(utils.timestampToNumbers)
+            columns      : employeeListColumns(utils.timestampToNumbers),
+
+            buttons: [
+                {
+                    type: 'redact'
+                },
+                {
+                    type: 'view'
+                },
+                {
+                    type: 'hire'
+                },
+            ]
         }
     },
 
@@ -111,12 +131,16 @@ export default {
             }
         },
 
-        loadEmployeeRedactingForm(event, emp){
-            //this.loadingEmployee = defineAsyncComponent(() => import('./addEmployee.vue'))
-            this.loadingEmployeeId = emp.id
+        loadEmployeeRedactingForm(employee){
+            this.loadingEmployeeId = employee.id
         }
     },
 
-    components: {ListCard, redactEmployeeComponent}
+    components: {
+        ListCard,
+        redactEmployeeComponent,
+        ButtonComponent
+
+    }
 }
 </script>

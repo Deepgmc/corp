@@ -39,3 +39,16 @@ export interface IDepartmentsGraphSummary {
     empNumber   : number,
     departmentId: number
 }
+
+type AnyFunction = (...args: any[]) => any
+
+export interface IButtonOptionsType {
+    text: string,
+    type: string,
+    icon: string | null,
+    link: string | null,
+    dataTarget: string,
+    action: AnyFunction | null,
+    dataModal: string | null
+}
+

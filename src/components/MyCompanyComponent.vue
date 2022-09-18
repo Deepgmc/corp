@@ -1,7 +1,7 @@
 <template>
 <div class="card mt-2">
     <div class="card-header card-header__colors">
-
+        Настройки компании
     </div>
     <div class="card-body">
         <form @submit.prevent="companyFormSubmit">
