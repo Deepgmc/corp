@@ -4,7 +4,8 @@
             class="btn-sm btn-success"
             :data-bs-toggle="dataModal"
             :data-bs-target="dataTarget"
-            @click="openModal"
+            :data-button_entity_id="buttonEntityId"
+            @click="buttonClick"
         >
             {{buttonText}}
         </button>
@@ -21,6 +22,7 @@ export default defineComponent({
     data() {
         return {
             buttonText: 'text',
+            buttonEntityId: 0,
             dataModal : '' as string | null,
             dataTarget: '' as string | null,
 
@@ -32,7 +34,7 @@ export default defineComponent({
                     dataModal : 'modal',
                     dataTarget: `#${this.partition}RedactModal`,
                     link      : '',
-                    action    : null
+                    // action    : null
                 } as IButtonOptionsType,
                 view: {
                     text      : 'просмотр',
@@ -41,7 +43,7 @@ export default defineComponent({
                     dataModal : 'modal',
                     dataTarget: `#${this.partition}ViewModal`,
                     link      : '',
-                    action    : null
+                    // action    : null
                 } as IButtonOptionsType,
                 hire: {
                     text      : 'уволить',
@@ -50,9 +52,9 @@ export default defineComponent({
                     dataModal : null,
                     dataTarget: '',
                     link      : '',
-                    action    : () => {
-                        console.log('Hire action')
-                    }
+                    // action    : () => {
+                    //     console.log('Hire action')
+                    // }
                 } as IButtonOptionsType
             },
         }
@@ -84,28 +86,29 @@ export default defineComponent({
         }
 
         this.buttonText = thisButton.text + `(${this.itemData.id})`
+        this.buttonEntityId = this.itemData.id
         this.dataModal = thisButton.dataModal
         this.dataTarget = thisButton.dataTarget
-        if(thisButton.action) thisButton.action()
 
-        switch(this.buttonType){
-            case 'redact':
-
-            break
-
-            case 'view':
-
-            break
-
-            case 'hire':
-
-            break
-        }
     },
 
     methods: {
-        openModal(){
-            this.$emit('buttonClick', this.itemData)
+        buttonClick(event: Event){
+            let entity
+            switch(this.buttonType){
+                case 'redact':
+                    this.$emit('buttonClick', this.itemData)
+                break
+
+                case 'view':
+                    this.$emit('buttonClick', this.itemData)
+                break
+
+                case 'hire':
+                    entity = (event.target as HTMLInputElement).dataset.button_entity_id
+                    console.log('Hire click, entity id:', entity)
+                break
+            }
         }
     }
 })

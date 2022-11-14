@@ -8,7 +8,7 @@
     >
         <template #listTableCaption>
             <tr>
-                <th v-for="column in columns" :key="column.name" class="text-left">
+                <th v-for="column in columns" :key="column.field" class="text-left">
                     {{column.caption}}
                     <span v-if="column.sorting" @click="localSortList(column)" style="color:green;cursor:pointer;">&#8645;</span>
                 </th>
@@ -18,22 +18,23 @@
             <tr
                 class="listItem__activating"
             >
-                <td v-for="column in columns" :key="column.name">
+                <td v-for="column in columns" :key="column.field">
                     <template v-if="column.action">
                         <span v-html="column.action(slotParams)"></span>
                     </template>
                     <template v-else>
-                        <span v-html="slotParams.item[column.name]"></span>
+                        <span v-html="slotParams.item[column.field]"></span>
                     </template>
                 </td>
                 <td>
-                    <template v-for="button in buttons" :key="button">
-                        <button-component
+                    <template v-for="button in slotParams.item.buttons" :key="button">
+                        Button type: {{button.type}} {{slotParams.item.id}}
+                        <!-- <button-component
                             :buttonType="button.type"
                             :itemData="slotParams.item"
                             partition="employee"
                             @buttonClick="loadEmployeeRedactingForm($event, employeeId)"
-                        ></button-component>
+                        ></button-component> -->
                     </template>
                 </td>
             </tr>
@@ -75,24 +76,24 @@ export default {
                 field    : 'fio',
                 type     : 'string',
                 direction: 1,
-                base     : true
+                //base     : true
             },
             loadingEmployeeId: null,
-            columns      : employeeListColumns(utils.timestampToNumbers),
-
-            buttons: [
-                {
-                    type: 'redact'
-                },
-                {
-                    type: 'view'
-                },
-                {
-                    type: 'hire'
-                },
-            ]
+            columns          : employeeListColumns(utils.timestampToNumbers),
         }
     },
+
+    buttons: [
+        {
+            type: 'redact'
+        },
+        {
+            type: 'view'
+        },
+        {
+            type: 'hire'
+        },
+    ],
 
     computed: {
 
@@ -117,6 +118,7 @@ export default {
                     positionName: [...this.positions].find((position) => {
                         return position.id === emp.positionId
                     }).name,
+                    buttons: this.$options.buttons
                 }
             })
         }
@@ -124,11 +126,8 @@ export default {
 
     methods: {
         localSortList (column) {
-            if(this.sorting.base){
-                this.sorting = utils.sortList(column)
-            } else {
-                this.sorting = utils.sortList({name: this.sorting.name, sorting: this.sorting})
-            }
+            column.sorting.direction = column.sorting.direction * -1
+            this.sorting = utils.sortList({sorting: column.sorting})
         },
 
         loadEmployeeRedactingForm(employee){
@@ -139,7 +138,7 @@ export default {
     components: {
         ListCard,
         redactEmployeeComponent,
-        ButtonComponent
+        //ButtonComponent
 
     }
 }

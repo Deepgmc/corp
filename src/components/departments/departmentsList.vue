@@ -80,17 +80,17 @@ export default {
                     action : null
                 },
             ],
-
-            buttons: [
-                {
-                    type: 'redact'
-                },
-                {
-                    type: 'view'
-                },
-            ]
         }
     },
+
+    buttons: [
+        {
+            type: 'redact'
+        },
+        {
+            type: 'view'
+        },
+    ],
 
     computed: {
         ...mapState('company', {
@@ -101,7 +101,7 @@ export default {
             return [...this.company.departments].map(dep => {
                 return {
                     ...dep,
-                    quantity: utils.getDepartmentSize(this.company.employees, dep.id) + ' чел.'
+                    quantity: utils.getDepartmentSize(this.company.employees, dep.id)
                 }
             })
         }
