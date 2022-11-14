@@ -24,6 +24,15 @@
                         {{slotParams.item[column.name]}}
                     </template>
                 </td>
+                <td>
+                    <template v-for="button in buttons" :key="button">
+                        <button-component
+                            :buttonType="button.type"
+                            :itemData="slotParams.item"
+                            partition="departments"
+                        ></button-component>
+                    </template>
+                </td>
             </tr>
         </template>
     </list-card>
@@ -32,6 +41,7 @@
 <script>
 
 import ListCard from '@/components/common/ListCard.vue'
+import ButtonComponent from '@/components/common/buttons/ButtonComponent.vue'
 import { mapState } from 'vuex'
 import utils from '@/utils/utilFunctions'
 
@@ -47,6 +57,7 @@ export default {
                 direction: 1,
                 base     : true
             },
+
             columns: [
                 {
                     name   : 'name',
@@ -68,9 +79,18 @@ export default {
                     },
                     action : null
                 },
-            ]
+            ],
         }
     },
+
+    buttons: [
+        {
+            type: 'redact'
+        },
+        {
+            type: 'view'
+        },
+    ],
 
     computed: {
         ...mapState('company', {
@@ -81,7 +101,7 @@ export default {
             return [...this.company.departments].map(dep => {
                 return {
                     ...dep,
-                    quantity: utils.getDepartmentSize(this.company.employees, dep.id) + ' чел.'
+                    quantity: utils.getDepartmentSize(this.company.employees, dep.id)
                 }
             })
         }
@@ -97,7 +117,7 @@ export default {
         },
     },
 
-    components: {ListCard}
+    components: {ListCard, ButtonComponent}
 
 }
 </script>

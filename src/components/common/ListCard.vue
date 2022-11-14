@@ -83,6 +83,7 @@ export default {
 
     methods: {
         filterByField(text){
+            //если в после поиска введён текст - нужно отфильтровать, ограничить список но нему
             if(!text) {
                 this.filterText = ''
                 this.filteredItems = this.sortedItems
@@ -107,12 +108,13 @@ export default {
                 else return this.sortingDirection
             })
             this.sortedItems = tmpList
+            //после сортировки нужно отфильтровать
             this.filterByField(this.filterText)
         }
     },
 
     watch: {
-        sorting(newSorting, /*oldSorting*/){
+        sorting(newSorting){
             this.sortingDirection = newSorting.direction
             this.sortBasicData(newSorting)
         },

@@ -6,6 +6,18 @@ export interface IEmpListItem {
     positionName  ?: string | undefined
 }
 
+type AnyFunction = (...args: any[]) => any
+
+export interface IButtonOptionsType {
+    text      : string,
+    type      : string,
+    icon      : string | null,
+    link      : string | null,
+    dataTarget: string,
+    //action    : AnyFunction | null,
+    dataModal : string | null
+}
+
 export enum requestTypes {
     get  = 'get',
     post = 'post'
@@ -31,7 +43,8 @@ export interface ISuccess {
 export interface ISorting {
     field    : string,
     type     : string,
-    direction: number
+    direction: number,
+    base     : boolean
 }
 
 export interface IDepartmentsGraphSummary {
