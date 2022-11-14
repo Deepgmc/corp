@@ -120,6 +120,12 @@ export default {
             const month = ('0' + (date.getMonth() + 1)).slice(-2)
             return `${date.getFullYear()}-${month}-${day}`
         },
+        getFieldById(array, fieldName, id){
+            /** вернёт нужное поле в 1 элемента из массива сущностей (таких как departments or positions) */
+            return [...array].find((element) => {
+                return element.id === id
+            })[fieldName]
+        },
 
         getDepartmentSize: getDepartmentSize,
         showDefaultMessage: showDefaultMessage

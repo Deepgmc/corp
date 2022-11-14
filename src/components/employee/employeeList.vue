@@ -91,12 +91,8 @@ export default {
                 */
                 return {
                     ...emp,
-                    departmentName: [...this.departments].find((department) => {
-                        return department.id === emp.departmentId
-                    }).name,
-                    positionName: [...this.positions].find((position) => {
-                        return position.id === emp.positionId
-                    }).name,
+                    departmentName: this.getFieldById(this.departments, 'name', emp.departmentId),
+                    positionName: this.getFieldById(this.positions, 'name', emp.positionId),
                 }
             })
         }
@@ -116,6 +112,8 @@ export default {
             this.loadingEmployeeId = emp.id
         }
     },
+
+    inject: ['getFieldById'],
 
     components: {ListCard, redactEmployeeComponent}
 }
