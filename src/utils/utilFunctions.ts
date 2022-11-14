@@ -27,14 +27,12 @@ function showDefaultMessage(dispatcher: Dispatch, type: string, message = ''){
     dispatcher(ACTION_SHOW_NOTIFICATION, {type: type, message: message }, { root: true } )
 }
 
-function sortList({name, sorting}: {name: string, sorting: ISorting}){
+function sortList({sorting}: {sorting: ISorting}){
     const resSorting = {
-        name     : name,
-        field    : name,
+        field    : sorting.field,
         type     : sorting.type,
         direction: sorting.direction
     }
-    resSorting.direction = sorting.direction * -1
     return resSorting
 }
 

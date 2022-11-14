@@ -4,17 +4,16 @@ export function employeeListColumns(timestampToNumbers: FnType) {
     return [
         {
             field  : 'fio',
-            name   : 'fio',
             caption: 'ФИО',
             sorting: {
-                type: 'string',
+                field    : 'fio',
+                type     : 'string',
                 direction: -1
             },
             action : null,
         },
         {
             field  : 'departmentPositionName',
-            name   : 'departmentPositionName',
             caption: 'Отдел/должность',
             sorting: null,
             action : (slotParams: IEmpListItem) => {
@@ -22,7 +21,7 @@ export function employeeListColumns(timestampToNumbers: FnType) {
             },
         },
         {
-            name   : 'employeeContacts',
+            field   : 'employeeContacts',
             caption: 'Контакты',
             sorting: null,
             action : (slotParams: IEmpListItem) => {
@@ -31,16 +30,16 @@ export function employeeListColumns(timestampToNumbers: FnType) {
         },
         {
             field  : 'employeeSalary',
-            name   : 'employeeSalary',
             caption: 'Месячная оплата',
             sorting: {
-                type: 'number',
+                field    : 'employeeSalary',
+                type     : 'number',
                 direction: -1
             },
             action : null
         },
         {
-            name   : 'hireDate',
+            field  : 'hireDate',
             caption: 'Начало работы',
             sorting: null,
             action : (slotParams: IEmpListItem) => {

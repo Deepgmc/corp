@@ -8,7 +8,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <employee-dynamic></employee-dynamic>
+                    employee Dynamic here
+                    <!-- <employee-dynamic></employee-dynamic> -->
                 </div>
             </div>
 
@@ -19,12 +20,12 @@
 
 <script>
 import employeeList from '@/components/employee/employeeList.vue'
-import employeeDynamic from '@/components/employee/employeeDynamic.vue'
+//import employeeDynamic from '@/components/employee/employeeDynamic.vue'
 
 export default {
     name: 'EmployeeView',
 
-    components: {employeeList, employeeDynamic},
+    components: {employeeList },//employeeDynamic
 
 }
 </script>
