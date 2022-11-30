@@ -8,7 +8,7 @@
     >
         <template #listTableCaption>
             <tr>
-                <th v-for="column in columns" :key="column.name" class="text-left">
+                <th v-for="column in columns" :key="column.field" class="text-left">
                     {{column.caption}}
                     <span v-if="column.sorting" @click="localSortList(column)" style="color:green;cursor:pointer;">&#8645;</span>
                 </th>
@@ -16,12 +16,12 @@
         </template>
         <template #listBody="slotParams">
             <tr>
-                <td v-for="column in columns" :key="column.name">
+                <td v-for="column in columns" :key="column.field">
                     <template v-if="column.action">
                         {{column.action(slotParams)}}
                     </template>
                     <template v-else>
-                        {{slotParams.item[column.name]}}
+                        {{slotParams.item[column.field]}}
                     </template>
                 </td>
                 <td>
@@ -54,13 +54,12 @@ export default {
             sorting      : {
                 field    : 'name',
                 type     : 'string',
-                direction: 1,
-                base     : true
+                direction: 1
             },
 
             columns: [
                 {
-                    name   : 'name',
+                    field   : 'name',
                     caption: 'Название',
                     sorting: {
                         field    : 'name',
@@ -70,7 +69,7 @@ export default {
                     action : null,
                 },
                 {
-                    name   : 'quantity',
+                    field   : 'quantity',
                     caption: 'Кол-во сотрудников',
                     sorting: {
                         field    : 'quantity',
@@ -109,11 +108,8 @@ export default {
 
     methods: {
         localSortList(column) {
-            if(this.sorting.base){
-                this.sorting = utils.sortList(column)
-            } else {
-                this.sorting = utils.sortList({name: this.sorting.name, sorting: this.sorting})
-            }
+            column.sorting.direction = column.sorting.direction * -1
+            this.sorting = utils.sortList({sorting: column.sorting})
         },
     },
 
