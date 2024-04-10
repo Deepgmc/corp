@@ -32,7 +32,7 @@
                     aria-describedby = "addressHelp"
                 />
                 <div id="addressHelp" class="form-text">
-                    Длина адреса не больше 40 символов, но не менее 10
+                    Длина адреса не больше 40 символов и не менее 10
                 </div>
             </div>
 
