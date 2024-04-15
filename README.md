@@ -14,11 +14,5 @@ npm run serve
 ```
 npm run build
 ```
-
-### Lints and fixes files
+Основной репозиторий на гитхабе в мастере. Мерджи делаю уже там, не локально. Гитфлис - берёт уже спуленный локальный мастер.
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
