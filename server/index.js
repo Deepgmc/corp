@@ -1,7 +1,7 @@
-const createError = require('http-errors')
-const express = require('express')
-const app = express()
-const path = require('path')
+const createError  = require('http-errors')
+const express      = require('express')
+const app          = express()
+const path         = require('path')
 const cookieParser = require('cookie-parser')
 
 app.use(cookieParser())
@@ -16,7 +16,7 @@ const apiRouter = require('./routes/api')
 app.use('/auth', authRouter)
 app.use('/api', apiRouter)
 
-
+console.log('process.version:', process.version);
 
 //app.set('views', path.join(__dirname, 'views'))
 
