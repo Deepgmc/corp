@@ -26,10 +26,6 @@ class Service {
         return this._crypto.createHash('md5').update(str).digest('hex')
     }
 
-    generateToken(){
-        return this._crypto.randomBytes(20).toString('hex')
-    }
-
     getTimestamp(){
         return Math.floor(Date.now() / 1000)
     }

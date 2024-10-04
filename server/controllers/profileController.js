@@ -1,7 +1,7 @@
 const profileS = require('../services/profileService')
 const authS = require('../services/authService.js')
 
-const saveUserProfile = async function (req, res, next) {
+const saveUserProfile = async function (req, res) {
     const profileService = new profileS()
     const newUser = req.body.data.user
     const settings = req.body.data.settings
@@ -15,7 +15,7 @@ const saveUserProfile = async function (req, res, next) {
         profileService.updateUserData(newUser, foundUser),
         profileService.updateProfileData(settings, foundUser)
     ])
-    .then((result) => {
+    .then(() => {
         res.send({error: false, message: 'Успешно сохранено'})
     })
     .catch((error) => {
