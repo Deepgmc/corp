@@ -1,4 +1,4 @@
-# corp_ts
+# CORP_TS
 
 ## Project setup
 ```
